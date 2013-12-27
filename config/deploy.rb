@@ -7,6 +7,9 @@ set :repository,            "git@github.com:regidium/frontend.git"
 set :branch,                "master"
 set :scm,                   :git
 set :deploy_via,            :copy
+
+role :web,        domain
+role :app,        domain, :primary => true
  
 default_run_options[:pty] = true
 
@@ -17,8 +20,11 @@ set :use_sudo,              false
 
 set :shared_children,       [
                                 "node_modules",
-                                "config"
+                                "config",
+                                "cache"
                             ]
+
+logger.level = Logger::MAX_LEVEL
 
 namespace :deploy do
 
@@ -29,10 +35,10 @@ namespace :deploy do
   end
 
   desc "Restart Supervisor"
-  task :start do
+  task :restart do
     run "cd #{current_path} && touch app.js"
   end
 
 end
  
-after "deploy:create_symlink", "deploy:npm_install", "deploy:stop", "deploy:start"
+after "deploy:create_symlink", "deploy:npm_install", "deploy:restart"
