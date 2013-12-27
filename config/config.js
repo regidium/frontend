@@ -12,11 +12,7 @@ module.exports = function(app, express, mongoose) {
     });
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(express.static(__dirname + '/../www'));
-/*    app.use(express.compiler({
-      src: __dirname + '/www',
-      enable: ['less']
-    }));*/
+    app.use(express.static(__dirname + '/../public'));
     app.use(app.router);
   });
 

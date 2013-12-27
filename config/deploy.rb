@@ -8,8 +8,7 @@ set :branch,                "master"
 set :scm,                   :git
 set :deploy_via,            :copy
 
-role :web,        domain
-role :app,        domain, :primary => true
+role :web,                  domain, :primary => true
  
 default_run_options[:pty] = true
 
@@ -39,7 +38,7 @@ namespace :deploy do
 
   desc "Restart Supervisor"
   task :restart do
-    run "cd #{current_path} && touch app.js"
+    run "sudo /usr/bin/supervisorctl restart my.regidium.com"
   end
 
 end

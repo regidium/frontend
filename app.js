@@ -26,7 +26,7 @@ app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
 
 // Socket.io Communication
-io.sockets.on('connection', socket);
+io.sockets.on('connection', function(socket) { console.log('SocketIO connected'); });
 io.set('log level', 2)
   .set('close timeout', 35)
   .set('max reconnection attempts', 100)
