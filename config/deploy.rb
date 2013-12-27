@@ -18,9 +18,12 @@ set :ssh_options,           {:forward_agent => true, :port => 22}
 set :user,                  "deployer"
 set :use_sudo,              false
 
+set :shared_files,          [
+                                "config/config.js",
+                            ]
+
 set :shared_children,       [
                                 "node_modules",
-                                "config",
                                 "cache"
                             ]
 
