@@ -1,6 +1,6 @@
 {
     "name": "regidium-frontend",
-    "description": "",
+    "description": "Regidium frontend",
     "private": true,
     "version": "0.0.1",
     "main": "./app.js",
