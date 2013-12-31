@@ -22,8 +22,13 @@
   margin: 0;
 }
 
-
 p.active{
   background: #FFF;
   color: #000;
+}
+
+.form-auth {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
 }

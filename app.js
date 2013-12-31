@@ -1,39 +1,46 @@
+var config = require('./app/config/config/config.json'),
+    express = require('express'),
+    app = express(),
+    http = require('http'),
+    server = http.createServer(app),
+    consolidate = require('consolidate'),
+    i18n = require('i18n'),
+    io = require('socket.io').listen(server);
 
-var express = require('express'),
-  app = express(),
-  http = require('http'),
-  server = http.createServer(app),
-  routes = require('./routes'),
-  socket = require('./routes/socket.js'),
-  io = require('socket.io').listen(server);
-
-// Heroku config only
-/*if(process.env.PORT) {
-  io.configure(function () { 
-    io.set("transports", ["xhr-polling"]); 
-    io.set("polling duration", 10); 
-  });
-}*/
+i18n.configure(config.i18n);
 
 // Configuration
-var config = require('./config/config')(app, express);
+app.configure(function() {
+    app.set('views', config.paths.views);
+    app.set('view cache', config.view.cache);
+    app.set('view engine', 'jade');
+    app.set('view options', {
+        layout: false
+    });
+    app.engine('.jade', consolidate.jade);
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.static(__dirname + '/public'));
+    app.use(app.router);
+    app.use(i18n.init);
+    app.locals.config = config;
+});
+
+app.configure('development', function() {
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function() {
+    app.use(express.errorHandler());
+});
 
 // Routes
-app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
-
-// Socket.io Communication
-io.sockets.on('connection', function(socket) { console.log('SocketIO connected'); });
-io.set('log level', 2)
-  .set('close timeout', 35)
-  .set('max reconnection attempts', 100)
-  .set('heartbeat timeout', 60)
-  .set('heartbeat interval', 25)
+require('./app/routes/core')(app);
+require('./app/routes/user')(app);
+require('./app/routes/agent')(app);
 
 // Start server
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 5001;
 
 server.listen(port);
+console.log("Server listen on: http://localhost:"+port);

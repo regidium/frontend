@@ -1,0 +1,29 @@
+{
+
+    "env": "development",
+
+    "server": {
+        "port": 3000,
+        "host": "my.regidium.loc",
+        "url": "http://my.regidium.loc"
+    },
+
+    "view": {
+        "cache": true
+    },
+
+    "i18n": {
+        "locales": [ "ru", "en" ],
+        "defaultLocale": "en",
+        "cookie": "locale",
+        "directory": "app/locales",
+        "debug": true,
+        "updateFiles": false
+    },
+
+    "paths": {
+        "views": "app/views",
+        "public": "app/public"
+    }
+
+}

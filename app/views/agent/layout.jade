@@ -1,0 +1,62 @@
+doctype html
+html(ng-app="regidiumApp")
+    head
+        meta(charset='utf8')
+        base(href='/')
+        title Agent panel
+        link(rel='stylesheet', href='/css/bootstrap.min.css')
+        style(type='text/css').
+            body {
+                padding-top: 70px
+            }
+        link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
+        link(rel='stylesheet', href='/css/app.css')
+    body(ng-init="loadScopes()")
+        .navbar.navbar-inverse.navbar-fixed-top
+            .navbar-inner
+                .container
+                    button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.brand(href='/agent') Regidium
+                    .nav-collapse.collapse
+                        ul.nav
+                            li.active
+                                a(href='/agent') Home
+                        ul.nav
+                            li
+                                a(ng-click="getUsers()") Users
+                        ul.nav
+                            li
+                                a(ng-click="getAgents()") Agents
+                        ul.nav
+                            li
+                                a(ng-click="getChats()") Chats
+                        ul.nav
+                            li
+                                a(ng-click="getWidgets()") Widgets
+                        ul.nav.dropdown
+                            li
+                                a.dropdown-toggle(data-toggle="dropdown", ng-click="getStatistics()") Statistics
+                                    b.caret
+                                ul.dropdown-menu
+                                    li
+                                        a(ng-click="getUsersStatistic()") Users
+                                    li
+                                        a(ng-click="getAgentsStatistic()") Agents
+                        ul.nav.pull-right
+                            li
+                                a(href='#logout') Exit
+
+                block body
+
+                script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js')
+                script(src='js/lib/bootstrap.min.js')
+                script(src='js/lib/angular/angular.js')
+                script(src='/socket.io/socket.io.js')
+                script(src='js/app/agentApp.js')
+                script(src='js/app/common/services.js')
+                script(src='js/app/common/controllers.js')
+                script(src='js/app/common/filters.js')
+                script(src='js/app/common/directives.js')
