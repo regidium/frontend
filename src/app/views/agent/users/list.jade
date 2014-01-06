@@ -1,0 +1,9 @@
+extends ../index
+
+
+block content
+    .jumbotron(ng-controller="AgentCtrl")
+        .row(ng-view)
+            - for (user in users)
+                p
+                    span= user.fullname

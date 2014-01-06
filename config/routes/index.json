@@ -1,0 +1,10 @@
+{
+
+    "index": {
+        "method": "all",
+        "route": "/",
+        "controller": "index/index",
+        "action": "index"
+    }
+
+}

@@ -1,0 +1,48 @@
+<div ng-controller="MainAuthLoginCtrl" id="login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+    <div class="modal-body">
+        <div class="modal-dialog">
+            <div class="modal-content form-auth">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <form role="form" ng-submit='login()' name="login_form">
+                            <input ng-model="user.email" ng-required="true" name="login_form.email" type="email" placeholder="Email address" required="required" autofocus="autofocus" class="form-control" />
+                            <span class="has-error">
+                                <span ng-show="login_form.$error.email" class="help-block">Should be valid email address!</span>
+                            </span>
+                            <input ng-model="user.password" ng-required="true" name="login_form.password" type="password" placeholder="Password" required="required" class="form-control" />
+                            <label class="checkbox">
+                                <input type="checkbox" value="remember" /> Remember me
+                            </label>
+                            <p>
+                                <button type="submit" ng-disabled="login_form.$invalid" class="btn btn-lg btn-primary btn-block">Login</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-lg btn-danger btn-block" type="button" data-dismiss="modal" aria-hidden="true">Close</button>
+                            </p>
+                        </form>
+                    </p>
+                    <p>
+                        <ul>
+                            <li class="vk">
+                                <a href='/auth/external/service/vkontakte/connect'>VK</a>
+                            </li>
+                            <li class="fb">
+                                <a href='/auth/external/service/facebook/connect'>Facebook</a>
+                            </li>
+                            <li class="gg">
+                                <a href='/auth/external/service/google/connect'>Google</a>
+                            </li>
+                            <li class="tw">
+                                <a href='/auth/external/service/twitter/connect'>Twitter</a>
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

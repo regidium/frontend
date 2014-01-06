@@ -1,0 +1,16 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>UID</td>
+            <td>Email</td>
+            <td>Fullname</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in users">
+            <td>{{user.uid}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.fullname}}</td>
+        </tr>
+    </tbody>
+</table>

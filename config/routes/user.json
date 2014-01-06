@@ -1,0 +1,10 @@
+{
+
+    "user_index": {
+        "method": "all",
+        "route": "/user",
+        "controller": "user/index",
+        "action": "index"
+    }
+
+}

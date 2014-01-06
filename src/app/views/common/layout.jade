@@ -1,0 +1,63 @@
+doctype html
+
+block html
+    html(ng-app="regidiumApp")
+
+        block head
+            head
+                base(href="/")
+                - var title = title ? title : "My Regidium"
+                title= title
+
+                block meta
+                    meta(charset="utf8")
+
+                block base_style
+                    - if (env == 'production')
+                        link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css")
+                        link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css")
+                    - else
+                        link(rel="stylesheet", href="/js/libs/bootstrap/css/bootstrap.min.css")
+                        link(rel="stylesheet", href="/js/libs/bootstrap/css/bootstrap-theme.min.css")
+                    link(rel="stylesheet", href="/js/libs/angular/angular-loading-bar/loading-bar.min.css")
+                    link(rel="stylesheet", href="/css/app.css")
+                block style
+
+        block body_inner
+            body.ng-cloak(ng-cloak)
+
+                block body
+                    div.container
+                        block alert
+                            include alerts
+
+                        block header_nav
+
+                        block content
+
+                    block auto_popups
+
+                    block base_script
+                        script(src="/js/libs/angular/angular-loader/angular-loader.min.js", type="text/javascript")
+                        - if (env == 'production')
+                            script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js', type="text/javascript")
+                            script(src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js', type="text/javascript")
+                            script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js', type="text/javascript")
+                            script(src='//code.angularjs.org/1.2.7/angular.min.js', type="text/javascript")
+                            script(src='//code.angularjs.org/1.2.7/angular-route.min.js', type="text/javascript")
+                            script(src='//code.angularjs.org/1.2.7/angular-resource.min.js', type="text/javascript")
+                            script(src='//code.angularjs.org/1.2.7/angular-cookies.min.js', type="text/javascript")
+                        - else
+                            script(src='/js/libs/jquery/jquery.min.js', type="text/javascript")
+                            script(src='/js/libs/underscore/underscore-min.js', type="text/javascript")
+                            script(src='/js/libs/bootstrap/js/bootstrap.min.js', type="text/javascript")
+                            script(src='/js/libs/angular/angular.min.js', type="text/javascript")
+                            script(src='/js/libs/angular/angular-route/angular-route.min.js', type="text/javascript")
+                            script(src='/js/libs/angular/angular-resource/angular-resource.min.js', type="text/javascript")
+                            script(src='/js/libs/angular/angular-cookies/angular-cookies.min.js', type="text/javascript")
+
+                        script(src="/js/libs/angular/angular-loading-bar/loading-bar.min.js", type="text/javascript")
+                        script(src="/js/libs/angular/angular-flash/angular-flash.min.js", type="text/javascript")
+                        script(src="/js/libs/angular/angular-underscore/angular-underscore.js", type="text/javascript")
+
+                    block script
