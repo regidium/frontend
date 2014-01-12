@@ -14,8 +14,13 @@ block header
                 a(href="/agent/users", translate) Users
             li
                 a(href="/agent/agents", translate) Agents
-            li
-                a(href="/agent/settings", translate) Settings
+            li.dropdown
+                a.dropdown-toggle(href="#", data-toggle="dropdown", translate) Settings
+                ul.dropdown-menu
+                    li
+                        a(href="/agent/settings/widget") Widget
+                    li
+                        a(href="/agent/settings/productivity") Productivity
             li
                 a(href="/agent/statistics", translate) Statistics
             li

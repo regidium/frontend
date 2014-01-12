@@ -27,7 +27,9 @@
             .when('/agent/agents/detail/:uid', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsDetailCtrl })
             .when('/agent/agents/create', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsCreateCtrl })
             .when('/agent/agents/edit/:uid', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsEditCtrl })
-            .when('/agent/settings', { templateUrl: 'js/app/agent/views/settings/index.html', controller: AgentSettingsCtrl })
+            .when('/agent/settings', { templateUrl: 'js/app/agent/views/settings/index.html', controller: AgentSettingsWidgetCtrl })
+            .when('/agent/settings/widget', { templateUrl: 'js/app/agent/views/settings/widget.html', controller: AgentSettingsProductivityCtrl })
+            .when('/agent/settings/productivity', { templateUrl: 'js/app/agent/views/settings/productivity.html', controller: AgentSettingsCtrl })
             .when('/agent/statistics', { templateUrl: 'js/app/agent/views/statistics/index.html', controller: AgentStatisticsCtrl })
             .when('/agent/chat', { templateUrl: 'js/app/agent/views/chat/index.html', controller: AgentChatCtrl })
             .otherwise({ redirectTo: '/agent' });

@@ -9,6 +9,6 @@
 
     <form ng-submit='sendMessage()'>
         <input ng-model='message' />
-        <button type='submit' translate class="btn btn-success">Send</button>
+        <button type='submit' class="btn btn-success" translate ng-disabled="!message">Send</button>
     </form>
 </div>

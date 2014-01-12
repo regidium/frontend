@@ -223,6 +223,20 @@ function AgentSettingsCtrl($scope, $cookieStore) {
 }
 
 /**
+ * @url "/agent/settings/widget"
+ */
+function AgentSettingsWidgetCtrl($scope, $cookieStore) {
+    security($cookieStore);
+}
+
+/**
+ * @url "/agent/settings/productivity"
+ */
+function AgentSettingsProductivityCtrl($scope, $cookieStore) {
+    security($cookieStore);
+}
+
+/**
  * @url "/agent/statistics"
  */
 function AgentStatisticsCtrl($scope, $cookieStore) {
@@ -232,9 +246,10 @@ function AgentStatisticsCtrl($scope, $cookieStore) {
 /**
  * @url "/agent/chat"
  */
-function AgentChatCtrl($scope, $cookieStore, socket) {
+function AgentChatCtrl($scope, $cookieStore, flash, socket) {
     $scope.agent = security($cookieStore);
     $scope.agent.fullname = decodeURIComponent($scope.agent.fullname);
+    $scope.message = '';
 
     socket.on('send:message', function (message) {
         $scope.messages.push({
@@ -246,6 +261,11 @@ function AgentChatCtrl($scope, $cookieStore, socket) {
     $scope.messages = [];
 
     $scope.sendMessage = function () {
+        if ($scope.message.length == 0) {
+            flash.error = 'Empty message!';
+            return false;
+        };
+
         socket.emit('send:message', {
             owner: $scope.agent,
             message: $scope.message
