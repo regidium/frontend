@@ -149,9 +149,12 @@ function AgentAgentsCreateCtrl($scope, $cookieStore, $location, sha1, Agents) {
     $scope.disabled = false;
     $scope.agent = {
         fullname: '',
+        avatar: '',
         email: '',
         password: '',
-        state: 2
+        type: 1,
+        state: 1,
+        accept_chats: true
     };
 
     $scope.cancel = function() {
@@ -159,11 +162,16 @@ function AgentAgentsCreateCtrl($scope, $cookieStore, $location, sha1, Agents) {
     };
 
     $scope.save = function() {
-        var fullname = $scope.agent.fullname;
-        var email = $scope.agent.email;
-        var password = sha1.encode($scope.agent.password);
-        var state = $scope.agent.state;
-        Agents.create({}, { fullname: fullname, email: email, password: password, state: state }, function() {
+        var data = {
+            fullname: $scope.agent.fullname,
+            avatar: $scope.agent.avatar,
+            email: $scope.agent.email,
+            password: sha1.encode($scope.agent.password),
+            type: $scope.agent.state,
+            state: $scope.agent.type,
+            accept_chats: $scope.agent.accept_chats
+        }
+        Agents.create({}, data, function() {
             /** @todo Обработка ошибок */
             /** @todo Переходить на страницу агента */
             $location.path('/agent/agents/list');
@@ -178,6 +186,7 @@ function AgentAgentsEditCtrl($scope, $cookieStore, $routeParams, $location, Agen
     security($cookieStore);
     $scope.disabled = false;
     $scope.agent = Agents.one({ uid: $routeParams.uid }, function() {
+        /** @todo Делать это на сервере */
         delete($scope.agent.password);
     });
 
@@ -187,7 +196,7 @@ function AgentAgentsEditCtrl($scope, $cookieStore, $routeParams, $location, Agen
 
     $scope.remove = function() {
         if (confirm('Are you sure you want to remove this agent?')) {
-            Agents.remove({ 'uid': $scope.agent.uid }, $scope.agent.uid, function() {
+            Agents.remove({ 'uid': $scope.agent.uid }, $scope.agent.uid, function(data) {
                 /** @todo Обработка ошибок */
                 $location.path('/agent/agents/list');
             });
@@ -195,9 +204,13 @@ function AgentAgentsEditCtrl($scope, $cookieStore, $routeParams, $location, Agen
     };
 
     $scope.save = function() {
-        Agents.edit({ 'uid': $scope.agent.uid }, $scope.agent, function() {
+        Agents.edit({ 'uid': $scope.agent.uid }, $scope.agent, function(data) {
             /** @todo Обработка ошибок */
-            $location.path('/agent/agents/list');
+            if (data && data.errors) {
+                console.log(data.errors);
+            } else {
+                $location.path('/agent/agents/list');
+            }
         });
     };
 }

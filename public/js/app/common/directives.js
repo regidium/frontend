@@ -11,7 +11,6 @@
                 link: function (scope, elm, attrs, ctrl) {
 
                     function validateEqual(myValue, otherValue) {
-                        console.log(myValue, otherValue);
                         if (myValue === otherValue) {
                             ctrl.$setValidity('equal', true);
                             return myValue;

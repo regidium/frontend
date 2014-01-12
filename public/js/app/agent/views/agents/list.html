@@ -10,6 +10,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th translate>Avatar</th>
                     <th translate>UID</th>
                     <th translate>Email</th>
                     <th translate>Full Name</th>
@@ -18,6 +19,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="agent in agents | filter:search | orderBy:'uid'" class="panel panel-default" ng-class="{ online: agent.online }">
+                    <td><img class="px35 img-rounded" ng-src="{{agent.avatar}}" /></td>
                     <td><a href="/agent/agents/detail/{{agent.uid}}" ng-click="detail(agent.uid)">{{agent.uid}}</a></td>
                     <td>{{agent.fullname}}</td>
                     <td>{{agent.email}}</td>
