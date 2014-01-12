@@ -3,20 +3,20 @@
         .alert.alert-dismissable.fade(flash-alert="info", active-class="in")
             button.close(type="button", ng-click="hide()") &times;
             i.glyphicon.glyphicon-info-sign
-            strong.alert-heading {{flash.type}}:
+            strong.alert-heading(translate) {{flash.type}}:
             span.alert-message {{flash.message}}
         .alert.alert-dismissable.fade(flash-alert="success", active-class="in")
             button.close(type="button", ng-click="hide()") &times;
             i.glyphicon.glyphicon-ok-sign
-            strong.alert-heading {{flash.type}}:
+            strong.alert-heading(translate) {{flash.type}}:
             span.alert-message {{flash.message}}
         .alert.alert-dismissable.fade(flash-alert="warn", active-class="in")
             button.close(type="button", ng-click="hide()") &times;
             i.glyphicon.glyphicon-exclamation-sign
-            strong.alert-heading {{flash.type}}:
+            strong.alert-heading(translate) {{flash.type}}:
             span.alert-message {{flash.message}}
         .alert.alert-dismissable.fade(flash-alert="error", active-class="in")
             button.close(type="button", ng-click="hide()") &times;
             i.glyphicon.glyphicon-remove-sign
-            strong.alert-heading {{flash.type}}:
+            strong.alert-heading(translate) {{flash.type}}:
             span.alert-message {{flash.message}}

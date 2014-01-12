@@ -1,29 +1,31 @@
 extends ../common/layout
 
-block header_nav
-    navbar.navbar-inverse.navbar-fixed-top(role="navigation")
-        .container
-            .navbar-header
-                button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
-                    span.sr-only Toggle navigation
-                    span.icon-bar
-                    span.icon-bar
-                    span.icon-bar
-                a.navbar-brand(href="/agent") Regidium
-            div.collapse.navbar-collapse
-                ul.nav.navbar-nav
-                    li.active
-                        a(href="/agent") Home
-                    li
-                        a(href="/agent/users") User
-                    li
-                        a(href="/agent/chat") Chat
-                ul.nav.navbar-nav.pull-right
-                    li(ng-controller="MainAuthLogoutCtrl")
-                        a(href="", ng-click="logout()") Logout
+block header
+    .navbar-header
+        button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+            span.sr-only(translate) Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        a.navbar-brand(href="/agent", translate) Regidium
+    .collapse.navbar-collapse(role="navigation")
+        ul.nav.navbar-nav
+            li
+                a(href="/agent/users", translate) Users
+            li
+                a(href="/agent/agents", translate) Agents
+            li
+                a(href="/agent/settings", translate) Settings
+            li
+                a(href="/agent/statistics", translate) Statistics
+            li
+                a(href="/agent/chat", translate) Chats
+        ul.nav.navbar-nav.navbar-right
+            li(ng-controller="AgentAuthLogoutCtrl")
+                a(href="", ng-click="logout()", translate) Logout
 
 block content
-    .jumbotron(ng-controller="AgentCtrl")
+    div(ng-controller="AgentCtrl")
         .row(ng-view)
 
 block script
@@ -34,3 +36,4 @@ block script
     script(src='/js/app/main/directives.js', type="text/javascript")
     script(src='/js/app/common/services.js', type="text/javascript")
     script(src='/js/app/common/directives.js', type="text/javascript")
+    script(src='/js/app/common/models.js', type="text/javascript")

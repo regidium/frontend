@@ -1,0 +1,33 @@
+<div ng-include="'js/app/agent/views/users/menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content" ui-view="users">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span translate>User List</span>
+                <input type="text" ng-model="search" class="form-control" placeholder="Search" />
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th translate>UID</th>
+                        <th translate>Email</th>
+                        <th translate>Full Name</th>
+                        <th translate>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users | filter:search | orderBy:'uid'" class="panel panel-default" ng-class="{ online: user.online }">
+                        <td><a href="/agent/users/detail/{{user.uid}}" ng-click="detail(user.uid)">{{user.uid}}</a></td>
+                        <td>{{user.fullname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>
+                            <a href="/agent/users/edit/{{user.uid}}" class="btn btn-primary" translate>Edit</a>
+                            <a ng-click="remove(user)" class="btn btn-danger" translate>Remove</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

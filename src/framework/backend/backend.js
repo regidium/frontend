@@ -60,6 +60,7 @@ self.handle_response = function (err, statusCode, body, options, cb) {
     try {
         body = JSON.parse(body);
     } catch (e) {
+        console.log(body);
         requestErrors = 'parse-error';
         if (_.isFunction(options.onRequestError)) options.onRequestError(e, body);
         body = null;

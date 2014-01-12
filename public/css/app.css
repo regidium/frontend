@@ -1,5 +1,42 @@
-/* app css stylesheet */
+body {
+  position: relative;
+  padding-top: 50px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333;
+  background-color: #fff;
+}
 
+.sidenav.nav {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-shadow: 0 1px 0 #fff;
+  background-color: #f7f5fa;
+  border-radius: 5px;
+}
+
+.sidebar .sidenav.nav a.active {
+  font-weight: bold;
+}
+
+.content {
+  margin-top: 30px;
+  background-color: #f7f5fa;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+}
+/*
 .overflowable {
   height: 400px;
 }
@@ -8,6 +45,7 @@
   margin-bottom: 50px;
   height: 400px;
   overflow: auto;
+  word-wrap: break-word;
 }
 
 .bar-submit-message{
@@ -26,6 +64,7 @@ p.active{
   background: #FFF;
   color: #000;
 }
+*/
 
 .form-auth {
     max-width: 330px;
@@ -37,9 +76,13 @@ p.active{
 
 .row-alert {
   position: absolute;
-  right: 50px;
+  right: 285px;
   z-index: 9999;
-  top: 5px;
+  top: 50px;
+}
+
+.alert {
+  position: fixed;
 }
 
 .alert.fade {

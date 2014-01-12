@@ -1,0 +1,13 @@
+<div class="col-md-12">
+    <h3 translate>Messages</h3>
+    <div class="well message-spot overflowable" auto-scroll>
+        <p ng-repeat='message in messages'>
+            {{message.owner.fullname}}: {{message.text}}
+        </p>
+    </div>
+
+    <form ng-submit='sendMessage()'>
+        <input ng-model='message' />
+        <button type='submit' translate>Send</button>
+    </form>
+</div>

@@ -1,0 +1,68 @@
+<div ng-include="'js/app/agent/views/agents/menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content" ui-view="agents">
+        <div ng-show="disabled">
+            <button type="button" class="btn btn-primary" ng-click="edit()" translate>Edit</button>
+        </div>
+        <form class="form-horizontal" role="form" name="form">
+            <fieldset ng-disabled="disabled">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" translate>Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" placeholder="Name" ng-model="agent.fullname" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" translate>Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" name="form.email" class="form-control" placeholder="Email" ng-model="agent.email" ng-required="true" />
+                    </div>
+                    <span class="has-error pull-right">
+                        <span ng-show="form.$error.email" class="help-block" translate>Should be valid email address!</span>
+                    </span>
+                </div>
+                <div class="form-group" ng-hide="agent.uid">
+                    <label class="col-sm-3 control-label" translate>Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="form.password" class="form-control" placeholder="Password" ng-model="agent.password" />
+                    </div>
+                </div>
+                <div class="form-group" ng-hide="agent.uid" ng-cloak="ng-cloak">
+                    <label class="col-sm-3 control-label" translate>Confirm password</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="form.confirm_password" placeholder="Confirm password" class="form-control" ng-model="agent.confirm_password" ui-equal-to="agent.password" />
+                    </div>
+                    <span class="has-error pull-right">
+                        <span ng-show="form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" translate>Status</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input type="radio" ng-model="agent.state" value="1" translate /> Enabled
+                        </label>
+                        <label>
+                            <input type="radio" ng-model="agent.state" value="2" translate /> Disabled
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <div ng-show="!disabled">
+                            <div class="form-group pull-left">
+                                <button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid" translate>Save</button>
+                                <button type="button" class="btn btn-default" ng-click="cancel()" translate>Cancel</button>
+                            </div>
+                            <div class="form-group pull-right">
+                                <button type="button" class="btn btn-danger" ng-click="remove()" ng-show="agent.uid" translate>Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -95,7 +95,7 @@ self.flush_object_data = function (obj, cb) {
 
         function (callback) {
             backend.get({
-                path: 'auth/' + obj.object_id + '/check',
+                path: 'logins/' + obj.object_id + '/check',
                 data: {},
                 onComplete: function (data) {
                     callback(null, data);

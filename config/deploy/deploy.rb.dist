@@ -4,17 +4,27 @@ set :deploy_to,             "/www/regidium.com/my"
  
 set :scm,                   :git
 set :repository,            "git@github.com:regidium/my.git"
+set :branch,                "master"
+set :deploy_via,            :remote_cache
 
 role :app,                  domain, :primary => true
  
 default_run_options[:pty] = true
-set :user,                  "AAAAAAAA"
-set :scm_passphrase,        "XXXXXXXX"
+
+set :keep_releases,         3
+set :ssh_options,           {:forward_agent => true, :port => 22}
+set :user,                  "USER"
+set :scm_passphrase,        "PASSWORD"
+set :use_sudo,              false
 set :normalize_asset_timestamps, false
 
+set :shared_files,          [
+                                "config/deploy/deploy.rb",
+                                "config/config/config.json"
+                            ]
+
 set :shared_children,       [
-                                "node_modules",
-                                "config/config/config"
+                                "node_modules"
                             ]
 
 namespace :deploy do
@@ -27,3 +37,5 @@ namespace :deploy do
 end
  
 after "deploy:create_symlink", "deploy:npm_install"
+
+logger.level = Logger::MAX_LEVEL

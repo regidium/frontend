@@ -2,6 +2,7 @@ var http = require('http');
 var consolidate = require('consolidate');
 var config = require('./config/config/config.json');
 var framework = require('./src/framework/framework');
+var router = require('./src/app/router/router');
 
 var app = framework.init();
 var server = http.createServer(app);
@@ -48,24 +49,22 @@ app.configure('development', function() {
             res.json({error: true});
         } else {
             res.status(500);
-            res.render('error', { error: err });
+            res.render('common/error', { error: err });
         }
     });
 });
 
-app.configure('production', function() { });
+app.configure('production', function() {});
+
+// Routes
+router.init(app);
 
 io.sockets.on('connection', socket);
-
-framework.router(app);
 
 var response = require('http').ServerResponse.prototype;
 response.backend = framework.backend;
 response.async = framework.async;
 response.authorizer = framework.authorizer;
-response.router = framework.router;
-response.router = framework.router;
-response.path = framework.router.path;
 
 server.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

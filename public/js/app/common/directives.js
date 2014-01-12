@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 
     'use strict';
 
@@ -11,9 +11,12 @@
                 link: function (scope, elm, attrs, ctrl) {
 
                     function validateEqual(myValue, otherValue) {
+                        console.log(myValue, otherValue);
                         if (myValue === otherValue) {
                             ctrl.$setValidity('equal', true);
                             return myValue;
+                        } else if (myValue == undefined && otherValue == undefined) {
+                            return true;
                         } else {
                             ctrl.$setValidity('equal', false);
                             return myValue;
@@ -34,6 +37,16 @@
                 }
             };
         })
+        .directive('autoScroll', function () {
+            return {
+                restrict: 'A',
+                link: function(scope, $el, attrs) {
+                    scope.$watch(function() {
+                        $el[0].scrollTop = $el[0].scrollHeight;
+                    });
+                }
+            };
+        })
     ;
 
-})();
+})(angular);

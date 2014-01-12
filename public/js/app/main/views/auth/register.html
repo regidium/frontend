@@ -4,7 +4,7 @@
             <div class="modal-content form-auth">
                 <div class="modal-header">
                     <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Register</h4>
+                    <h4 class="modal-title" translate>Register</h4>
                 </div>
                 <div class="modal-body">
                     <p>
@@ -12,37 +12,37 @@
                             <input ng-model="user.fullname" type="text" placeholder="Full name" autofocus="autofocus" class="form-control" />
                             <input ng-model="user.email" ng-required="true" name="register_form.email" type="email" placeholder="Email address" required="required" class="form-control"/>
                             <span class="has-error">
-                                <span ng-show="register_form.$error.email" class="help-block">Should be valid email address!</span>
+                                <span ng-show="register_form.$error.email" class="help-block" translate>Should be valid email address!</span>
                             </span>
                             <input ng-model="user.password" ng-required="true" type="password" name="register_form.password" placeholder="Password" required="required" class="form-control"/>
                             <input ng-model="user.confirm_password" ng-required="true" name="register_form.confirm_password" ui-equal-to="user.password" type="password" placeholder="Confirm password" required="required" class="form-control"/>
                             <span class="has-error">
-                                <span ng-show="register_form.$error.equal" class="help-block has-error">Should be equal to password!</span>
+                                <span ng-show="register_form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
                             </span>
                             <label class="checkbox">
-                                <input type="checkbox" value="remember"/>Remember me
+                                <input type="checkbox" value="remember" translate />Remember me
                             </label>
                             <p>
-                                <button type="submit" ng-disabled="register_form.$invalid" class="btn btn-lg btn-primary btn-block">Register</button>
+                                <button type="submit" ng-disabled="register_form.$invalid" class="btn btn-lg btn-primary btn-block" translate>Register</button>
                             </p>
                             <p>
-                                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-lg btn-danger btn-block">Close</button>
+                                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-lg btn-danger btn-block" translate>Close</button>
                             </p>
                         </form>
                     </p>
                     <p>
                         <ul>
                             <li class="vk">
-                                <a href='/auth/external/service/vkontakte/connect'>VK</a>
+                                <a href='/auth/external/service/vkontakte/connect' translate>VK</a>
                             </li>
                             <li class="fb">
-                                <a href='/auth/external/service/facebook/connect'>Facebook</a>
+                                <a href='/auth/external/service/facebook/connect' translate>Facebook</a>
                             </li>
                             <li class="gg">
-                                <a href='/auth/external/service/google/connect'>Google</a>
+                                <a href='/auth/external/service/google/connect' translate>Google</a>
                             </li>
                             <li class="tw">
-                                <a href='/auth/external/service/twitter/connect'>Twitter</a>
+                                <a href='/auth/external/service/twitter/connect' translate>Twitter</a>
                             </li>
                         </ul>
                     </p>

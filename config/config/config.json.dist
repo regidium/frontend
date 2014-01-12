@@ -18,7 +18,7 @@
 
     "authorizer": {
         "key": "security",
-        "secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     },
 
     "backend": {

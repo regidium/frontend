@@ -1,11 +1,16 @@
 extends ../common/layout
 
+block header_inner
+
+block content
+    div(ng-controller="MainCtrl")
+        .row(ng-view)
+
+block footer_inner
+
 block auto_popups
     <auth-register></auth-register>
     <auth-login></auth-login>
-
-block content
-    .row(ng-view)
 
 block script
     script(src='/js/app/main/app.js', type="text/javascript")
