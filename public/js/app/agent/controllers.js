@@ -153,7 +153,7 @@ function AgentAgentsCreateCtrl($scope, $cookieStore, $location, sha1, Agents) {
         email: '',
         password: '',
         type: 1,
-        state: 1,
+        status: 1,
         accept_chats: true
     };
 
@@ -167,8 +167,8 @@ function AgentAgentsCreateCtrl($scope, $cookieStore, $location, sha1, Agents) {
             avatar: $scope.agent.avatar,
             email: $scope.agent.email,
             password: sha1.encode($scope.agent.password),
-            type: $scope.agent.state,
-            state: $scope.agent.type,
+            type: $scope.agent.type,
+            status: $scope.agent.status,
             accept_chats: $scope.agent.accept_chats
         }
         Agents.create({}, data, function() {

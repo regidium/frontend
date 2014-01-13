@@ -61,10 +61,13 @@
                     <label class="col-sm-3 control-label" translate>Status</label>
                     <div class="col-sm-9">
                         <label>
-                            <input type="radio" ng-model="agent.state" value="1" translate /> Enabled
+                            <input type="radio" ng-model="agent.status" value="1" translate /> Enabled
                         </label>
                         <label>
-                            <input type="radio" ng-model="agent.state" value="2" translate /> Disabled
+                            <input type="radio" ng-model="agent.status" value="2" translate /> Blocked
+                        </label>
+                        <label>
+                            <input type="radio" ng-model="agent.status" value="3" translate /> Deleted
                         </label>
                     </div>
                 </div>
