@@ -11,15 +11,15 @@ function security($cookieStore) {
 /**
  * @url "/logout"
  */
-function AgentAuthLogoutCtrl($scope, $resource) {
+function AgentAuthLogoutCtrl($scope, $http, socket) {
     $scope.logout = function() {
-        var Logout = $resource('/logout', {}, {
-            query: { method: 'GET', params: {} }
-        });
-
-        Logout.query({}, function() {
-            window.location = '/';
-        });
+        $http.get('/logout')
+            .success(function(data, status, headers, config) {
+                window.location = '/';
+            })
+            .error(function(data, status, headers, config) {
+                window.location = '/';
+            });
     }
 }
 
@@ -244,40 +244,61 @@ function AgentStatisticsCtrl($scope, $cookieStore) {
 }
 
 /**
- * @url "/agent/chat"
+ * @url "/agent/chats"
  */
-function AgentChatCtrl($scope, $cookieStore, flash, socket) {
+function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
+    security($cookieStore);
+    $scope.rooms = [];
+    socket.emit('agent:list:chats', '', function(rooms) {
+        //delete rooms[''];
+        console.log(rooms);
+        $scope.rooms = Object.keys(rooms).map(function(room, index) { return  room = room.replace('/',''); });
+        console.log($scope.rooms);
+    });
+}
+
+/**
+ * @url "/agent/chat/:uid"
+ */
+function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket) {
     $scope.agent = security($cookieStore);
     $scope.agent.fullname = decodeURIComponent($scope.agent.fullname);
-    $scope.message = '';
+    $scope.text = '';
 
-    socket.on('send:message', function (message) {
+    // Подключаем агента к чату
+    /** @todo Делать PUT запрос в API, для подключения агента в чат */
+    socket.emit('agent:enter:chat', $routeParams.uid);
+
+    // Пользователь написал сообщение
+    socket.on('user:send:message', function (data) {
         $scope.messages.push({
-            owner: message.owner,
-            text: message.text
+            user: data.user,
+            text: data.text
         });
     });
 
     $scope.messages = [];
 
     $scope.sendMessage = function () {
-        if ($scope.message.length == 0) {
+        if ($scope.text.length == 0) {
             flash.error = 'Empty message!';
             return false;
         };
 
-        socket.emit('send:message', {
-            owner: $scope.agent,
-            message: $scope.message
+        // Отправляем сообщение пользователю
+        socket.emit('agent:send:message', {
+            chat: $routeParams.uid,
+            agent: $scope.agent,
+            text: $scope.text
         });
 
         // add the message to our model locally
         $scope.messages.push({
-            owner: $scope.agent,
-            text: $scope.message
+            agent: $scope.agent,
+            text: $scope.text
         });
 
         // clear message box
-        $scope.message = '';
+        $scope.text = '';
     };
 }

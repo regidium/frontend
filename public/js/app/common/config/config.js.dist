@@ -1,0 +1,14 @@
+(function() {
+
+    'use strict';
+
+    /* Services */
+    angular.module('regidiumApp')
+        .factory('config', function ($rootScope) {
+
+            $rootScope.apiUrl = 'http://API_URL/api/v1/'
+
+            return $rootScope;
+        });
+
+})();

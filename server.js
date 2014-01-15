@@ -6,18 +6,20 @@ var router = require('./src/app/router/router');
 
 var app = framework.init();
 var server = http.createServer(app);
-var io = require('socket.io')
-    .listen(server)
+var io = require('socket.io').listen(server)
     .set('log level', 2)
     .set('close timeout', 35)
     .set('max reconnection attempts', 100)
     .set('heartbeat timeout', 60)
     .set('heartbeat interval', 25)
     .set('authorization', function (handshake_data, callback) { framework.authorizer.io_check(handshake_data, callback); });
+
 var socket = require('./src/app/socket/socket.js');
+socket.init(io);
 
 app.set(config.env);
 app.locals.env = config.env;
+app.locals.config = config;
 
 app.configure(function() {
     app.set('port', config.server.port);
@@ -46,7 +48,7 @@ app.configure('development', function() {
         }
 
         if (req.headers['xhr']) {
-            res.json({error: true});
+            res.json({error: err});
         } else {
             res.status(500);
             res.render('common/error', { error: err });
@@ -59,7 +61,7 @@ app.configure('production', function() {});
 // Routes
 router.init(app);
 
-io.sockets.on('connection', socket);
+io.sockets.on('connection', socket.run);
 
 var response = require('http').ServerResponse.prototype;
 response.backend = framework.backend;

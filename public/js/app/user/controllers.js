@@ -3,6 +3,7 @@
 function security($cookieStore) {
     var user = $cookieStore.get('user');
     if (user) {
+        user.fullname = decodeURIComponent(user.fullname);
         return user;
     }
     window.location = '/login';
@@ -27,40 +28,54 @@ function UserCtrl($scope, $cookieStore) {
     security($cookieStore);
 }
 
-/* todo Поделить на разделы (то что есть, вынести в раздел "Chat") **/
-function UserChatCtrl($scope, $cookieStore, socket, flash) {
-    $scope.message = '';
+function UserChatCtrl($scope, $cookieStore, socket, flash, Chats) {
+    $scope.text = '';
     $scope.user = security($cookieStore);
-    $scope.user.fullname = decodeURIComponent($scope.user.fullname);
 
-    socket.on('send:message', function (message) {
+    // Создаем новый чат
+    /** @todo Поправить API (не обрабатывается POST) */
+    $scope.chat = Chats.create({}, { user: $scope.user.uid }, function(data) {
+        console.log(data);
+        socket.emit('user:create:chat', {
+            user: $scope.user,
+            chat: $scope.chat
+        });
+    });
+
+    socket.on('agent:send:message', function (data) {
+        // Если текущий пользователь и не отправитель, и не получатель, то ему сообщение не пказываем
+/*        if (message.sender != $scope.user.uid && message.receiver != $scope.user.uid) {
+            console.log('Ему не должно показываться это сообщение');
+            return;
+        }*/
         $scope.messages.push({
-            owner: message.owner,
-            text: message.text
+            agent: data.agent,
+            text: data.text
         });
     });
 
     $scope.messages = [];
 
     $scope.sendMessage = function () {
-        if ($scope.message.length == 0) {
+        if ($scope.text.length == 0) {
             flash.error = 'Empty message!';
             return false;
         };
 
-        socket.emit('send:message', {
-            owner: $scope.user,
-            message: $scope.message
+        socket.emit('user:send:message', {
+            chat: $scope.chat.uid,
+            user: $scope.user,
+            text: $scope.text
         });
 
         // add the message to our model locally
         $scope.messages.push({
-            owner: $scope.user,
-            text: $scope.message
+            user: $scope.user,
+            text: $scope.text
         });
 
         // clear message box
-        $scope.message = '';
+        $scope.text = '';
     };
 }
 

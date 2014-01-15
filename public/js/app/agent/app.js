@@ -31,7 +31,8 @@
             .when('/agent/settings/widget', { templateUrl: 'js/app/agent/views/settings/widget.html', controller: AgentSettingsProductivityCtrl })
             .when('/agent/settings/productivity', { templateUrl: 'js/app/agent/views/settings/productivity.html', controller: AgentSettingsCtrl })
             .when('/agent/statistics', { templateUrl: 'js/app/agent/views/statistics/index.html', controller: AgentStatisticsCtrl })
-            .when('/agent/chat', { templateUrl: 'js/app/agent/views/chat/index.html', controller: AgentChatCtrl })
+            .when('/agent/chats', { templateUrl: 'js/app/agent/views/chats/index.html', controller: AgentChatsCtrl })
+            .when('/agent/chat/:uid', { templateUrl: 'js/app/agent/views/chats/chat.html', controller: AgentChatCtrl })
             .otherwise({ redirectTo: '/agent' });
 
         $translateProvider.useStaticFilesLoader({
@@ -49,13 +50,13 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($http, $rootScope, $translate) {
+    }]).run(function($rootScope, $cookieStore, $translate, config, socket) {
         /** @todo форматировать языки (ru_RU в ru) */
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
         $rootScope.lang = lang;
         $translate.uses(lang);
 
-        $rootScope.apiUrl = 'http://api.regidium.loc/app_dev.php/api/v1/';
+        socket.emit('agent:connected', { agent: $cookieStore.get('agent') });
     });
 
 })(angular);
