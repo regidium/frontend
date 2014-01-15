@@ -1,4 +1,4 @@
-var redis = require('redis');
+//var redis = require('redis');
 
 /** Все online пользователи */
 var users = [];
@@ -14,8 +14,8 @@ self.init = function (io) {
 }
 
 self.run = function (socket) {
-    self.sub = redis.createClient();
-    self.pub = redis.createClient();
+//    self.sub = redis.createClient();
+//    self.pub = redis.createClient();
 
     socket.on('agent:connected', function(data) {
         /** @todo Передать агенту список ожидающих */
