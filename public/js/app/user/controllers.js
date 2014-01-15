@@ -32,6 +32,9 @@ function UserChatCtrl($scope, $cookieStore, socket, flash, Chats) {
     $scope.text = '';
     $scope.user = security($cookieStore);
 
+    var sound = document.createElement('audio');
+    sound.setAttribute('src', '/sound/chat/chat.mp3');
+
     // Создаем новый чат
     /** @todo Поправить API (не обрабатывается POST) */
     $scope.chat = Chats.create({}, { user: $scope.user.uid }, function(data) {
@@ -48,6 +51,8 @@ function UserChatCtrl($scope, $cookieStore, socket, flash, Chats) {
             console.log('Ему не должно показываться это сообщение');
             return;
         }*/
+        sound.play();
+
         $scope.messages.push({
             agent: data.agent,
             text: data.text

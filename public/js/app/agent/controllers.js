@@ -259,6 +259,10 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
     socket.on('user:create:chat', function (data) {
         $scope.rooms.push(data.chat.uid);
     });
+
+    socket.on('user:close:chat', function (data) {
+        $scope.rooms.push();
+    });
 }
 
 /**

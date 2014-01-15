@@ -48,7 +48,8 @@
         "sha1": "1.1.x",
         "oauth": "0.9.x",
         "qs": "0.6.x",
-        "socket.io": "0.9.x"
+        "socket.io": "0.9.x",
+        "redis": "0.10.x"
     },
     "os": ["linux"],
     "cpu": ["x64"],
