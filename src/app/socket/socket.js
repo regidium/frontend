@@ -36,8 +36,8 @@ self.run = function (socket) {
     });
 
     socket.on('user:create:chat', function(data) {
-        console.log('User create new chat');
         socket.join(data.chat.uid);
+        socket.broadcast.emit('user:create:chat', data)
     });
 
     // передать сообщение пользователя агенту

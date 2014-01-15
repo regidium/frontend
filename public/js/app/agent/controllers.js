@@ -255,6 +255,10 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
         $scope.rooms = Object.keys(rooms).map(function(room, index) { return  room = room.replace('/',''); });
         console.log($scope.rooms);
     });
+
+    socket.on('user:create:chat', function (data) {
+        $scope.rooms.push(data.chat.uid);
+    });
 }
 
 /**
