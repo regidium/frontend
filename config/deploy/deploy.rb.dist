@@ -18,13 +18,10 @@ set :scm_passphrase,        "PASSWORD"
 set :use_sudo,              false
 set :normalize_asset_timestamps, false
 
-set :shared_files,          [
-                                "config/deploy/deploy.rb",
-                                "config/config/config.json"
-                            ]
-
 set :shared_children,       [
-                                "node_modules"
+                                "node_modules",
+                                "config/config",
+                                "public/js/app/common/config"
                             ]
 
 namespace :deploy do
