@@ -18,8 +18,9 @@
         $routeProvider
             .when('/logout', { templateUrl: 'js/app/user/views/index.html', controller: UserAuthLogoutCtrl })
             .when('/user', { templateUrl: 'js/app/user/views/index.html', controller: UserCtrl })
-            .when('/user/chat', { templateUrl: 'js/app/user/views/chat/index.html', controller: UserChatCtrl })
-            .when('/user/chat/:uid', { templateUrl: 'js/app/user/views/chat/index.html', controller: UserChatCtrl })
+            .when('/user/chats', { templateUrl: 'js/app/user/views/chat/index.html', controller: UserChatsCtrl })
+            .when('/user/chat', { templateUrl: 'js/app/user/views/chat/chat.html', controller: UserChatCtrl })
+            .when('/user/chat/:uid', { templateUrl: 'js/app/user/views/chat/chat.html', controller: UserChatCtrl })
             .when('/user/settings', { templateUrl: 'js/app/user/views/settings/index.html', controller: UserSettingsCtrl })
             .otherwise({ redirectTo: '/user' });
 

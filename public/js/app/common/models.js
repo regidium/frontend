@@ -11,7 +11,8 @@
                 one: { method: 'GET', url: $rootScope.apiUrl + 'users/:uid' },
                 create: { method: 'POST', url: $rootScope.apiUrl + 'users' },
                 edit: { method: 'PUT', url: $rootScope.apiUrl + 'users/:uid' },
-                remove: { method: 'DELETE', url: $rootScope.apiUrl + 'users/:uid' }
+                remove: { method: 'DELETE', url: $rootScope.apiUrl + 'users/:uid' },
+                allChats: { method: 'GET', url: $rootScope.apiUrl + 'users/:uid/chats', isArray:true }
             });
         })
         .factory('Agents', function($rootScope, $resource) {
@@ -20,7 +21,8 @@
                 one: { method: 'GET', url: $rootScope.apiUrl + 'agents/:uid' },
                 create: { method: 'POST', url: $rootScope.apiUrl + 'agents' },
                 edit: { method: 'PUT', url: $rootScope.apiUrl + 'agents/:uid' },
-                remove: { method: 'DELETE', url: $rootScope.apiUrl + 'agents/:uid' }
+                remove: { method: 'DELETE', url: $rootScope.apiUrl + 'agents/:uid' },
+                connectToChat: { method: 'PUT', params: { uid: '@uid', chat: '@chat' }, url: $rootScope.apiUrl + 'agents/:uid/chats/:chat' }
             });
         })
         .factory('Chats', function($rootScope, $resource) {

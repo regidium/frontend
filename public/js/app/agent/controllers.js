@@ -276,7 +276,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
 /**
  * @url "/agent/chat/:uid"
  */
-function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Chats, ChatsMessages) {
+function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents, Chats, ChatsMessages) {
     $scope.agent = security($cookieStore);
     $scope.text = '';
     $scope.chat = {};
@@ -288,7 +288,7 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Chats,
     // Получаем существующий чат
     $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
         // Подключаем агента к чату
-        /** @todo Делать PUT запрос в API, для подключения агента в чат */
+        Agents.connectToChat({uid: $scope.agent.uid, chat: $scope.chat.uid})
         socket.emit('chat:agent:enter', $scope.chat.uid);
     });
 

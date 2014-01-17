@@ -1,7 +1,7 @@
 <div ng-include="'js/app/agent/views/agents/menu.html'"></div>
 
 <div class="col-md-9" role="main">
-    <div class="content" ui-view="agents">
+    <div class="content">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 translate>Agent List</h1>
@@ -18,16 +18,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="agent in agents | filter:search | orderBy:'uid'" class="panel panel-default" ng-class="{ online: agent.online }">
-                    <td><img class="px35 img-rounded" ng-src="{{agent.avatar}}" /></td>
-                    <td><a href="/agent/agents/detail/{{agent.uid}}" ng-click="detail(agent.uid)">{{agent.uid}}</a></td>
-                    <td>{{agent.fullname}}</td>
-                    <td>{{agent.email}}</td>
-                    <td>
-                        <a href="/agent/agents/edit/{{agent.uid}}" class="btn btn-primary" translate>Edit</a>
-                        <a ng-click="remove(agent)" class="btn btn-danger" translate>Remove</a>
-                    </td>
-                </tr>
+                    <tr ng-repeat="agent in agents | filter:search | orderBy:'uid'" class="panel panel-default" ng-class="{ online: agent.online }">
+                        <td><img class="px35 img-rounded" ng-src="{{agent.avatar}}" /></td>
+                        <td><a href="/agent/agents/detail/{{agent.uid}}" ng-click="detail(agent.uid)">{{agent.uid}}</a></td>
+                        <td>{{agent.fullname}}</td>
+                        <td>{{agent.email}}</td>
+                        <td>
+                            <a href="/agent/agents/edit/{{agent.uid}}" class="btn btn-primary" translate>Edit</a>
+                            <a ng-click="remove(agent)" class="btn btn-danger" translate>Remove</a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

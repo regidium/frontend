@@ -1,16 +1,31 @@
-<div class="col-md-12">
-    <h3 translate>Messages</h3>
-    <div class="well message-spot overflowable" auto-scroll>
-        <p ng-repeat='message in chat.messages;'>
-            <span ng-class="{red: message.sender.model_type == 'user', green: message.sender.model_type == 'agent'}">{{message.sender.fullname}}: {{message.text}}</span>
-        </p>
+<div ng-include="'js/app/user/views/chat/menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 translate>List of all chats</h1>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th translate>Agent</th>
+                        <th translate>Started</th>
+                        <th translate>Ended</th>
+                        <th translate>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, chat) in chats | orderBy:'chat.started.sec'" class="panel panel-default" ng-class="{ online: chat.online }">
+                        <td><span ng-show="chat.agent">{{chat.agent.fullname}}</span><span ng-hide="chat.agent" translate>Agent not connected</span></td>
+                        <td>{{chat.started.sec * 1000 | date:'medium'}}</td>
+                        <td><span ng-show="chat.ended">{{chat.ended.sec * 1000 | date:'medium'}}</span><span ng-hide="chat.ended">---</span></td>
+                        <td>
+                            <a href="/user/chat/{{chat.uid}}" class="btn btn-primary" translate>Open</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <form ng-submit="sendMessage()" class="form-horizontal" role="form">
-        <div class="col-md-10">
-            <input ng-model="text" class="form-control" placeholder="Enter message" />
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-success" translate>Send</button>
-        </div>
-    </form>
 </div>

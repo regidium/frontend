@@ -15,20 +15,35 @@ function security($cookieStore) {
  */
 function UserAuthLogoutCtrl($scope, $resource) {
     $scope.logout = function() {
-        var Logout = $resource('/logout', {}, {
-            query: { method: 'GET', params: {} }
-        });
-
-        Logout.query({}, function() {
-            window.location = '/';
-        });
+        $http.get('/logout')
+            .success(function(data, status, headers, config) {
+                window.location = '/';
+            })
+            .error(function(data, status, headers, config) {
+                window.location = '/';
+            });
     }
 }
 
+/**
+ * @url "/user"
+ */
 function UserCtrl($scope, $cookieStore) {
     security($cookieStore);
 }
 
+/**
+ * @url "/user/chats"
+ */
+function UserChatsCtrl($scope, $cookieStore, flash, socket, Users) {
+    var user = security($cookieStore);
+    $scope.chats = Users.allChats({uid: user.uid});
+}
+
+/**
+ * @url "/user/chat"
+ * @url "/user/chat/:uid"
+ */
 function UserChatCtrl($scope, $cookieStore, $location, $routeParams, socket, flash, Chats, ChatsMessages) {
     $scope.user = security($cookieStore);
     $scope.text = '';
@@ -100,6 +115,9 @@ function UserChatCtrl($scope, $cookieStore, $location, $routeParams, socket, fla
     };
 }
 
+/**
+ * @url "/user/settings"
+ */
 function UserSettingsCtrl() {
 
 }
