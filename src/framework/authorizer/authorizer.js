@@ -14,31 +14,7 @@ self.login = function (res, object, remember) {
             path:    '/'
         });
         /** @todo Перевести user и agent на object */
-        if (object.user) {
-            var data = JSON.stringify(object.user, function(key, val) {
-                if (key == 'fullname') {
-                    return encodeURIComponent(val);
-                } else {
-                    return val;
-                }
-            });
-            res.cookie('user', data, {
-                expires: new Date(self.calcLifetime()),
-                path: '/'
-            });
-        } else {
-            var data = JSON.stringify(object.agent, function(key, val) {
-                if (key == 'fullname') {
-                    return encodeURIComponent(val);
-                } else {
-                    return val;
-                }
-            });
-            res.cookie('agent', data, {
-                expires: new Date(self.calcLifetime()),
-                path: '/'
-            });
-        }
+        self.flush_auth(res, object);
     }
 };
 
@@ -73,6 +49,7 @@ self.check = function (req, res, next) {
     req.object_id = object_id;
     self.flush_object_data(req, function () {
         next();
+        self.flush_auth(res, req);
     });
 };
 
@@ -165,3 +142,31 @@ self.encode = function (unencoded) {
 self.decode = function (encoded) {
     return new Buffer(encoded || '', 'base64').toString('utf8');
 };
+
+self.flush_auth = function(res, object) {
+    if (object.user) {
+        var data = JSON.stringify(object.user, function(key, val) {
+            if (key == 'fullname') {
+                return encodeURIComponent(val);
+            } else {
+                return val;
+            }
+        });
+        res.cookie('user', data, {
+            expires: new Date(self.calcLifetime()),
+            path: '/'
+        });
+    } else if (object.agent) {
+        var data = JSON.stringify(object.agent, function(key, val) {
+            if (key == 'fullname') {
+                return encodeURIComponent(val);
+            } else {
+                return val;
+            }
+        });
+        res.cookie('agent', data, {
+            expires: new Date(self.calcLifetime()),
+            path: '/'
+        });
+    }
+}

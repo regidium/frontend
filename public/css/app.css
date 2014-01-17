@@ -58,6 +58,14 @@ footer {
   height: 35px;
 }
 
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
 /*
 
 .bar-submit-message{

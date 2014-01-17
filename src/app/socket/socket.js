@@ -1,69 +1,123 @@
-//var redis = require('redis');
-
-/** Все online пользователи */
-var users = [];
-
-/** Все online агенты */
-var agents = [];
-
 var self = module.exports = {};
+var _ = require('underscore');
 
 // export function for listening to the socket
 self.init = function (io) {
     self.io = io;
+    /** Все online пользователи */
+    self.users = {};
+    /** Все online агенты */
+    self.agents = {};
+    /** Все online чаты */
+    self.chats = {};
 }
 
 self.run = function (socket) {
-//    self.sub = redis.createClient();
-//    self.pub = redis.createClient();
-
     socket.on('agent:connected', function(data) {
         /** @todo Передать агенту список ожидающих */
         socket.agent = data;
-        agents[socket.agent.uid] = socket;
+        self.agents[socket.agent.uid] = socket;
     });
 
-    // Выдаем список чатов
-    socket.on('agent:list:chats', function(data, cb) {
-        cb(self.io.sockets.manager.rooms)
+    socket.on('agent:registered', function(data) {
+        /** @todo реализовать */
+        socket.broadcast.emit('a    gent:registered', data);
     });
 
-    // Подключаем агента к чату
-    socket.on('agent:enter:chat', function(chat) {
-        console.log('Agent enter ot chat '+chat);
-        socket.join(chat);
+    socket.on('agent:edited', function(data) {
+        /** @todo реализовать */
+        socket.broadcast.emit('agent:edited', data);
     });
 
     socket.on('user:connected', function(data) {
         /** @todo Оповестить всех агентов, о входе пользователя */
         socket.user = data;
-        users[socket.user.uid] = socket;
+        self.users[socket.user.uid] = socket;
     });
 
-    socket.on('user:create:chat', function(data) {
+    socket.on('user:registered', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('user:logined', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('user:edited', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('user:edited', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('chat:created', function(data) {
+        self.chats[data.chat.uid] = data.chat;
         socket.join(data.chat.uid);
-        socket.broadcast.emit('user:create:chat', data)
+        socket.broadcast.emit('chat:created', data);
+    });
+
+    socket.on('chat:started', function(data) {
+        /** @todo реализовать */
+        self.chats[data.chat.uid] = data.chat;
+        socket.join(data.chat.uid);
+        socket.broadcast.emit('chat:started', data);
+    });
+
+    socket.on('chat:ended', function(data) {
+        socket.leave(data.chat.uid);
+        /** @todo реализовать */
+    });
+
+    socket.on('chat:destroyed', function(data) {
+        delete self.chats[data.uid];
+        socket.broadcast.emit('chat:destroyed', data);
+    });
+
+    socket.on('chat:message:created', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('chat:message:readed', function(data) {
+        /** @todo реализовать */
+    });
+
+    socket.on('chat:message:removed', function(data) {
+        /** @todo реализовать */
+    });
+
+    // ========================================= //
+    // Выдаем список чатов
+    socket.on('chats:online', function(data, cb) {
+        cb(self.chats);
+        //cb(self.io.sockets.manager.rooms)
+    });
+
+    // Подключаем агента к чату
+    socket.on('chat:agent:enter', function(chat) {
+        socket.join(chat);
     });
 
     // передать сообщение пользователя агенту
-    socket.on('agent:send:message', function (data) {
-        socket.broadcast.to(data.chat).emit('agent:send:message', data)
+    socket.on('chat:user:message:send', function (data) {
+        socket.broadcast.to(data.chat).emit('chat:user:message:send', data)
     });
 
     // передать сообщение пользователя агенту
-    socket.on('user:send:message', function (data) {
-        socket.broadcast.to(data.chat).emit('user:send:message', data)
+    socket.on('chat:agent:message:send', function (data) {
+        socket.broadcast.to(data.chat).emit('chat:agent:message:send', data)
     });
 
-    socket.on('disconnect', function (data) {
+    socket.on('disconnect', function () {
         if (socket.user) {
-            /** @todo Оповестить всех агентов о выходе пользователя */
-            /* socket.broadcast.emit('user:disconnected', {
-                user: data
-             });*/
-            delete users[socket.user.uid];
+            delete self.users[socket.user.uid];
+            var chats = Object.keys(self.io.sockets.manager.roomClients[socket.id]).map(function(room) { return room.replace('/', ''); });
+            _.each(chats, function(uid) {
+                socket.broadcast.emit('chat:destroyed', {uid: uid});
+                delete self.chats[uid];
+            });
         } else if (socket.agent) {
-            delete agents[socket.agent.uid];
+            delete self.agents[socket.agent.uid];
         } else {
             return;
         }

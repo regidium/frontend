@@ -104,7 +104,14 @@ exports.login = function (req, res) {
             } else {
                 res.redirect('/');
             }
-        } else {
+        } else if (data.length == 0) {
+            /** @todo Сделать обработчик ошибок */
+            if (req.headers['xhr']) {
+                res.send({ errors: ['User no found!'] });
+            } else {
+                res.redirect('/login');
+            }
+        } else if (err) {
             /** @todo Сделать обработчик ошибок */
             if (req.headers['xhr']) {
                 res.send({ errors: ['Backend return bad data!'] });

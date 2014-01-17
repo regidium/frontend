@@ -31,6 +31,15 @@
                 edit: { method: 'PUT', url: $rootScope.apiUrl + 'chats/:uid' },
                 remove: { method: 'DELETE', url: $rootScope.apiUrl + 'chats/:uid' }
             });
+        })
+        .factory('ChatsMessages', function($rootScope, $resource) {
+            return $resource($rootScope.apiUrl + 'chats', null, {
+                all: { method: 'GET', url: $rootScope.apiUrl + 'chats/messages', isArray:true },
+                one: { method: 'GET', url: $rootScope.apiUrl + 'chats/messages/:uid' },
+                create: { method: 'POST', url: $rootScope.apiUrl + 'chats/messages' },
+                edit: { method: 'PUT', url: $rootScope.apiUrl + 'chats/messages/:uid' },
+                remove: { method: 'DELETE', url: $rootScope.apiUrl + 'chats/messages/:uid' }
+            });
         });
 
 })();

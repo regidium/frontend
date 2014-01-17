@@ -1,6 +1,6 @@
 <div class="col-md-12">
     <h3>List of all chats</h3>
-    <p ng-repeat="room in rooms">
-        <a href="/agent/chat/{{room}}">{{room}}</a>
+    <p ng-repeat="(key, chat) in chats">
+        <a href="/agent/chat/{{key}}">{{chat.user.fullname}}: {{chat.user.email}}</a>
     </p>
 </div>

@@ -4,9 +4,10 @@ function security($cookieStore) {
     var user = $cookieStore.get('user');
     if (user) {
         user.fullname = decodeURIComponent(user.fullname);
+        user.model_type = 'user';
         return user;
     }
-    window.location = '/login';
+    //window.location = '/login';
 }
 
 /**
@@ -28,38 +29,50 @@ function UserCtrl($scope, $cookieStore) {
     security($cookieStore);
 }
 
-function UserChatCtrl($scope, $cookieStore, socket, flash, Chats) {
-    $scope.text = '';
+function UserChatCtrl($scope, $cookieStore, $location, $routeParams, socket, flash, Chats, ChatsMessages) {
     $scope.user = security($cookieStore);
+    $scope.text = '';
+    $scope.chat = {};
+    $scope.chat.messages = [];
 
     var sound = document.createElement('audio');
     sound.setAttribute('src', '/sound/chat/chat.mp3');
 
-    // Создаем новый чат
-    /** @todo Поправить API (не обрабатывается POST) */
-    $scope.chat = Chats.create({}, { user: $scope.user.uid }, function(data) {
-        console.log(data);
-        socket.emit('user:create:chat', {
-            user: $scope.user,
-            chat: $scope.chat
+    if ($routeParams.uid) {
+        // Получаем существующий чат
+        $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
+            socket.emit('chat:started', {
+                user: $scope.user,
+                chat: $scope.chat
+            });
         });
-    });
+    } else {
+        // Создаем новый чат
+        $scope.chat = Chats.create({}, { user: $scope.user.uid }, function(data) {
+            socket.emit('chat:created', {
+                user: $scope.user,
+                chat: $scope.chat
+            });
+            $location.path('/user/chat/' + $scope.chat.uid);
+        });
+    }
 
-    socket.on('agent:send:message', function (data) {
-        // Если текущий пользователь и не отправитель, и не получатель, то ему сообщение не пказываем
-/*        if (message.sender != $scope.user.uid && message.receiver != $scope.user.uid) {
-            console.log('Ему не должно показываться это сообщение');
-            return;
-        }*/
+    socket.on('chat:agent:message:send', function (data) {
         sound.play();
 
-        $scope.messages.push({
-            agent: data.agent,
+        $scope.chat.messages.push({
+            sender: data.sender,
             text: data.text
         });
     });
 
-    $scope.messages = [];
+    /** Пользователь меняет страницу */
+    $scope.$on('$locationChangeStart', function(event) {
+        /** Сообщаем агенту о выходе пользователя */
+        socket.emit('chat:destroyed', {
+            uid: $scope.chat.uid
+        });
+    });
 
     $scope.sendMessage = function () {
         if ($scope.text.length == 0) {
@@ -67,16 +80,19 @@ function UserChatCtrl($scope, $cookieStore, socket, flash, Chats) {
             return false;
         };
 
-        socket.emit('user:send:message', {
-            chat: $scope.chat.uid,
-            user: $scope.user,
-            text: $scope.text
-        });
-
-        // add the message to our model locally
-        $scope.messages.push({
-            user: $scope.user,
-            text: $scope.text
+        var text = $scope.text;
+        /** Записываем сообщение в БД */
+        ChatsMessages.create({}, { sender: $scope.user.uid, text: text, chat: $scope.chat.uid }, function(data) {
+            socket.emit('chat:user:message:send', {
+                chat: $scope.chat.uid,
+                sender: $scope.user,
+                text: text
+            });
+            // add the message to our model locally
+            $scope.chat.messages.push({
+                sender: $scope.user,
+                text: text
+            });
         });
 
         // clear message box

@@ -3,6 +3,8 @@
 function security($cookieStore) {
     var agent = $cookieStore.get('agent');
     if (agent) {
+        agent.fullname = decodeURIComponent(agent.fullname);
+        agent.model_type = 'agent';
         return agent;
     }
     window.location = '/login';
@@ -248,44 +250,57 @@ function AgentStatisticsCtrl($scope, $cookieStore) {
  */
 function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
     security($cookieStore);
-    $scope.rooms = [];
-    socket.emit('agent:list:chats', '', function(rooms) {
-        //delete rooms[''];
-        console.log(rooms);
-        $scope.rooms = Object.keys(rooms).map(function(room, index) { return  room = room.replace('/',''); });
-        console.log($scope.rooms);
+    $scope.chats = {};
+
+    socket.emit('chats:online', '', function(chats) {
+        $scope.chats = chats;
     });
 
-    socket.on('user:create:chat', function (data) {
-        $scope.rooms.push(data.chat.uid);
+    socket.on('chat:created', function (data) {
+        $scope.chats[data.chat.uid] = data.chat;
     });
 
-    socket.on('user:close:chat', function (data) {
-        $scope.rooms.push();
+    socket.on('chat:started', function (data) {
+        $scope.chats[data.chat.uid] = data.chat;
+    });
+
+    socket.on('chat:destroyed', function (data) {
+        delete $scope.chats[data.uid];
+    });
+
+    socket.on('chat:ended', function (data) {
+        delete $scope.chats[data.chat.uid];
     });
 }
 
 /**
  * @url "/agent/chat/:uid"
  */
-function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket) {
+function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Chats, ChatsMessages) {
     $scope.agent = security($cookieStore);
-    $scope.agent.fullname = decodeURIComponent($scope.agent.fullname);
     $scope.text = '';
+    $scope.chat = {};
+    $scope.chat.messages = [];
 
-    // Подключаем агента к чату
-    /** @todo Делать PUT запрос в API, для подключения агента в чат */
-    socket.emit('agent:enter:chat', $routeParams.uid);
+    var sound = document.createElement('audio');
+    sound.setAttribute('src', '/sound/chat/chat.mp3');
+
+    // Получаем существующий чат
+    $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
+        // Подключаем агента к чату
+        /** @todo Делать PUT запрос в API, для подключения агента в чат */
+        socket.emit('chat:agent:enter', $scope.chat.uid);
+    });
 
     // Пользователь написал сообщение
-    socket.on('user:send:message', function (data) {
-        $scope.messages.push({
-            user: data.user,
+    socket.on('chat:user:message:send', function (data) {
+        sound.play();
+
+        $scope.chat.messages.push({
+            sender: data.sender,
             text: data.text
         });
     });
-
-    $scope.messages = [];
 
     $scope.sendMessage = function () {
         if ($scope.text.length == 0) {
@@ -293,17 +308,19 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket) {
             return false;
         };
 
-        // Отправляем сообщение пользователю
-        socket.emit('agent:send:message', {
-            chat: $routeParams.uid,
-            agent: $scope.agent,
-            text: $scope.text
-        });
+        var text = $scope.text;
+        /** Записываем сообщение в БД */
+        ChatsMessages.create({}, { sender: $scope.agent.uid, text: text, chat: $scope.chat.uid }, function(data) {
+            socket.emit('chat:agent:message:send', {
+                chat: $scope.chat.uid,
+                sender: $scope.agent,
+                text: text
+            });
 
-        // add the message to our model locally
-        $scope.messages.push({
-            agent: $scope.agent,
-            text: $scope.text
+            $scope.chat.messages.push({
+                sender: $scope.agent,
+                text: text
+            });
         });
 
         // clear message box

@@ -1,9 +1,8 @@
 <div class="col-md-12">
     <h3 translate>Messages</h3>
     <div class="well message-spot overflowable" auto-scroll>
-        <p ng-repeat='message in messages'>
-            <span style="color: red;" ng-if="message.user">{{message.user.fullname}}: {{message.text}}</span>
-            <span style="color: green;" ng-if="message.agent">{{message.agent.fullname}}: {{message.text}}</span>
+        <p ng-repeat='message in chat.messages;'>
+            <span ng-class="{red: message.sender.model_type == 'user', green: message.sender.model_type == 'agent'}">{{message.sender.fullname}}: {{message.text}}</span>
         </p>
     </div>
     <form ng-submit="sendMessage()" class="form-horizontal" role="form">
