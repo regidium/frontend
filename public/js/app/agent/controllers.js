@@ -251,7 +251,9 @@ function AgentClientsPayCtrl($scope, $cookieStore, $routeParams, $location, Clie
 function AgentClientsPlanCtrl($scope, $cookieStore, $routeParams, $location, Clients, Plans) {
     security($cookieStore);
     $scope.client = {};
-    $scope.plans = Plans.all();
+    $scope.plans = Plans.all({}, function() {
+        $scope.client.plan= $scope.plans[0].uid;
+    });
 
     $scope.submit = function() {
         Clients.plan({}, { uid: $routeParams.uid, plan: $scope.client.plan }, function(data) {
