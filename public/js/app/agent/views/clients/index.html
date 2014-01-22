@@ -1,0 +1,38 @@
+<div ng-include="'js/app/agent/views/clients/menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 translate>Client List</h1>
+                <input type="text" ng-model="search" class="form-control" placeholder="Search" />
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th translate>Url</th>
+                    <th translate>Plane</th>
+                    <th translate>Balance</th>
+                    <th translate>Chats</th>
+                    <th translate>Agents</th>
+                    <th translate>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="client in clients | filter:search | orderBy:'uid'" class="panel panel-default" ng-class="{ enabled: client.status }">
+                    <td><a href="{{client.url}}">{{client.url}}</a></td>
+                    <td><a href="#">{{client.plan.name}}</a></td>
+                    <td>{{client.balance}}</a></td>
+                    <td>{{client.available_chats}}</td>
+                    <td>{{client.available_agents}}</td>
+                    <td>
+                        <a href="/agent/clients/edit/{{client.uid}}" class="btn btn-primary" translate>Edit</a>
+                        <a href="/agent/clients/pay/{{client.uid}}" class="btn btn-success" translate>Pay</a>
+                        <a href="/agent/clients/plan/{{client.uid}}" class="btn btn-warning" translate>Plane</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

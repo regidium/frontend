@@ -1,0 +1,32 @@
+<div ng-include="'js/app/agent/views/clients/menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 translate>Pay Client</h1>
+            </div>
+            <form ng-submit='submit()' name="pay_form" class="form-horizontal" role="form">
+                <fieldset>
+                    <div class="form-group col-sm-10">
+                        <div class="radio" ng-repeat="payment_method in payment_methods">
+                            <label>
+                                <input ng-model="pay.payment_method" type="radio" value="{{payment_method.uid}}" /> {{payment_method.name}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-10">
+                        <label class="control-label" translate>Amount</label>
+                        <input ng-model="pay.amount" type="text" class="form-control" />
+                    </div>
+                    <p>
+                        <button type="submit" ng-disabled="pay_form.$invalid" class="btn btn-lg btn-primary btn-block">Pay</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-lg btn-danger btn-block" type="button" data-dismiss="modal" aria-hidden="true">Close</button>
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

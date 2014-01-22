@@ -1,6 +1,6 @@
 var external_services = require('../../../framework/external_services/external_services');
 
-module.exports.register = function (req, res) {
+module.exports.registration = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
@@ -21,7 +21,7 @@ module.exports.register = function (req, res) {
 
         function (callback) {
             res.backend.post({
-                path: 'registers',
+                path: 'registrations',
                 data: {
                     fullname: req.body.fullname,
                     email: req.body.email,
@@ -52,7 +52,7 @@ module.exports.register = function (req, res) {
             if (req.headers['xhr']) {
                 res.send({ errors: ['Backend return bad data!'] });
             } else {
-                res.redirect('/register');
+                res.redirect('/registration');
             }
         }
     });
@@ -163,7 +163,7 @@ exports.external_service_connect = function (req, res) {
                 return callback(null);
             }
             delete req.session.oauth;
-            return res.send({'errors': ['Error external service login register']});
+            return res.send({'errors': ['Error external service login registration']});
         },
 
         /** Connect with external service */

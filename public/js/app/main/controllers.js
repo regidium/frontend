@@ -64,24 +64,24 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
     };
 }
 
-function MainAuthRegisterCtrl($scope, $location, $http, sha1, flash) {
+function MainAuthRegistrationCtrl($scope, $location, $http, sha1, flash) {
     $scope.user = {
         fullname: '',
         email: '',
         password: ''
     };
 
-    if ($location.path() === '/register') {
-        $('#register').modal('show');
+    if ($location.path() === '/registration') {
+        $('#registration').modal('show');
     }
 
     /** todo Валилидация данных */
-    $scope.register = function() {
+    $scope.registration = function() {
         var fullname = $scope.user.fullname;
         var email = $scope.user.email;
         var password = sha1.encode($scope.user.password);
 
-        $http.post('/register', { fullname: fullname, email: email, password: password }).
+        $http.post('/registration', { fullname: fullname, email: email, password: password }).
             success(function(data, status, headers, config) {
                 if (data && data.user) {
                     window.location = '/user';

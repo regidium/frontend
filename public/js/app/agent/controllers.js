@@ -173,6 +173,7 @@ function AgentAgentsCreateCtrl($scope, $cookieStore, $location, sha1, Agents) {
             status: $scope.agent.status,
             accept_chats: $scope.agent.accept_chats
         }
+
         Agents.create({}, data, function() {
             /** @todo Обработка ошибок */
             /** @todo Переходить на страницу агента */
@@ -215,6 +216,48 @@ function AgentAgentsEditCtrl($scope, $cookieStore, $routeParams, $location, Agen
             }
         });
     };
+}
+
+/**
+ * @url "/agent/clients"
+ */
+function AgentClientsCtrl($scope, $cookieStore, Clients) {
+    security($cookieStore);
+    $scope.clients = Clients.all();
+}
+
+/**
+ * @url "/agent/clients/pay/:uid"
+ */
+function AgentClientsPayCtrl($scope, $cookieStore, $routeParams, $location, Clients, PaymentMethods) {
+    security($cookieStore);
+    $scope.pay = {};
+    $scope.payment_methods = PaymentMethods.all({}, function() {
+        $scope.pay.payment_method = $scope.payment_methods[0].uid;
+    });
+
+    $scope.submit = function() {
+        alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
+        Clients.pay({}, { uid: $routeParams.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
+            // @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
+            $location.path('/agent/clients');
+        });
+    }
+}
+
+/**
+ * @url "/agent/clients/plan/:uid"
+ */
+function AgentClientsPlanCtrl($scope, $cookieStore, $routeParams, $location, Clients, Plans) {
+    security($cookieStore);
+    $scope.client = {};
+    $scope.plans = Plans.all();
+
+    $scope.submit = function() {
+        Clients.plan({}, { uid: $routeParams.uid, plan: $scope.client.plan }, function(data) {
+            $location.path('/agent/clients');
+        });
+    }
 }
 
 /**

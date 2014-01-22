@@ -21,7 +21,7 @@ self.run = function (socket) {
 
     socket.on('agent:registered', function(data) {
         /** @todo реализовать */
-        socket.broadcast.emit('a    gent:registered', data);
+        socket.broadcast.emit('agent:registered', data);
     });
 
     socket.on('agent:edited', function(data) {

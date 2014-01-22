@@ -1,7 +1,7 @@
 {
-    "Register": "Register",
-    "Login": "Register",
-    "Close": "Register",
-    "VK": "Register",
-    "Please login": "Register"
+    "Registration": "Registration",
+    "Login": "Login",
+    "Close": "Close",
+    "VK": "VK",
+    "Please login": "Please login"
 }

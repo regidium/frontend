@@ -8,8 +8,8 @@ var user = require('./routes/user');
 self.init = function(app) {
     app.get('/', index.index);
 
-    app.get('/register', auth.register);
-    app.post('/register', auth.register);
+    app.get('/registration', auth.registration);
+    app.post('/registration', auth.registration);
 
     app.get('/login', auth.login);
     app.post('/login', auth.login);

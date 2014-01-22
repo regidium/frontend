@@ -13,7 +13,7 @@ function security($cookieStore) {
 /**
  * @url "/logout"
  */
-function UserAuthLogoutCtrl($scope, $resource) {
+function UserAuthLogoutCtrl($scope, $http) {
     $scope.logout = function() {
         $http.get('/logout')
             .success(function(data, status, headers, config) {
@@ -64,11 +64,20 @@ function UserChatCtrl($scope, $cookieStore, $location, $routeParams, socket, fla
     } else {
         // Создаем новый чат
         $scope.chat = Chats.create({}, { user: $scope.user.uid }, function(data) {
-            socket.emit('chat:created', {
-                user: $scope.user,
-                chat: $scope.chat
-            });
-            $location.path('/user/chat/' + $scope.chat.uid);
+            if ($scope.chat && $scope.chat.uid) {
+                socket.emit('chat:created', {
+                    user: $scope.user,
+                    chat: $scope.chat
+                });
+                $location.path('/user/chat/' + $scope.chat.uid);
+            } else {
+                if (data.errors) {
+                    $scope.map(data.errors, function(error) {
+                        flash.error = error;
+                    });
+                }
+                history.back();
+            }
         });
     }
 

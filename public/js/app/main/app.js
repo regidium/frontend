@@ -19,7 +19,7 @@
         $routeProvider
             .when('/', { templateUrl: 'js/app/main/views/index.html', controller: MainCtrl })
             .when('/login', { templateUrl: 'js/app/main/views/index.html', controller: MainAuthLoginCtrl })
-            .when('/register', { templateUrl: 'js/app/main/views/index.html', controller: MainAuthRegisterCtrl })
+            .when('/registration', { templateUrl: 'js/app/main/views/index.html', controller: MainAuthRegistrationCtrl })
             .when('/auth/external/service/:provider/connect', { templateUrl: 'js/app/main/views/index.html', controller: MainAuthExternalServiceConnectCtrl })
             .when('/auth/external/service/:provider/disconnect', { templateUrl: 'js/app/main/views/index.html', controller: MainAuthExternalServiceDisconnectCtrl })
             .otherwise({ redirectTo: '/' });

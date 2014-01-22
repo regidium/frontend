@@ -10,10 +10,10 @@
                 templateUrl: '/js/app/main/views/auth/login.html'
             };
         })
-        .directive('authRegister', function() {
+        .directive('authRegistration', function() {
             return {
                 restrict: 'E',
-                templateUrl: '/js/app/main/views/auth/register.html'
+                templateUrl: '/js/app/main/views/auth/registration.html'
             };
         })
     ;
