@@ -13,7 +13,7 @@ function createWidget(config) {
         uid: 0,
         height: '100%',
         width: '100%',
-        domain: 'my.regidium.loc',
+        domain: 'my.regidium.com',
         class: 'regidium_widget_container'
     }, config);
 
