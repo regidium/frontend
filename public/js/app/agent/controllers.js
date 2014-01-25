@@ -34,6 +34,33 @@ function AgentCtrl($scope, $cookieStore) {
 };
 
 /**
+ * @url "/agent/visitors"
+ */
+function AgentVisitorsCtrl($scope, $cookieStore, socket) {
+    security($cookieStore);
+    $scope.visitors = {};
+
+    socket.emit('visitors:online', '', function(visitors) {
+        console.log('visitors:online', visitors);
+        $scope.visitors = visitors;
+    });
+
+    socket.on('visitor:connected', function (visitor) {
+        console.log('visitors:connected', visitor);
+        $scope.visitors[visitor.uid] = visitor;
+    });
+
+    socket.on('visitor:refresh', function (data) {
+        console.log('visitors:online', data);
+        delete $scope.visitors[data.uid];
+    });
+
+    socket.on('visitor:exited', function (data) {
+        delete $scope.visitors[data.uid];
+    });
+}
+
+/**
  * @url "/agent/users"
  */
 function AgentUsersCtrl($scope, $cookieStore) {
@@ -320,9 +347,11 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
 
 /**
  * @url "/agent/chat/:uid"
+ * @todo REFACTORING!!!
  */
 function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents, Chats, ChatsMessages) {
     $scope.agent = security($cookieStore);
+    $scope.agent.avatar = 'img/employee-photo-small.jpg';
     $scope.text = '';
     $scope.chat = {};
     $scope.chat.messages = [];
@@ -331,10 +360,31 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents
     sound.setAttribute('src', '/sound/chat/chat.mp3');
 
     // Получаем существующий чат
-    $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
+/*    $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
         // Подключаем агента к чату
         Agents.connectToChat({uid: $scope.agent.uid, chat: $scope.chat.uid})
         socket.emit('chat:agent:enter', $scope.chat.uid);
+    });*/
+    socket.emit('chat:agent:enter', {chat: $routeParams.uid, agent: $scope.agent});
+
+    /** агент меняет страницу */
+    $scope.$on('$locationChangeStart', function(event) {
+        console.log('$locationChangeStart', $scope.visitor);
+        socket.emit('agent:chat:exited', {
+            chat: $scope.chat.uid,
+            agent: $scope.agent.uid
+        });
+    });
+
+    // Посетитель написал сообщение
+    socket.on('chat:visitor:message:send', function (data) {
+        sound.play();
+
+        $scope.chat.messages.push({
+            date: data.date,
+            sender: data.sender,
+            text: data.text
+        });
     });
 
     // Пользователь написал сообщение
@@ -342,6 +392,7 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents
         sound.play();
 
         $scope.chat.messages.push({
+            date: data.date,
             sender: data.sender,
             text: data.text
         });
@@ -355,7 +406,7 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents
 
         var text = $scope.text;
         /** Записываем сообщение в БД */
-        ChatsMessages.create({}, { sender: $scope.agent.uid, text: text, chat: $scope.chat.uid }, function(data) {
+/*        ChatsMessages.create({}, { sender: $scope.agent.uid, text: text, chat: $scope.chat.uid }, function(data) {
             socket.emit('chat:agent:message:send', {
                 chat: $scope.chat.uid,
                 sender: $scope.agent,
@@ -366,6 +417,19 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents
                 sender: $scope.agent,
                 text: text
             });
+        });*/
+
+        socket.emit('chat:agent:message:send', {
+            date: new Date(),
+            chat: $scope.chat.uid,
+            sender: $scope.agent,
+            text: text
+        });
+
+        $scope.chat.messages.push({
+            date: new Date(),
+            sender: $scope.agent,
+            text: text
         });
 
         // clear message box

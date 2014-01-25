@@ -18,6 +18,7 @@
         $routeProvider
             .when('/logout', { templateUrl: 'js/app/agent/views/index.html', controller: AgentAuthLogoutCtrl })
             .when('/agent', { templateUrl: 'js/app/agent/views/index.html', controller: AgentCtrl })
+            .when('/agent/visitors', { templateUrl: 'js/app/agent/views/visitors/list.html', controller: AgentVisitorsCtrl })
             .when('/agent/users', { templateUrl: 'js/app/agent/views/users/index.html', controller: AgentUsersCtrl })
             .when('/agent/users/list', { templateUrl: 'js/app/agent/views/users/list.html', controller: AgentUsersListCtrl })
             .when('/agent/users/detail/:uid', { templateUrl: 'js/app/agent/views/users/form.html', controller: AgentUsersDetailCtrl })
@@ -53,13 +54,17 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($rootScope, $cookieStore, $translate, config, socket) {
+    }]).run(function($rootScope, $cookieStore, $translate, config, socket, flash) {
         /** @todo форматировать языки (ru_RU в ru) */
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
         $rootScope.lang = lang;
         $translate.uses(lang);
 
         socket.emit('agent:connected', { agent: $cookieStore.get('agent') });
+
+        socket.on('visitor:connected', function (data) {
+            flash.success = 'Visitor connected';
+        });
     });
 
 })(angular);

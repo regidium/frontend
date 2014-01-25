@@ -4,6 +4,8 @@ var _ = require('underscore');
 // export function for listening to the socket
 self.init = function (io) {
     self.io = io;
+    /** Все online посетители */
+    self.visitors = {};
     /** Все online пользователи */
     self.users = {};
     /** Все online агенты */
@@ -15,6 +17,7 @@ self.init = function (io) {
 self.run = function (socket) {
     socket.on('agent:connected', function(data) {
         /** @todo Передать агенту список ожидающих */
+        data.avatar = 'img/employee-photo-small.jpg';
         socket.agent = data;
         self.agents[socket.agent.uid] = socket;
     });
@@ -29,7 +32,22 @@ self.run = function (socket) {
         socket.broadcast.emit('agent:edited', data);
     });
 
-    socket.on('user:connected', function(data) {
+    socket.on('visitor:connected', function(data) {
+        /** @todo Оповестить всех агентов, о входе посетителя */
+        data.uid = socket.id;
+        data.model_type = 'visitor';
+        data.avatar = 'img/user-photo-default.jpg';
+        socket.visitor = data;
+        self.visitors[socket.id] = data;
+        socket.broadcast.emit('visitor:connected', data);
+        socket.emit('visitor:connected', data);
+    });
+
+    socket.on('agent:chat:exited', function(data) {
+        socket.leave(data.chat);
+    });
+
+    socket.on('user:logined', function(data) {
         /** @todo Оповестить всех агентов, о входе пользователя */
         socket.user = data;
         self.users[socket.user.uid] = socket;
@@ -93,9 +111,21 @@ self.run = function (socket) {
         //cb(self.io.sockets.manager.rooms)
     });
 
+    // Выдаем список чатов
+    socket.on('visitors:online', function(data, cb) {
+        cb(self.visitors);
+    });
+
     // Подключаем агента к чату
-    socket.on('chat:agent:enter', function(chat) {
-        socket.join(chat);
+    socket.on('chat:agent:enter', function(data) {
+        socket.join(data.chat);
+        socket.broadcast.to(data.chat).emit('chat:agent:enter', data)
+    });
+
+    // передать сообщение посетителя агенту
+    socket.on('chat:visitor:message:send', function (data) {
+        console.log(data.chat);
+        socket.broadcast.to(data.chat).emit('chat:visitor:message:send', data)
     });
 
     // передать сообщение пользователя агенту
@@ -118,6 +148,9 @@ self.run = function (socket) {
             });
         } else if (socket.agent) {
             delete self.agents[socket.agent.uid];
+        } else if (socket.visitor) {
+            delete self.visitors[socket.visitor.uid];
+            socket.broadcast.emit('visitor:exited', {uid: socket.visitor.uid});
         } else {
             return;
         }
