@@ -3,11 +3,17 @@
   margin: 0;
 }
 #container {
+  width: 312px;
+  min-height: 185px;
   box-shadow: 0 0 3px #bab8b8;
   border-radius: 3px 3px 0 0;
   overflow: hidden;
+
   position: fixed;
+  left: 300px;
+  bottom: 0;
   font-family: Arial;
+  margin: 200px 0 0 200px;
 }
 #header {
   background: #ec1d23;
@@ -18,12 +24,13 @@
   line-height: 100%;
 }
 #header .status {
-  background: url(../img/open-arrow.png) bottom right no-repeat;
+  background: url(../img/open-arrow.png) right 3px no-repeat;
   cursor: pointer;
 }
 
 #content {
   position: relative;
+  background: #fff;
 }
 #employee {
   height: 79px;
@@ -57,10 +64,13 @@
   overflow: hidden;
   resize: none;
   border: 1px solid #d5d5d5;
-  width: 273px;
-  height: 15px;
+  width: 100%;
+  height: 30px;
   font-size: 12px;
-  padding: 7px 10px 7px 10px;
+  padding: 6px 10px 7px 6px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 
   font-family: Arial;
 }
@@ -81,7 +91,7 @@
   left: 0;
   width: 275px;
   height: 24px;
-  padding: 7px 10px 0 10px;
+  padding: 7px 10px 0 7px;
 }
 #message-input.full .message-input-content span {
   height: 71px;
@@ -107,7 +117,6 @@
 #dialogue {
   padding: 15px 18px 0 22px;
   height: 192px;
-  width: 257px;
   overflow: auto;
   display: none;
 }
@@ -186,7 +195,7 @@
   height: 23px;
   border: 1px solid #d5d5d5;
   padding: 0 0 0 8px;
-  color: #9c9891;
+  color: #000;
 }
 #auth .form-item {
   display: inline-block;
