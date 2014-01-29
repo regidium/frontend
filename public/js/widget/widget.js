@@ -37,6 +37,7 @@ function createWidget(config) {
             this.widgetElement.style.width = '312px';
             this.widgetElement.style.top = '0';
             this.widgetElement.style.right = '0';
+            this.widgetElement.style.zIndex = '2147483646';
             this.widgetElement.setAttribute('id', options.class);
             this.widgetElement.setAttribute('class', options.class);
             this.widgetElement.innerHTML = '<iframe id="regidium_widget_iframe" src="' + options.widget_url + '" scrolling="no" width="'+options.width+'" height="'+options.height+'" frameborder="0"></iframe>';
