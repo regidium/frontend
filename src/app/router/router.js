@@ -3,8 +3,6 @@ var self = module.exports = {};
 var index = require('./routes/index');
 var auth = require('./routes/auth');
 var agent = require('./routes/agent');
-var user = require('./routes/user');
-var widget = require('./routes/widget');
 
 self.init = function(app) {
     app.get('/', index.index);
@@ -24,11 +22,6 @@ self.init = function(app) {
 
     app.get('/agent', agent.agent);
     app.get('/agent/*', agent.agent);
-
-    app.get('/user', user.user);
-    app.get('/user/*', user.user);
-
-    app.get('/widget', widget.widget);
 
     app.get('*', index.index);
 }

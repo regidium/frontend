@@ -5,7 +5,7 @@
     /* Services */
     angular.module('regidiumApp')
         .factory('socket', function ($rootScope) {
-            var socket = io.connect();
+            var socket = io.connect($rootScope.config.server.io_url + ':' + $rootScope.config.server.io_port);
             return {
                 on: function (eventName, callback) {
                     socket.on(eventName, function () {

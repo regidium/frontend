@@ -11,13 +11,17 @@ block header
     .collapse.navbar-collapse(role="navigation")
         ul.nav.navbar-nav
             li
+                a(href="/agent/chats", translate) Chats
+            li
                 a(href="/agent/visitors", translate) Visitors
             li
                 a(href="/agent/users", translate) Users
             li
-                a(href="/agent/clients", translate) Clients
+                a(href="/agent/clients", translate) Widgets
             li
                 a(href="/agent/agents", translate) Agents
+            li
+                a(href="/agent/statistics", translate) Statistics
             li.dropdown
                 a.dropdown-toggle(href="#", data-toggle="dropdown", translate) Settings
                 ul.dropdown-menu
@@ -25,10 +29,6 @@ block header
                         a(href="/agent/settings/widget") Widget
                     li
                         a(href="/agent/settings/productivity") Productivity
-            li
-                a(href="/agent/statistics", translate) Statistics
-            li
-                a(href="/agent/chats", translate) Chats
         ul.nav.navbar-nav.navbar-right
             li(ng-controller="AgentAuthLogoutCtrl")
                 a(href="", ng-click="logout()", translate) Logout
@@ -38,7 +38,7 @@ block content
         .row(ng-view)
 
 block script
-    script(src= (config.server.url + ':' + config.server.port + '/socket.io/socket.io.js'))
+    script(src= (config.server.io_url + ':' + config.server.io_port + '/socket.io/socket.io.js'))
     script(src='/js/app/agent/app.js', type="text/javascript")
     script(src='/js/app/agent/controllers.js', type="text/javascript")
     script(src='/js/app/main/controllers.js', type="text/javascript")

@@ -23,12 +23,13 @@ function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $ht
     });
 }
 
+/** @todo Update */
 function MainAuthExternalServiceDisconnectCtrl() {
 
 }
 
 function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
-    $scope.user = {
+    $scope.person = {
         email: '',
         password: ''
     };
@@ -39,17 +40,17 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 
     /** todo Валилидация данных */
     $scope.login = function() {
-        var email = $scope.user.email;
-        var password = sha1.encode($scope.user.password);
+        var email = $scope.person.email;
+        var password = sha1.encode($scope.person.password);
 
         $http.post('/login', { email: email, password: password }).
             success(function(data, status, headers, config) {
-                if (data && data.user) {
-                    window.location = '/user';
-                } else if (data && data.agent) {
+                if (data && data.model_type == 'person') {
                     window.location = '/agent';
                 } else {
-                    flash.error = 'Backend return error request!';
+                    _.each(data.errors, function(val, key) {
+                        flash.error = val;
+                    });
                 }
             }).
             error(function(data, status, headers, config) {
@@ -65,7 +66,7 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 }
 
 function MainAuthRegistrationCtrl($scope, $location, $http, sha1, flash) {
-    $scope.user = {
+    $scope.person = {
         fullname: '',
         email: '',
         password: ''
@@ -77,15 +78,13 @@ function MainAuthRegistrationCtrl($scope, $location, $http, sha1, flash) {
 
     /** todo Валилидация данных */
     $scope.registration = function() {
-        var fullname = $scope.user.fullname;
-        var email = $scope.user.email;
-        var password = sha1.encode($scope.user.password);
+        var fullname = $scope.person.fullname;
+        var email = $scope.person.email;
+        var password = sha1.encode($scope.person.password);
 
         $http.post('/registration', { fullname: fullname, email: email, password: password }).
             success(function(data, status, headers, config) {
-                if (data && data.user) {
-                    window.location = '/user';
-                } else if (data && data.agent) {
+                if (data && data.person && data.person.model_type == 'person') {
                     window.location = '/agent';
                 } else {
                     flash.error = 'Backend return error request!';

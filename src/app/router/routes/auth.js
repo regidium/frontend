@@ -4,10 +4,8 @@ module.exports.registration = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.agent) {
+            if (req.person && req.person.model_type == 'person') {
                 return res.redirect('/agent');
-            } else if (req.user) {
-                return res.redirect('/user');
             }
             callback(null);
         },
@@ -62,10 +60,8 @@ exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.agent) {
+            if (req.person && req.person.model_type == 'person') {
                 return res.redirect('/agent');
-            } else if (req.user) {
-                return res.redirect('/user');
             }
             callback(null);
         },
@@ -90,14 +86,17 @@ exports.login = function (req, res) {
                 },
                 onErrors: function (body) {
                     /** @todo Сделать обработчик ошибок */
-                    console.log(body);
-                    return body;
+                    if (req.headers['xhr']) {
+                        return res.send(body);
+                    } else {
+                        return res.redirect('/login');
+                    }
                 }
             });
         }
 
     ], function (err, data) {
-        if (data.user || data.agent) {
+        if (data && data.model_type && data.model_type == 'person') {
             res.authorizer.login(res, data, req.body.remember);
             if (req.headers['xhr']) {
                 res.send(data);
@@ -126,15 +125,16 @@ exports.logout = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (!req.user && !req.agent) {
+            if (req.person && req.person.model_type == 'person') {
+                callback(null);
+            } else {
                 return res.redirect('/');
             }
-            callback(null);
         },
 
         function (callback) {
             res.backend.get({
-                path: 'logouts/' + (req.user ? req.user.uid : req.agent.uid),
+                path: 'logouts/' + req.person.uid,
                 onSuccess: function (body) {
                     callback(null);
                 },
@@ -186,7 +186,7 @@ exports.external_service_connect = function (req, res) {
             res.backend.post({
                 path: 'auths/' + req.params.provider + '/externalservice/connect',
                 data: {
-                    uid: req.user ? req.user.uid : null,
+                    uid: req.person.uid,
                     data: data,
                     security: { access_token: token }
                 },
@@ -201,9 +201,9 @@ exports.external_service_connect = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data.user || data.agent) {
+        if (data.person) {
             res.authorizer.login(res, data, true);
-            res.redirect('/'+(data.user ? 'user' : 'agent'));
+            res.redirect('/agent');
         } else {
             res.redirect('/');
         }

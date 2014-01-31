@@ -7,43 +7,19 @@ var _ = require('underscore'),
 var self = module.exports = function () { };
 
 self.login = function (res, object, remember) {
-    if (object && (object.user || object.agent)) {
-        var object_id = object.user ? object.user.uid : object.agent.uid;
+    if (object) {
+        var object_id = object.uid;
         res.cookie(config.authorizer.key, self.generateToken(object_id, remember), {
             expires: new Date(self.calcLifetime(remember)),
             path:    '/'
         });
-        /** @todo Перевести user и agent на object */
         self.flush_auth(res, object);
     }
 };
 
 self.logout = function (res) {
     res.clearCookie(config.authorizer.key);
-    res.clearCookie('user');
-    res.clearCookie('agent');
-};
-
-self.io_check = function (handshake_data, callback) {
-    if (handshake_data.headers.cookie) {
-        var cookie = require('cookie').parse(handshake_data.headers.cookie);
-        var token = cookie[config.authorizer.key];
-
-        var object_id = self.validateToken(token);
-        /** @todo */
-        if (!object_id) {
-            return callback(null, true);
-        }
-
-        handshake_data.object_id = object_id;
-
-        self.flush_object_data(handshake_data, function () {
-            callback(null, true);
-        });
-    } else {
-        /** @todo */
-        callback(null, true);
-    }
+    res.clearCookie('person');
 };
 
 self.check = function (req, res, next) {
@@ -62,10 +38,8 @@ self.flush_object_data = function (obj, cb) {
     async.waterfall([
 
         function (callback) {
-            if (obj.user) {
-                obj.object_id = obj.agent.uid;
-            } else if (obj.agent) {
-                obj.object_id = obj.agent.uid;
+            if (obj.person) {
+                obj.object_id = obj.person.uid;
             }
 
             if (obj.object_id) {
@@ -86,11 +60,8 @@ self.flush_object_data = function (obj, cb) {
         },
 
         function (data, callback) {
-            if (data && data && data.user) {
-                obj.user = data.user;
-                delete obj.object_id;
-            } else if (data && data && data.agent) {
-                obj.agent = data.agent;
+            if (data && data.model_type == 'person') {
+                obj.person = data;
                 delete obj.object_id;
             } else {
                 console.error('Backend return error response! ' + data);
@@ -149,27 +120,15 @@ self.decode = function (encoded) {
 };
 
 self.flush_auth = function(res, object) {
-    if (object.user) {
-        var data = JSON.stringify(object.user, function(key, val) {
+    if (object.person) {
+        var data = JSON.stringify(object.person, function(key, val) {
             if (key == 'fullname') {
                 return encodeURIComponent(val);
             } else {
                 return val;
             }
         });
-        res.cookie('user', data, {
-            expires: new Date(self.calcLifetime()),
-            path: '/'
-        });
-    } else if (object.agent) {
-        var data = JSON.stringify(object.agent, function(key, val) {
-            if (key == 'fullname') {
-                return encodeURIComponent(val);
-            } else {
-                return val;
-            }
-        });
-        res.cookie('agent', data, {
+        res.cookie('person', data, {
             expires: new Date(self.calcLifetime()),
             path: '/'
         });

@@ -1,8 +1,6 @@
 module.exports.index = function (req, res) {
-    if (req.agent) {
+    if (req.person && req.person.model_type == 'person') {
         return res.redirect('/agent');
-    } else if (req.user) {
-        return res.redirect('/user');
     } else {
         return res.render('main/index');
     }

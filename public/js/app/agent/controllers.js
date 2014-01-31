@@ -1,11 +1,10 @@
 'use strict';
 
 function security($cookieStore) {
-    var agent = $cookieStore.get('agent');
-    if (agent) {
-        agent.fullname = decodeURIComponent(agent.fullname);
-        agent.model_type = 'agent';
-        return agent;
+    var person = $cookieStore.get('person');
+    if (person) {
+        person.fullname = decodeURIComponent(person.fullname);
+        return person;
     }
     window.location = '/login';
 }
@@ -350,8 +349,8 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
  * @todo REFACTORING!!!
  */
 function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents, Chats, ChatsMessages) {
-    $scope.agent = security($cookieStore);
-    $scope.agent.avatar = 'img/employee-photo-small.jpg';
+    $scope.person = security($cookieStore);
+    $scope.agent = $scope.person.agent;
     $scope.text = '';
     $scope.chat = {};
     $scope.chat.messages = [];

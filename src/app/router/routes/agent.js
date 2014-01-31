@@ -2,10 +2,11 @@ module.exports.agent = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (!req.agent) {
+            if (req.person && req.person.model_type == 'person') {
+                callback(null);
+            } else {
                 return res.redirect('/login');
             }
-            callback(null);
         }
 
     ], function (err, result) {
