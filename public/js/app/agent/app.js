@@ -19,21 +19,13 @@
             .when('/logout', { templateUrl: 'js/app/agent/views/index.html', controller: AgentAuthLogoutCtrl })
             .when('/agent', { templateUrl: 'js/app/agent/views/index.html', controller: AgentCtrl })
             .when('/agent/visitors', { templateUrl: 'js/app/agent/views/visitors/list.html', controller: AgentVisitorsCtrl })
-            .when('/agent/users', { templateUrl: 'js/app/agent/views/users/index.html', controller: AgentUsersCtrl })
-            .when('/agent/users/list', { templateUrl: 'js/app/agent/views/users/list.html', controller: AgentUsersListCtrl })
-            .when('/agent/users/detail/:uid', { templateUrl: 'js/app/agent/views/users/form.html', controller: AgentUsersDetailCtrl })
-            .when('/agent/users/edit/:uid', { templateUrl: 'js/app/agent/views/users/form.html', controller: AgentUsersEditCtrl })
             .when('/agent/agents', { templateUrl: 'js/app/agent/views/agents/index.html', controller: AgentAgentsCtrl })
-            .when('/agent/agents/list', { templateUrl: 'js/app/agent/views/agents/list.html', controller: AgentAgentsListCtrl })
-            .when('/agent/agents/detail/:uid', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsDetailCtrl })
-            .when('/agent/agents/create', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsCreateCtrl })
-            .when('/agent/agents/edit/:uid', { templateUrl: 'js/app/agent/views/agents/form.html', controller: AgentAgentsEditCtrl })
-            .when('/agent/clients', { templateUrl: 'js/app/agent/views/clients/index.html', controller: AgentClientsCtrl })
-            .when('/agent/clients/pay/:uid', { templateUrl: 'js/app/agent/views/clients/pay.html', controller: AgentClientsPayCtrl })
-            .when('/agent/clients/plan/:uid', { templateUrl: 'js/app/agent/views/clients/plan.html', controller: AgentClientsPlanCtrl })
-            .when('/agent/settings', { templateUrl: 'js/app/agent/views/settings/index.html', controller: AgentSettingsWidgetCtrl })
-            .when('/agent/settings/widget', { templateUrl: 'js/app/agent/views/settings/widget.html', controller: AgentSettingsProductivityCtrl })
-            .when('/agent/settings/productivity', { templateUrl: 'js/app/agent/views/settings/productivity.html', controller: AgentSettingsCtrl })
+            .when('/agent/settings', { templateUrl: 'js/app/agent/views/settings/index.html', controller: AgentSettingsCtrl })
+            .when('/agent/settings/widget', { templateUrl: 'js/app/agent/views/settings/widget/index.html', controller: AgentSettingsWidgetCtrl })
+            .when('/agent/settings/widget/style', { templateUrl: 'js/app/agent/views/settings/widget/style.html', controller: AgentSettingsWidgetStyleCtrl })
+            .when('/agent/settings/widget/pay', { templateUrl: 'js/app/agent/views/settings/widget/pay.html', controller: AgentSettingsWidgetPayCtrl })
+            .when('/agent/settings/widget/plan', { templateUrl: 'js/app/agent/views/settings/widget/plan.html', controller: AgentSettingsWidgetPlanCtrl })
+            .when('/agent/settings/productivity', { templateUrl: 'js/app/agent/views/settings/productivity.html', controller: AgentSettingsProductivityCtrl })
             .when('/agent/statistics', { templateUrl: 'js/app/agent/views/statistics/index.html', controller: AgentStatisticsCtrl })
             .when('/agent/chats', { templateUrl: 'js/app/agent/views/chats/index.html', controller: AgentChatsCtrl })
             .when('/agent/chat/:uid', { templateUrl: 'js/app/agent/views/chats/chat.html', controller: AgentChatCtrl })
@@ -60,11 +52,7 @@
         $rootScope.lang = lang;
         $translate.uses(lang);
 
-        socket.emit('agent:connected', { agent: $cookieStore.get('agent') });
-
-        socket.on('visitor:connected', function (data) {
-            flash.success = 'Visitor connected';
-        });
+        socket.emit('agent:connected', { agent: $cookieStore.get('person') });
     });
 
 })(angular);

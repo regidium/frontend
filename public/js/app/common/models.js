@@ -25,15 +25,18 @@
                 connectToChat: { method: 'PUT', params: { uid: '@uid', chat: '@chat' }, url: $rootScope.config.apiUrl + 'agents/:uid/chats/:chat' }
             });
         })
-        .factory('Clients', function($rootScope, $resource) {
-            return $resource($rootScope.config.apiUrl + 'clients', null, {
-                all: { method: 'GET', url: $rootScope.config.apiUrl + 'clients', isArray:true },
-                one: { method: 'GET', url: $rootScope.config.apiUrl + 'clients/:uid' },
-                create: { method: 'POST', url: $rootScope.config.apiUrl + 'clients' },
-                edit: { method: 'PUT', url: $rootScope.config.apiUrl + 'clients/:uid' },
-                remove: { method: 'DELETE', url: $rootScope.config.apiUrl + 'clients/:uid' },
-                pay: { method: 'POST', params: { uid: "@uid", payment_method: "@payment_method", amount: "@amount" }, url: $rootScope.config.apiUrl + 'clients/:uid/pays/:payment_method' },
-                plan: { method: 'PUT', params: { uid: "@uid", plan: "@plan" }, url: $rootScope.config.apiUrl + 'clients/:uid/plans/:plan' }
+        .factory('Widgets', function($rootScope, $resource) {
+            return $resource($rootScope.config.apiUrl + 'widgets', null, {
+                all: { method: 'GET', url: $rootScope.config.apiUrl + 'widgets', isArray:true },
+                one: { method: 'GET', url: $rootScope.config.apiUrl + 'widgets/:uid' },
+                create: { method: 'POST', url: $rootScope.config.apiUrl + 'widgets' },
+                edit: { method: 'PUT', url: $rootScope.config.apiUrl + 'widgets/:uid' },
+                remove: { method: 'DELETE', url: $rootScope.config.apiUrl + 'widgets/:uid' },
+                pay: { method: 'POST', params: { uid: "@uid", payment_method: "@payment_method", amount: "@amount" }, url: $rootScope.config.apiUrl + 'widgets/:uid/pays/:payment_method' },
+                plan: { method: 'PUT', params: { uid: "@uid", plan: "@plan" }, url: $rootScope.config.apiUrl + 'widgets/:uid/plans/:plan' },
+                users: { method: 'GET', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/users', isArray:true },
+                agents: { method: 'GET', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/agents', isArray:true },
+                saveAgent: { method: 'PUT', params: { uid: "@uid", agent: "@agent" }, url: $rootScope.config.apiUrl + 'widgets/:uid/agents/:agent' }
             });
         })
         .factory('Chats', function($rootScope, $resource) {

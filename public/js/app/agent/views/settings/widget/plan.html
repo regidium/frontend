@@ -1,17 +1,17 @@
-<div ng-include="'js/app/agent/views/clients/menu.html'"></div>
+<div ng-include="'js/app/agent/views/settings/widget/_menu.html'"></div>
 
 <div class="col-md-9" role="main">
     <div class="content">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h1 translate>Select Client Plan</h1>
+                <h1 translate>Select Widget Plan</h1>
             </div>
             <form ng-submit='submit()' name="plan_form" class="form-horizontal" role="form">
                 <fieldset>
                     <div class="form-group col-sm-10">
                         <div class="radio" ng-repeat="plan in plans">
                             <label>
-                                <input ng-model="client.plan" type="radio" value="{{plan.uid}}" />
+                                <input ng-model="widget.plan" type="radio" value="{{plan.uid}}" />
                                 {{plan.name}} <b>{{plan.cost}}$</b>
                                 <br/>
                                 <span ng-if="plan.count_agents">{{plan.count_agents}}</span><span ng-if="!plan.count_agents">&infin;</span> <span translate>agents and </span> <span ng-if="plan.count_chats">{{plan.count_chats}}</span><span ng-if="!plan.count_chats">&infin; <span translate>chats</span>

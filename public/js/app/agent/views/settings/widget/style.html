@@ -1,0 +1,25 @@
+<div ng-include="'js/app/agent/views/settings/widget/_menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content">
+        <blockquote>
+            <pre>
+                <code>
+&lt;script&gt;
+var widgetOptions = {
+    uid: '{{person.agent.widget.uid}}'
+};
+
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.async = true;
+script.src = "http://widget.regidium.com/widget.js";
+document.getElementsByTagName('head')[0].appendChild(script);
+})();
+&lt;/script&gt;
+                </code>
+            </pre>
+        </blockquote>
+    </div>
+</div>

@@ -65,11 +65,18 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
     };
 }
 
-function MainAuthRegistrationCtrl($scope, $location, $http, sha1, flash) {
+function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, flash) {
+    var ua = UAParser('');
+
     $scope.person = {
         fullname: '',
         email: '',
-        password: ''
+        password: undefined,
+        confirm_password: undefined,
+        language: $rootScope.lang,
+        device: (ua.device.name ? ua.device.name : '') + ' ' + (ua.device.version ? ua.device.version : ''),
+        os: ua.os.name + ' ' + ua.os.version,
+        browser: ua.browser.name + ' ' + ua.browser.version
     };
 
     if ($location.path() === '/registration') {
@@ -78,13 +85,11 @@ function MainAuthRegistrationCtrl($scope, $location, $http, sha1, flash) {
 
     /** todo Валилидация данных */
     $scope.registration = function() {
-        var fullname = $scope.person.fullname;
-        var email = $scope.person.email;
-        var password = sha1.encode($scope.person.password);
+        $scope.person.password = sha1.encode($scope.person.password);
 
-        $http.post('/registration', { fullname: fullname, email: email, password: password }).
+        $http.post('/registration', $scope.person).
             success(function(data, status, headers, config) {
-                if (data && data.person && data.person.model_type == 'person') {
+                if (data && data.model_type == 'person') {
                     window.location = '/agent';
                 } else {
                     flash.error = 'Backend return error request!';

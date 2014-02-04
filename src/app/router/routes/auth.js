@@ -18,14 +18,16 @@ module.exports.registration = function (req, res) {
         },
 
         function (callback) {
+            var data = req.body;
+            data.fullname = req.body.fullname;
+            data.email = req.body.email;
+            data.password = req.body.password;
+            data.remember = req.body.remember;
+            data.ip = req.ips.reverse()[0];
+
             res.backend.post({
-                path: 'registrations',
-                data: {
-                    fullname: req.body.fullname,
-                    email: req.body.email,
-                    password: req.body.password,
-                    remember: req.body.remember
-                },
+                path: 'agents',
+                data: data,
                 onSuccess: function (body) {
                     callback(null, body);
                 },
@@ -38,7 +40,8 @@ module.exports.registration = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data.user) {
+        console.log(data);
+        if (data && data.model_type == 'person') {
             res.authorizer.login(res, data, req.body.remember);
             if (req.headers['xhr']) {
                 res.send(data);
@@ -96,7 +99,7 @@ exports.login = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data && data.model_type && data.model_type == 'person') {
+        if (data && data.model_type == 'person') {
             res.authorizer.login(res, data, req.body.remember);
             if (req.headers['xhr']) {
                 res.send(data);
