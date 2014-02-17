@@ -353,6 +353,10 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound)
         // Отсеиваем чужие оповещения
         if (data.person.uid == $scope.person.uid) {
             $scope.chat = data.chat;
+
+            if(!data.chat.messages) {
+                $scope.chat.messages = [];
+            }
         }
     });
 
