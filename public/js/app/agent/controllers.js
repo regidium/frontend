@@ -2,6 +2,7 @@
 
 function security($cookieStore) {
     var person = $cookieStore.get('person');
+
     if (person) {
         person.fullname = decodeURIComponent(person.fullname);
         return person;
@@ -10,31 +11,19 @@ function security($cookieStore) {
     window.location = '/login';
 }
 
-function getSound() {
-    var sound = document.createElement('audio');
-    var types = {
-        '/sound/chat/chat.ogg': 'audio/ogg; codecs="vorbis"',
-        '/sound/chat/chat.wav': 'audio/wav; codecs="1"',
-        '/sound/chat/chat.mp3': 'audio/mpeg;'
-    };
-
-    var audio_file = _.each(types, function(type, file) {
-        var e = sound.canPlayType(type);
-        if ('probably' === e || 'maybe' === e) {
-            return file;
-        }
-    });
-
-    sound.setAttribute('src', audio_file);
-
-    return sound;
-}
-
 /**
  * @url "/logout"
  */
-function AgentAuthLogoutCtrl($scope, $http, socket) {
+function AgentAuthLogoutCtrl($scope, $http, $cookieStore, socket) {
+    // Получаем пользователя из cookie
+    var person = security($cookieStore);
+
+    // Нажатие кнопки Logout
     $scope.logout = function() {
+        // Оповещаем об отключении агента
+        socket.emit('agent:disconnect', { person_uid: person.uid });
+
+        // Запрос на отключение агента
         $http.get('/logout')
             .success(function(data, status, headers, config) {
                 window.location = '/';
@@ -87,8 +76,8 @@ function AgentVisitorsCtrl($scope, $cookieStore, socket, flash, Users, Widgets) 
     });
 
     // Пользователь оналайн
-    socket.on('user:connected', function (data) {
-        console.log('user:connected', data);
+    socket.on('chat:created', function (data) {
+        console.log('chat:created', data);
         // Добавляем пользователя в список пользователей онлайн
         $scope.users[data.person.uid] = data.person;
     });
@@ -116,33 +105,29 @@ function AgentVisitorsCtrl($scope, $cookieStore, socket, flash, Users, Widgets) 
 function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, Widgets) {
     var person = security($cookieStore);
 
-    // Блокировка формы от редактирования
+    // Блокировка формы редактирования
     $scope.disabled = true;
     // Список агентов
-    $scope.agents = [];
+    $scope.persons = [];
     // Выбранный агент
-    $scope.agent = {};
+    $scope.person = {};
 
     // Получаем список агентов
-    if (person.agent.widget) {
-        $scope.agents = Widgets.agents({ uid: person.agent.widget.uid }, function(data) {
-            // Делам текущим первого из списка
-            $scope.agent = $scope.agents[0];
-            delete($scope.agent.person.password);
-        });
-    }
+    $scope.persons = Widgets.agents({ uid: person.agent.widget.uid }, function(data) {
+        // Делам текущим первого из списка
+        $scope.person = $scope.persons[0];
+    });
 
     // Выбираем агента
-    $scope.select = function(agent) {
+    $scope.select = function(person) {
         $scope.disabled = true;
-        $scope.agent = agent;
-        delete($scope.agent.person.password);
+        $scope.person = person;
     };
 
     // Создаем нового агента
     $scope.create = function() {
-        $scope.agent = {};
-        $scope.agent.person = {};
+        $scope.person = {};
+        $scope.person.agent = {};
         $scope.disabled = false;
     };
 
@@ -154,60 +139,41 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     // Сохраняем агента
     $scope.save = function() {
         // Получаем UID агента
-        var agent_uid = $scope.agent.uid;
+        var person_uid = $scope.person.uid;
         var password = '';
-        if (!$scope.agent.uid) {
+        if (!$scope.person.uid) {
             // Если агент новый,то UID = new
-            agent_uid = 'new';
-            password = sha1.encode($scope.agent.person.password);
+            person_uid = 'new';
+            password = sha1.encode($scope.person.password);
         }
 
         var data = {
-            fullname: $scope.agent.person.fullname,
-            job_title: $scope.agent.job_title,
-            avatar: $scope.agent.person.avatar,
-            email: $scope.agent.person.email,
+            fullname: $scope.person.fullname,
+            job_title: $scope.person.agent.job_title,
+            avatar: $scope.person.avatar,
+            email: $scope.person.email,
             password: password,
-            type: $scope.agent.type,
-            status: $scope.agent.status,
-            accept_chats: $scope.agent.accept_chats
+            type: $scope.person.agent.type,
+            status: $scope.person.agent.status,
+            accept_chats: $scope.person.agent.accept_chats
         }
 
-        Widgets.saveAgent({ uid: person.agent.widget.uid, agent: agent_uid }, data, function(returned) {
+        Widgets.saveAgent({ uid: person.agent.widget.uid, agent: person_uid }, data, function(returned) {
             /** @todo Обработка ошибок */
             if (returned && returned.errors) {
                 console.log(returned.errors);
             } else {
                 // Если создавали пользователя, то добавляем его в список
-                if (agent_uid == 'new') {
-                    var agent = {};
-                    agent = returned.agent;
-                    agent.person = returned;
-                    delete(agent.person.agent);
-                    $scope.agents.push(agent);
+                if (person_uid == 'new') {
+                    var person = {};
+                    person = returned.person;
+                    person.person = returned;
+                    $scope.persons.push(person);
                 }
+
                 $scope.disabled = true;
             }
         });
-/*        if ($scope.agent.uid) {
-            Agents.edit({ 'uid': $scope.agent.uid }, $scope.agent, function(data) {
-                *//** @todo Обработка ошибок *//*
-                if (data && data.errors) {
-                    console.log(data.errors);
-                } else {
-                    $location.path('/agent/agents');
-                }
-            });
-        } else {
-            Agents.create({}, $scope.agent, function(data) {
-                *//** @todo Обработка ошибок *//*
-                if (data && data.errors) {
-                    console.log(data.errors);
-                } else {
-                    $location.path('/agent/agents');
-                }
-            });
-        }*/
     };
 
     // Отменяем редактирование
@@ -216,13 +182,13 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     };
 
     // Удаляем агента
-    $scope.remove = function(agent) {
-        if (agent.type != 1) {
+    $scope.remove = function(person) {
+        if (person.type != 1) {
             if (confirm('Are you sure you want to remove this agent?')) {
-                Agents.remove({ 'uid': agent.uid }, agent.uid, function() {
+                Agents.remove({ 'uid': person.uid }, person.uid, function() {
                     /** @todo Обработка ошибок */
                     flash.success = 'Agent success removed';
-                    $scope.agents.splice($scope.agents.indexOf(agent), 1);
+                    $scope.persons.splice($scope.persons.indexOf(person), 1);
                 });
             }
         } else {
@@ -234,7 +200,7 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
 /**
  * @url "/agent/settings"
  */
-function AgentSettingsCtrl($scope, $cookieStore) {
+function AgentSettingsCtrl($scope, $cookieStore, Widgets) {
     security($cookieStore);
 }
 
@@ -250,6 +216,15 @@ function AgentSettingsWidgetCtrl($scope, $cookieStore) {
  */
 function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
     $scope.person = security($cookieStore);
+    $scope.settings = {};
+
+    Widgets.one({ uid: $scope.person.agent.widget.uid }, function(data) {
+        $scope.settings = data.settings;
+    });
+
+    $scope.submit = function() {
+        Widgets.saveSettings({ uid: $scope.person.agent.widget.uid }, $scope.settings);
+    }
 //    $scope.widget = Widgets.one({ uid: person.widget.uid });
 
 /*    $scope.save = function() {
@@ -267,12 +242,9 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
 /**
  * @url "/agent/widget/pay"
  */
-function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets, PaymentMethods) {
+function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
     var person = security($cookieStore);
     $scope.pay = {};
-    $scope.payment_methods = PaymentMethods.all({}, function() {
-        $scope.pay.payment_method = $scope.payment_methods[0].uid;
-    });
 
     $scope.submit = function() {
         alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
@@ -286,12 +258,9 @@ function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets, Pa
 /**
  * @url "/agent/widget/plan"
  */
-function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets, Plans) {
+function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
     var person = security($cookieStore);
     $scope.widget = {};
-    $scope.plans = Plans.all({}, function() {
-        $scope.widget.plan= $scope.plans[0].uid;
-    });
 
     $scope.submit = function() {
         Widgets.plan({}, { uid: person.widget.uid, plan: $scope.widget.plan }, function(data) {
@@ -326,49 +295,37 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
 
     $scope.chats = {};
 
+    // Запрашиваем список чатов онлайн
+    socket.emit('chat:online', { widget_uid: widget_uid });
+
     // Получаем список чатов онлайн
-    socket.emit('chats:online', widget_uid, function(chats) {
-        console.log(chats);
+    socket.on('chat:online:list', function(data) {
+        console.log('Socket chat:online:list', data);
+
         // Наполняем список чатов онлайн
-        $scope.chats = chats;
+        $scope.chats = data;
     });
 
-    // Пользователь создал чат
-    socket.on('chat:created', function (data) {
-        console.log('chat:created', data);
-        // Отделяем ненужные оповещения
-        if (data.widget == widget_uid) {
-            // Добавляем чат в список чатов онлайн
-            $scope.chats[data.chat.uid] = data;
-        }
+    // Чат подключен
+    socket.on('chat:connected', function (data) {
+        console.log('Socket chat:connected', data);
+
+        // Добавляем чат в список чатов онлайн
+        $scope.chats[data.chat.uid] = data;
     });
 
-    // Пользователь открыл чат
-    socket.on('chat:started', function (data) {
-        console.log('chat:started', data);
-        // Отделяем ненужные оповещения
-        if (data.widget == widget_uid) {
-            // Добавляем чат в список чатов онлайн
-            $scope.chats[data.chat.uid] = data;
-        }
-    });
+    // Чат отключен
+    socket.on('chat:disconnected', function (data) {
+        console.log('Socket chat:disconnected', data);
 
-    // Пользователь покинул чат
-    socket.on('chat:destroyed', function (data) {
-        console.log('chat:destroyed', data);
-        // Отделяем ненужные оповещения
-        if (data.widget == widget_uid) {
-            // Удаляем чат из списка чатов онлайн
-            delete $scope.chats[data.chat];
-        }
+        // Удаляем чат из списка чатов онлайн
+        delete $scope.chats[data.chat_uid];
     });
 
     // Пользователь закрыл чат
     /** @todo */
     socket.on('chat:ended', function (data) {
-        console.log('chat:ended', data);
-        // Удаляем чат из списка чатов онлайн
-        delete $scope.chats[data.chat.uid];
+        console.log('Socket chat:ended');
     });
 }
 
@@ -376,75 +333,67 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
  * @url "/agent/chat/:uid"
  * @todo REFACTORING!!!
  */
-function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, Agents, Chats, ChatsMessages) {
+function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound) {
     // Получаем агента из cookie
     $scope.person = security($cookieStore);
     var widget_uid = $scope.person.agent.widget.uid;
 
     //$scope.agent = $scope.person.agent;
     $scope.text = '';
-    $scope.chat = {};
+    $scope.chat = { uid: $routeParams.uid };
     $scope.chat.messages = [];
 
-    // Подключаем аудио файл для звукового оповещания
-    var sound = getSound();
+    // Подключаем агента к чату
+    socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $routeParams.uid, widget_uid: widget_uid });
 
-    // Получаем существующий чат
-    $scope.chat = Chats.one({uid: $routeParams.uid}, function(data) {
-        // Подключаем агента к чату
-        Agents.connectToChat({uid: $scope.person.agent.uid, chat: $routeParams.uid})
-        socket.emit('chat:agent:enter', { chat: $routeParams.uid, agent: $scope.person });
-        console.log($scope.chat);
-    });
+    // Агент подключен к чату
+    socket.on('chat:agent:entered', function (data) {
+        console.log('Socket chat:agent:entered');
 
-    /** агент меняет страницу */
-    $scope.$on('$locationChangeStart', function(event) {
-        console.log('$locationChangeStart', $scope.visitor);
-        socket.emit('agent:chat:exited', {
-            chat: $scope.chat.uid,
-            agent: $scope.person.agent.uid
-        });
+        // Отсеиваем чужие оповещения
+        if (data.person.uid == $scope.person.uid) {
+            $scope.chat = data.chat;
+        }
     });
 
     // Пользователь написал сообщение
-    socket.on('chat:user:message:send', function (data) {
+    socket.on('chat:message:send:user', function (data) {
+        console.log('Socket chat:message:send:user');
+
         // Отсеиваем чужие оповещения
-        if (data.chat == $scope.chat.uid) {
+        if (data.chat_uid == $scope.chat.uid) {
             // Проигрываем звуковое уводомление
             sound.play();
 
             // Добавляем сообщение в список сообщений
             $scope.chat.messages.push({
                 date: data.date,
-                sender: data.sender,
+                person: data.person,
                 text: data.text
             });
         }
     });
 
     $scope.sendMessage = function () {
+        // Блокируем отправку пустых сообщений
         if ($scope.text.length == 0) {
-            flash.error = 'Empty message!';
             return false;
         };
 
-        var text = $scope.text;
-        var message_data = {
+        // Оповещаем об отпраке сообщения
+        socket.emit('chat:message:send:agent', {
+            widget_uid: widget_uid,
+            chat_uid: $scope.chat.uid,
+            person: $scope.person,
             date: new Date(),
-            sender: $scope.person.agent,
-            text: text
-        };
+            text: $scope.text
+        });
 
-        var message_data_emit = message_data;
-        message_data_emit.widget = widget_uid;
-        message_data_emit.chat = $scope.chat.uid;
-
-        // Сохраняем сообщение в БД
-        ChatsMessages.create({}, { sender: $scope.person.agent.uid, text: text, chat: $scope.chat.uid }, function(data) {
-            // Оповещаем об отпраке сообщения
-            socket.emit('chat:agent:message:send', message_data_emit);
-
-            $scope.chat.messages.push(message_data);
+        // Добавляем сообщение в список сообщений
+        $scope.chat.messages.push({
+            person: $scope.person,
+            date: new Date(),
+            text: $scope.text
         });
 
         // clear message box

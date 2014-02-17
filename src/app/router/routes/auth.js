@@ -82,7 +82,7 @@ exports.login = function (req, res) {
                 data: {
                     email: req.body.email,
                     password: req.body.password,
-                    remember: req.body.remember
+                    remember: true
                 },
                 onSuccess: function (body) {
                     callback(null, body);
@@ -150,7 +150,7 @@ exports.logout = function (req, res) {
         }
 
     ], function (err) {
-        res.authorizer.logout(res)
+        res.authorizer.logout(res);
         res.send(true);
     });
 };

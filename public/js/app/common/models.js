@@ -36,7 +36,8 @@
                 plan: { method: 'PUT', params: { uid: "@uid", plan: "@plan" }, url: $rootScope.config.apiUrl + 'widgets/:uid/plans/:plan' },
                 users: { method: 'GET', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/users', isArray:true },
                 agents: { method: 'GET', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/agents', isArray:true },
-                saveAgent: { method: 'PUT', params: { uid: "@uid", agent: "@agent" }, url: $rootScope.config.apiUrl + 'widgets/:uid/agents/:agent' }
+                saveAgent: { method: 'PUT', params: { uid: "@uid", agent: "@agent" }, url: $rootScope.config.apiUrl + 'widgets/:uid/agents/:agent' },
+                saveSettings: { method: 'PUT', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/settings' }
             });
         })
         .factory('Chats', function($rootScope, $resource) {

@@ -43,8 +43,6 @@
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
         $rootScope.lang = lang;
         $translate.uses(lang);
-
-        socket.emit('user:connected', $cookieStore.get('user') );
     });
 
 })(angular);

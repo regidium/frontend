@@ -1,6 +1,6 @@
 <div class="col-md-12">
     <h3>List of all chats</h3>
-    <p ng-repeat="(key, chat) in chats">
-        <a ng-href="/agent/chat/{{chat.chat.uid}}">{{chat.user.fullname}}: {{chat.user.ip}} {{chat.user.uid}}</a>
+    <p ng-repeat="chat in chats">
+        <a ng-href="/agent/chat/{{chat.chat.uid}}">{{chat.chat.uid}} - {{chat.person.fullname}}: {{chat.person.os}} {{chat.person.browser}}</a>
     </p>
 </div>

@@ -2,7 +2,7 @@
     <h3 translate>Messages</h3>
     <div class="well message-spot overflowable" auto-scroll>
         <p ng-repeat='message in chat.messages;'>
-            <span ng-class="{red: message.sender.agent, green: message.sender.user}">{{message.sender.fullname}}: {{message.text}}</span>
+            <span ng-class="{red: message.person.agent_uid, green: message.person.user_uid}">{{message.date | date:'shortTime' }}: {{message.person.fullname}}: {{message.text}}</span>
         </p>
     </div>
     <form ng-submit="sendMessage()" class="form-horizontal" role="form">
@@ -10,7 +10,7 @@
             <input ng-model="text" class="form-control" placeholder="Enter message" />
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-success" translate>Send</button>
+            <button type="submit" class="btn btn-success" ng-disabled="!chat" translate>Send</button>
         </div>
     </form>
 </div>

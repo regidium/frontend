@@ -40,8 +40,10 @@
         flashProvider.successClassnames.push('alert-success');
     }]).run(function($http, $rootScope, $translate) {
         $http.defaults.headers.common.xhr = true;
-        /** @todo форматировать языки (ru_RU в ru) */
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
+        if (lang.length > 2) {
+            lang = lang.substring(0, 2);
+        }
         $rootScope.lang = lang;
         $translate.uses(lang);
     });

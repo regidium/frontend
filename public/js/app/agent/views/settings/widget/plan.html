@@ -9,12 +9,28 @@
             <form ng-submit='submit()' name="plan_form" class="form-horizontal" role="form">
                 <fieldset>
                     <div class="form-group col-sm-10">
-                        <div class="radio" ng-repeat="plan in plans">
+                        <div class="radio">
                             <label>
-                                <input ng-model="widget.plan" type="radio" value="{{plan.uid}}" />
-                                {{plan.name}} <b>{{plan.cost}}$</b>
+                                <input ng-model="widget.plan" type="radio" value="1" />
+                                Base <b>0$</b>
                                 <br/>
-                                <span ng-if="plan.count_agents">{{plan.count_agents}}</span><span ng-if="!plan.count_agents">&infin;</span> <span translate>agents and </span> <span ng-if="plan.count_chats">{{plan.count_chats}}</span><span ng-if="!plan.count_chats">&infin; <span translate>chats</span>
+                                <span>2</span><span translate>agents and </span>10<span translate>chats</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="widget.plan" type="radio" value="2" />
+                                Expanded <b>10$</b>
+                                <br/>
+                                <span>20</span><span translate>agents and </span>100<span translate>chats</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="widget.plan" type="radio" value="3" />
+                                Unlimited <b>100$</b>
+                                <br/>
+                                <span>∞</span><span translate>agents and </span>∞<span translate>chats</span>
                             </label>
                         </div>
                     </div>

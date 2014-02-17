@@ -52,7 +52,8 @@
         $rootScope.lang = lang;
         $translate.uses(lang);
 
-        socket.emit('agent:connected', { agent: $cookieStore.get('person') });
+        var person = $cookieStore.get('person');
+        socket.emit('agent:connect', { person: person, widget_uid: person.agent.widget.uid });
     });
 
 })(angular);

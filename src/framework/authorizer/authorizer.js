@@ -9,7 +9,7 @@ var self = module.exports = function () { };
 self.login = function (res, object, remember) {
     if (object) {
         var object_id = object.uid;
-        res.cookie(config.authorizer.key, self.generateToken(object_id, remember), {
+        res.cookie(config.authorizer.key, self.generateToken(object_id, true), {
             expires: new Date(self.calcLifetime(remember)),
             path:    '/'
         });
@@ -121,13 +121,6 @@ self.decode = function (encoded) {
 
 self.flush_auth = function(res, object) {
     if (object.person) {
-        /** @todo Хранить только нужное */
-        delete(object.person.auths);
-        delete(object.person.agent.chats);
-        var widget = object.person.agent.widget.uid;
-        delete(object.person.agent.widget);
-        object.person.agent.widget = {};
-        object.person.agent.widget.uid = widget;
         var data = JSON.stringify(object.person, function(key, val) {
             if (key == 'fullname') {
                 return encodeURIComponent(val);
@@ -136,7 +129,7 @@ self.flush_auth = function(res, object) {
             }
         });
         var a = res.cookie('person', data, {
-            expires: new Date(self.calcLifetime()),
+            expires: new Date(self.calcLifetime(true)),
             path: '/'
         });
     }

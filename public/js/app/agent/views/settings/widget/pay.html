@@ -11,7 +11,9 @@
                     <div class="form-group col-sm-10">
                         <div class="radio" ng-repeat="payment_method in payment_methods">
                             <label>
-                                <input ng-model="pay.payment_method" type="radio" value="{{payment_method.uid}}" /> {{payment_method.name}}
+                                <input ng-model="pay.payment_method" type="radio" value="1" /> Electronic money
+                                <input ng-model="pay.payment_method" type="radio" value="2" /> Plastic card
+                                <input ng-model="pay.payment_method" type="radio" value="3" /> Cashless payments
                             </label>
                         </div>
                     </div>
