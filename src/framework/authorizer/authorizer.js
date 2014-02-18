@@ -128,9 +128,13 @@ self.flush_auth = function(res, object) {
                 return val;
             }
         });
-        var a = res.cookie('person', data, {
-            expires: new Date(self.calcLifetime(true)),
-            path: '/'
-        });
+        try {
+            res.cookie('person', data, {
+                expires: new Date(self.calcLifetime(true)),
+                path: '/'
+            });
+        } catch(e) {
+            next();
+        }
     }
 }

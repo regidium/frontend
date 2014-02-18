@@ -288,7 +288,7 @@ function AgentStatisticsCtrl($scope, $cookieStore) {
 /**
  * @url "/agent/chats"
  */
-function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
+function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     // Получаем агента из cookie
     $scope.person = security($cookieStore);
     var widget_uid = $scope.person.agent.widget.uid;
@@ -327,6 +327,76 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket) {
     socket.on('chat:ended', function (data) {
         console.log('Socket chat:ended');
     });
+
+    $scope.selectChat = function(chat) {
+        //$scope.agent = $scope.person.agent;
+        $scope.text = '';
+        $scope.current_chat = chat;
+        //$scope.current_chat.messages = [];
+
+        // Подключаем агента к чату
+        socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $scope.current_chat.chat.uid, widget_uid: widget_uid });
+    }
+
+
+    // Агент подключен к чату
+    socket.on('chat:agent:entered', function (data) {
+        console.log('Socket chat:agent:entered');
+
+        // Отсеиваем чужие оповещения
+        if (data.person.uid == $scope.person.uid) {
+            $scope.current_chat.chat = data.chat;
+
+            if(!data.chat.messages) {
+                $scope.current_chat.chat.messages = [];
+            }
+        }
+    });
+
+    // Пользователь написал сообщение
+    socket.on('chat:message:send:user', function (data) {
+        console.log('Socket chat:message:send:user');
+
+        // Отсеиваем чужие оповещения
+        if (data.chat_uid == $scope.current_chat.chat.uid) {
+            // Проигрываем звуковое уводомление
+            sound.play();
+
+            // Добавляем сообщение в список сообщений
+            $scope.current_chat.chat.messages.push({
+                date: data.date,
+                person: data.person,
+                text: data.text
+            });
+        }
+    });
+
+
+    $scope.sendMessage = function () {
+        // Блокируем отправку пустых сообщений
+        if ($scope.text.length == 0) {
+            return false;
+        }
+
+        // Оповещаем об отпраке сообщения
+        socket.emit('chat:message:send:agent', {
+            widget_uid: widget_uid,
+            chat_uid: $scope.current_chat.chat.uid,
+            person: $scope.person,
+            date: new Date(),
+            text: $scope.text
+        });
+
+        // Добавляем сообщение в список сообщений
+        $scope.current_chat.chat.messages.push({
+            person: $scope.person,
+            date: new Date(),
+            text: $scope.text
+        });
+
+        // clear message box
+        $scope.text = '';
+    };
 }
 
 /**
@@ -345,62 +415,4 @@ function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound)
 
     // Подключаем агента к чату
     socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $routeParams.uid, widget_uid: widget_uid });
-
-    // Агент подключен к чату
-    socket.on('chat:agent:entered', function (data) {
-        console.log('Socket chat:agent:entered');
-
-        // Отсеиваем чужие оповещения
-        if (data.person.uid == $scope.person.uid) {
-            $scope.chat = data.chat;
-
-            if(!data.chat.messages) {
-                $scope.chat.messages = [];
-            }
-        }
-    });
-
-    // Пользователь написал сообщение
-    socket.on('chat:message:send:user', function (data) {
-        console.log('Socket chat:message:send:user');
-
-        // Отсеиваем чужие оповещения
-        if (data.chat_uid == $scope.chat.uid) {
-            // Проигрываем звуковое уводомление
-            sound.play();
-
-            // Добавляем сообщение в список сообщений
-            $scope.chat.messages.push({
-                date: data.date,
-                person: data.person,
-                text: data.text
-            });
-        }
-    });
-
-    $scope.sendMessage = function () {
-        // Блокируем отправку пустых сообщений
-        if ($scope.text.length == 0) {
-            return false;
-        };
-
-        // Оповещаем об отпраке сообщения
-        socket.emit('chat:message:send:agent', {
-            widget_uid: widget_uid,
-            chat_uid: $scope.chat.uid,
-            person: $scope.person,
-            date: new Date(),
-            text: $scope.text
-        });
-
-        // Добавляем сообщение в список сообщений
-        $scope.chat.messages.push({
-            person: $scope.person,
-            date: new Date(),
-            text: $scope.text
-        });
-
-        // clear message box
-        $scope.text = '';
-    };
 }

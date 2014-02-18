@@ -1,6 +1,32 @@
 <div class="col-md-12">
     <h3>List of all chats</h3>
-    <p ng-repeat="chat in chats">
-        <a ng-href="/agent/chat/{{chat.chat.uid}}">{{chat.chat.uid}} - {{chat.person.fullname}}: {{chat.person.os}} {{chat.person.browser}}</a>
+    <p>
+        <span ng-repeat="chat in chats">
+            <a href="" ng-click="selectChat(chat)">
+                <img class="img-circle" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+" style="width: 140px; height: 140px;" />
+            </a>
+        </span>
     </p>
+    <div ng-show="current_chat">
+        <div class="col-md-9">
+            <div class="well message-spot overflowable" auto-scroll>
+                <p ng-repeat='message in current_chat.chat.messages;'>
+                    <span ng-class="{red: message.person.agent_uid, green: message.person.user_uid}">{{message.date | date:'shortTime' }}: {{message.person.fullname}}: {{message.text}}</span>
+                </p>
+            </div>
+            <form ng-submit="sendMessage()" class="form-horizontal" role="form">
+                <div class="col-md-10">
+                    <input ng-model="text" class="form-control" placeholder="Enter message" />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success" ng-disabled="!current_chat" translate>Send</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3">
+            <p>{{current_chat.person.uid}}: {{current_chat.person.fullname}}</p>
+            <p>{{current_chat.person.country}}, {{current_chat.person.city}}</p>
+            <p>{{current_chat.person.os}} {{current_chat.person.browser}}</p>
+        </div>
+    </div>
 </div>
