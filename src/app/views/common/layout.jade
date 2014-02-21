@@ -53,6 +53,14 @@ block html
                     block auto_popups
 
                     block base_script
+                        //- TODO
+                        //- if (env == 'production')
+                        //-     script(src='//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.load.min.js', type="text/javascript")
+                        //- else
+                        //-    script(src='/js/libs/headjs/head.load.min.js', type="text/javascript")
+
+                        //- script(src='/js/loader-#{env}.js', type="text/javascript")
+
                         - if (env == 'production')
                             script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js', type="text/javascript")
                             script(src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js', type="text/javascript")
