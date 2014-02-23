@@ -10,7 +10,7 @@ self.login = function (res, object, remember) {
     if (object) {
         var object_id = object.uid;
         res.cookie(config.authorizer.key, self.generateToken(object_id, true), {
-            expires: new Date(self.calcLifetime(remember)),
+            //expires: new Date(self.calcLifetime(remember)),
             path:    '/'
         });
         self.flush_auth(res, object);
@@ -130,7 +130,7 @@ self.flush_auth = function(res, object) {
         });
         try {
             res.cookie('person', data, {
-                expires: new Date(self.calcLifetime(true)),
+                //expires: new Date(self.calcLifetime(true)),
                 path: '/'
             });
         } catch(e) {

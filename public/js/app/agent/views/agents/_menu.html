@@ -1,10 +1,10 @@
 <div class="col-md-3">
     <div class="sidebar hidden-print affix-top" role="complementary">
         <ul class="nav sidenav">
-            <li ng-repeat="agent in agents | filter:search | orderBy:'uid'">
-                <a href="" ng-click="select(agent)" class="active">
-                    {{agent.person.fullname}}
-                    <img height="25px" ng-src="{{agent.person.avatar}}" />
+            <li ng-repeat="person in persons | filter:search | orderBy:'uid'">
+                <a href="" ng-click="select(person)" class="active">
+                    {{person.fullname}}
+                    <img height="25px" ng-src="{{person.avatar}}" />
                 </a>
             </li>
         </ul>

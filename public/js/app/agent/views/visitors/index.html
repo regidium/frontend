@@ -1,0 +1,16 @@
+<div class="col-md-12">
+    <h3>List of all visitors</h3>
+    <div class="col-md-9">
+        <div class="list-group">
+            <a ng-repeat="chat in chats" ng-click="selectChat(chat)" ng-class="{active: chat.chat.uid == current_chat.chat.uid}" href="" class="list-group-item">
+                {{chat.person.country}} | {{chat.person.fullname}} | {{chat.page}}
+            </a>
+        </div>
+    </div>
+    <div ng-show="current_chat.chat" class="col-md-3">
+        <p>{{current_chat.person.uid}}: {{current_chat.person.fullname}}</p>
+        <p>{{current_chat.person.country}}, {{current_chat.person.city}}</p>
+        <p><a ng-click="startChat(current_chat)" href="" class="btn btn-warning" translate>Start chat</a></p>
+        <p>{{current_chat.person.os}} {{current_chat.person.browser}}</p>
+    </div>
+</div>

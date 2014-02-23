@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <h3>List of archive chats</h3>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default" ng-repeat="chat in chats">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        {{chat.user.person.fullname}} <span translate>and</span> {{chat.agent.person.fullname}}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p ng-repeat="message in chat.messages">
+                        <p><span class="left">{{message.sender.fullname}}</span><span class="right">{{message.date | date:'shortTime'}}</span></p>
+                        <p>{{message.text}}</p>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

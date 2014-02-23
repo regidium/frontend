@@ -2,13 +2,16 @@
     <div class="sidebar hidden-print affix-top" role="complementary">
         <ul class="nav sidenav">
             <li>
-                <a href="/agent/settings/widget/style" class="active">Style</a>
+                <a href="/agent/settings/widget/style" ng-class="{active: current_menu == 'style'}">Style</a>
             </li>
             <li>
-                <a href="/agent/settings/widget/pay">Pay</a>
+                <a href="/agent/settings/widget/code" ng-class="{active: current_menu == 'code'}">Code</a>
             </li>
             <li>
-                <a href="/agent/settings/widget/plan">Plan</a>
+                <a href="/agent/settings/widget/pay" ng-class="{active: current_menu == 'pay'}">Pay</a>
+            </li>
+            <li>
+                <a href="/agent/settings/widget/plan" ng-class="{active: current_menu == 'plan'}">Plan</a>
             </li>
         </ul>
     </div>
