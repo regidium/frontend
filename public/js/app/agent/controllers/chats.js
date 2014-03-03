@@ -45,6 +45,10 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     socket.on('chat:disconnected', function (data) {
         console.log('Socket chat:disconnected', data);
 
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            delete $scope.current_chat.uid;
+        }
+
         // Удаляем чат из списка чатов онлайн
         delete $scope.chats[data.chat_uid];
     });
@@ -56,15 +60,13 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     });
 
     $scope.selectChat = function(chat) {
-        //$scope.agent = $scope.person.agent;
+        console.log(chat);
         $scope.text = '';
         $scope.current_chat = chat;
-        //$scope.current_chat.messages = [];
 
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $scope.current_chat.chat.uid, widget_uid: widget_uid });
     }
-
 
     // Агент подключен к чату
     socket.on('chat:agent:entered', function (data) {
@@ -72,7 +74,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
 
         // Отсеиваем чужие оповещения
         if (data.person.uid == $scope.person.uid) {
-            $scope.current_chat.chat = data.chat;
+            $scope.current_chat = data;
 
             if(!data.chat.messages) {
                 $scope.current_chat.chat.messages = [];
@@ -97,7 +99,6 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             });
         }
     });
-
 
     $scope.sendMessage = function () {
         // Блокируем отправку пустых сообщений

@@ -4,7 +4,6 @@ function security($cookieStore) {
     var user = $cookieStore.get('user');
     if (user) {
         user.fullname = decodeURIComponent(user.fullname);
-        user.model_type = 'user';
         return user;
     }
     //window.location = '/login';

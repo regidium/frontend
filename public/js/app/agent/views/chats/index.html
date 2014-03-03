@@ -11,7 +11,7 @@
         <div class="col-md-9">
             <div class="well message-spot overflowable" auto-scroll>
                 <p ng-repeat='message in current_chat.chat.messages;'>
-                    <span ng-class="{red: message.person.agent_uid, green: message.person.user_uid}">{{message.date | date:'shortTime' }}: {{message.person.fullname}}: {{message.text}}</span>
+                    <span ng-class="{red: message.person.agent, green: message.person.user}">{{message.date | date:'shortTime' }}: {{message.person.fullname}}: {{message.text}}</span>
                 </p>
             </div>
             <form ng-submit="sendMessage()" class="form-horizontal" role="form">

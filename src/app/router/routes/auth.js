@@ -4,7 +4,7 @@ module.exports.registration = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.model_type == 'person') {
+            if (req.person && req.person.uid) {
                 return res.redirect('/agent');
             }
             callback(null);
@@ -41,7 +41,7 @@ module.exports.registration = function (req, res) {
 
     ], function (err, data) {
         console.log(data);
-        if (data && data.model_type == 'person') {
+        if (data && data.uid) {
             res.authorizer.login(res, data, req.body.remember);
             if (req.headers['xhr']) {
                 res.send(data);
@@ -63,7 +63,7 @@ exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.model_type == 'person') {
+            if (req.person && req.person.uid) {
                 return res.redirect('/agent');
             }
             callback(null);
@@ -99,7 +99,7 @@ exports.login = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data && data.model_type == 'person') {
+        if (data && data.uid) {
             res.authorizer.login(res, data, req.body.remember);
             if (req.headers['xhr']) {
                 res.send(data);
@@ -128,7 +128,7 @@ exports.logout = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.model_type == 'person') {
+            if (req.person && req.person.uid) {
                 callback(null);
             } else {
                 return res.redirect('/');

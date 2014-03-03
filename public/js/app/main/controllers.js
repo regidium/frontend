@@ -45,7 +45,7 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 
         $http.post('/login', { email: email, password: password }).
             success(function(data, status, headers, config) {
-                if (data && data.model_type == 'person') {
+                if (data && data.uid) {
                     window.location = '/agent';
                 } else {
                     _.each(data.errors, function(val, key) {
@@ -89,7 +89,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
 
         $http.post('/registration', $scope.person).
             success(function(data, status, headers, config) {
-                if (data && data.model_type == 'person') {
+                if (data && data.uid) {
                     window.location = '/agent';
                 } else {
                     flash.error = 'Backend return error request!';
