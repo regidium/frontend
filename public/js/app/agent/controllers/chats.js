@@ -60,7 +60,6 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     });
 
     $scope.selectChat = function(chat) {
-        console.log(chat);
         $scope.text = '';
         $scope.current_chat = chat;
 
@@ -87,7 +86,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         console.log('Socket chat:message:send:user');
 
         // Отсеиваем чужие оповещения
-        if (data.chat_uid == $scope.current_chat.chat.uid) {
+        if ($scope.current_chat && $scope.current_chat.chat && data.chat_uid == $scope.current_chat.chat.uid) {
             // Проигрываем звуковое уводомление
             sound.play();
 
