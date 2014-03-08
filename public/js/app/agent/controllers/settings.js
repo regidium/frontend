@@ -40,7 +40,7 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
     $scope.submit = function() {
         Widgets.saveSettings({ uid: $scope.person.agent.widget.uid }, $scope.settings);
     }
-//    $scope.widget = Widgets.one({ uid: person.widget.uid });
+//    $scope.widget = Widgets.one({ uid: person.agent.widget..uid });
 
 /*    $scope.save = function() {
         Widgets.edit({ 'uid': $scope.widget.uid }, $scope.widget, function(data) {
@@ -73,7 +73,7 @@ function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
 
     $scope.submit = function() {
         alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
-        Widgets.pay({}, { uid: person.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
+        Widgets.pay({}, { uid: person.agent.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
             // @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
             $location.path('/agent/settings/widget');
         });
@@ -89,8 +89,57 @@ function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
     $scope.current_menu = 'plan';
 
     $scope.submit = function() {
-        Widgets.plan({}, { uid: person.widget.uid, plan: $scope.widget.plan }, function(data) {
+        Widgets.plan({}, { uid: person.agent.widget.uid, plan: $scope.widget.plan }, function(data) {
             $location.path('/agent/settings/widget');
+        });
+    }
+}
+
+/**
+ * @url "/agent/widget/plan"
+ */
+function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widgets) {
+    var person = security($cookieStore);
+    var widget_uid = person.agent.widget.uid;
+    //$scope.current_trigger = {};
+
+    Widgets.getTriggers({uid: widget_uid}, function(data) {
+        $scope.triggers = data;
+    });
+
+    $scope.events = {
+        1: {name: 'EVENT_WIDGET_CREATED', param: false },
+        2: {name: 'EVENT_WORD_SEND', param: true },
+        3: {name: 'EVENT_TIME_ONE_PAGE', param: true },
+        4: {name: 'EVENT_VISIT_PAGE', param: true },
+        5: {name: 'EVENT_VISIT_FROM_URL', param: true },
+        6: {name: 'EVENT_VISIT_FROM_KEY_WORD', param: true },
+        7: {name: 'EVENT_CHAT_OPENED', param: false },
+        8: {name: 'EVENT_CHAT_CLOSED', param: false },
+        9: {name: 'EVENT_MESSAGE_START', param: false },
+        10: {name: 'EVENT_MESSAGE_SEND', param: false }
+    };
+
+    $scope.results = {
+        1: {name: 'RESULT_MESSAGE_SEND', param: true },
+        2: {name: 'RESULT_OPERATORS_ALERT', param: false },
+        3: {name: 'RESULT_WIDGET_OPEN', param: false },
+        4: {name: 'RESULT_WIDGET_BELL', param: false }
+    };
+
+    $scope.new = function() {
+        $scope.current_trigger = {};
+    }
+
+    $scope.select = function(trigger) {
+        $scope.current_trigger = trigger;
+    }
+
+    $scope.submit = function(trigger) {
+        Widgets.saveTrigger({ uid: widget_uid, trigger_uid: trigger.uid }, $scope.current_trigger, function(data) {
+            if (!trigger.uid) {
+                $scope.triggers.push(data);
+            }
         });
     }
 }

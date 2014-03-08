@@ -1,0 +1,62 @@
+<div ng-include="'js/app/agent/views/settings/widget/_menu.html'"></div>
+
+<div class="col-md-9" role="main">
+    <div class="content">
+        <button ng-hide="current_trigger" type="button" class="btn btn-primary" ng-click="new()" translate>New</button>
+        <div ng-show="current_trigger">
+            <form ng-submit='submit(current_trigger)' name="triger_form" class="form-horizontal" role="form">
+                <fieldset>
+                    <input type="hidden" ng-model="current_trigger.uid" />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="Name" ng-model="current_trigger.name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Proirity</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" placeholder="Proirity" ng-model="current_trigger.priority" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Event</label>
+                        <div class="col-sm-9">
+                            <select ng-model="current_trigger.event" name="event">
+                                <option ng-repeat='(id, event) in events' value='{{id}}' ng-bind='event.name'></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Event params</label>
+                        <div class="col-sm-9">
+                            <input ng-disabled="current_trigger.event && !events[current_trigger.event].param" type="text" class="form-control" placeholder="Event params" ng-model="current_trigger.event_params" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Result</label>
+                        <div class="col-sm-9">
+                            <select ng-model="current_trigger.result" name="result">
+                                <option ng-repeat='(id, result) in results' value='{{id}}' ng-bind='result.name'></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" translate>Result params</label>
+                        <div class="col-sm-9">
+                            <input ng-disabled="current_trigger.result && !results[current_trigger.result].param" type="text" class="form-control" placeholder="Result params" ng-model="current_trigger.result_params" />
+                        </div>
+                    </div>
+                    <p>
+                        <button type="submit" ng-disabled="trigers_form.$invalid" class="btn btn-lg btn-primary btn-block">Save</button>
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+        <div class="list-group">
+            <a ng-repeat="trigger in triggers | orderBy:trigger.priority" ng-click="select(trigger)" href="" class="list-group-item">
+                {{trigger.name}}: {{events[trigger.event].name}} {{trigger.event_params}} -> {{results[trigger.result].name}} {{trigger.result_params}}
+            </a>
+        </div>
+    </div>
+</div>
