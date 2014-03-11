@@ -6,14 +6,14 @@ var _ = require('underscore'),
 
 var self = module.exports = function () { };
 
-self.login = function (res, object, remember) {
+self.login = function (res, object) {
     if (object) {
         var object_id = object.uid;
         res.cookie(config.authorizer.key, self.generateToken(object_id, true), {
             //expires: new Date(self.calcLifetime(remember)),
             path:    '/'
         });
-        self.flush_auth(res, object);
+        self.flush_auth(res, object, function() {});
     }
 };
 
@@ -30,7 +30,7 @@ self.check = function (req, res, next) {
     req.object_id = object_id;
     self.flush_object_data(req, function () {
         next();
-        self.flush_auth(res, req);
+        self.flush_auth(res, req, next);
     });
 };
 
@@ -119,7 +119,7 @@ self.decode = function (encoded) {
     return new Buffer(encoded || '', 'base64').toString('utf8');
 };
 
-self.flush_auth = function(res, object) {
+self.flush_auth = function(res, object, next) {
     if (object.person) {
         var data = JSON.stringify(object.person, function(key, val) {
             if (key == 'fullname') {

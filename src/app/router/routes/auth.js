@@ -42,7 +42,7 @@ module.exports.registration = function (req, res) {
     ], function (err, data) {
         console.log(data);
         if (data && data.uid) {
-            res.authorizer.login(res, data, req.body.remember);
+            res.authorizer.login(res, data);
             if (req.headers['xhr']) {
                 res.send(data);
             } else {
@@ -100,7 +100,7 @@ exports.login = function (req, res) {
 
     ], function (err, data) {
         if (data && data.uid) {
-            res.authorizer.login(res, data, req.body.remember);
+            res.authorizer.login(res, data);
             if (req.headers['xhr']) {
                 res.send(data);
             } else {
@@ -205,7 +205,7 @@ exports.external_service_connect = function (req, res) {
 
     ], function (err, data) {
         if (data.person) {
-            res.authorizer.login(res, data, true);
+            res.authorizer.login(res, data);
             res.redirect('/agent');
         } else {
             res.redirect('/');
