@@ -128,6 +128,7 @@ function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widget
     };
 
     $scope.new = function() {
+        console.log('new2');
         $scope.current_trigger = {
             uid: 'new'
         };
@@ -137,11 +138,23 @@ function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widget
         $scope.current_trigger = trigger;
     }
 
+    $scope.close = function(trigger) {
+        delete $scope.current_trigger;
+    }
+
     $scope.submit = function(trigger) {
         Widgets.saveTrigger({ uid: widget_uid, trigger_uid: trigger.uid }, $scope.current_trigger, function(data) {
             if (trigger.uid == 'new') {
                 $scope.triggers.push(data);
             }
+            delete $scope.current_trigger;
+        });
+    }
+
+    $scope.remove = function(trigger) {
+        Widgets.deleteTrigger({ uid: widget_uid, trigger_uid: trigger.uid }, {}, function(data) {
+            $scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
+            delete $scope.current_trigger;
         });
     }
 }

@@ -40,6 +40,7 @@
                 saveSettings: { method: 'PUT', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/settings' },
                 getTriggers: { method: 'GET', params: { uid: "@uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/triggers', isArray: true },
                 saveTrigger: { method: 'PUT', params: { uid: "@uid", trigger_uid: "@trigger_uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/triggers/:trigger_uid' },
+                deleteTrigger: { method: 'DELETE', params: { uid: "@uid", trigger_uid: "@trigger_uid" }, url: $rootScope.config.apiUrl + 'widgets/:uid/triggers/:trigger_uid' },
             });
         })
         .factory('Chats', function($rootScope, $resource) {
