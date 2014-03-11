@@ -3,6 +3,7 @@
 <div class="col-md-9" role="main">
     <div class="content">
         <button ng-hide="current_trigger" type="button" class="btn btn-primary" ng-click="new()" translate>New</button>
+        <button ng-show="current_trigger && current_trigger.uid != 'new'" type="button" class="btn btn-danger" ng-click="remove()" translate>Remove</button>
         <div ng-show="current_trigger">
             <form ng-submit='submit(current_trigger)' name="triger_form" class="form-horizontal" role="form">
                 <fieldset>
