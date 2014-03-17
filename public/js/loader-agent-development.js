@@ -8,6 +8,8 @@ head.load(
     "/js/libs/angular/angular-resource/angular-resource.min.js",
     "/js/libs/angular/angular-cookies/angular-cookies.min.js",
     "/js/libs/angular/angular-translate/angular-translate.min.js",
+    "/js/libs/angular/angular-ui-bootstrap/ui-bootstrap.min.js",
+    "/js/libs/angular/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
     "/js/libs/angular/angular-translate/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-local/angular-translate-storage-local.min.js",

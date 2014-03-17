@@ -24,14 +24,14 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users
 
     $scope.current_chat = {};
 
-    // Запрашиваем список чатов онлайн
-    socket.emit('chat:online', { widget_uid: widget_uid });
+    // Запрашиваем список чатов
+    socket.emit('chat:existed', { widget_uid: widget_uid });
 
-    // Получаем список чатов онлайн
-    socket.on('chat:online:list', function(data) {
-        console.log('Socket chat:online:list', data);
+    // Получаем список чатов
+    socket.on('chat:existed:list', function(data) {
+        console.log('Socket chat:existed:list', data);
 
-        // Наполняем список чатов онлайн
+        // Наполняем список чатов
         $scope.chats = data;
     });
 
@@ -47,7 +47,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users
     socket.on('chat:disconnected', function (data) {
         console.log('Socket chat:disconnected', data);
 
-        if ($scope.current_chat.chat.uid == data.chat_uid) {
+        if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.chat.uid == data.chat_uid) {
             $scope.current_chat = {};
         }
 

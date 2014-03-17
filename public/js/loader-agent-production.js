@@ -7,6 +7,8 @@ head.load(
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js",
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js",
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js",
     "/js/libs/angular/angular-translate/angular-translate.min.js",
     "/js/libs/angular/angular-translate/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
