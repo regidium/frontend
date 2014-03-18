@@ -29,15 +29,17 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users
 
     // Получаем список чатов
     socket.on('chat:existed:list', function(data) {
-        console.log('Socket chat:existed:list', data);
+        console.log('Socket chat:existed:list');
 
         // Наполняем список чатов
-        $scope.chats = data;
+        angular.forEach(data, function(chat) {
+            $scope.chats[chat.chat.uid] = chat;
+        });
     });
 
     // Чат подключен
     socket.on('chat:connected', function (data) {
-        console.log('Socket chat:connected', data);
+        console.log('Socket chat:connected');
 
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data;
@@ -51,8 +53,11 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users
             $scope.current_chat = {};
         }
 
-        // Удаляем чат из списка чатов онлайн
-        delete $scope.chats[data.chat_uid];
+        // Переносим чат из списка чатов онлайн в список покинувших сайт
+        console.log($scope.chats[data.chat_uid]);
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].chat.status = 3;
+        }
     });
 
     // Пользователь закрыл чат
