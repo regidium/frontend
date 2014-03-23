@@ -4,7 +4,7 @@
         <accordion close-others="true">
            <accordion-group is-open="isopen1">
                 <accordion-heading translate>
-                    На сайте
+                    На сайте (<span ng-bind="{{(chats|filter:chat.status==1).length}}"></span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen1, 'glyphicon-chevron-right': !isopen1}"></i>
                 </accordion-heading>
                 <div class="list-group">

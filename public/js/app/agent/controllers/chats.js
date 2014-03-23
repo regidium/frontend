@@ -64,7 +64,11 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         $scope.current_chat = chat;
 
         // Подключаем агента к чату
-        socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $scope.current_chat.chat.uid, widget_uid: widget_uid });
+        socket.emit('chat:agent:enter', {
+            person: $scope.person,
+            chat_uid: $scope.current_chat.chat.uid,
+            widget_uid: widget_uid
+        });
     }
 
     // Агент подключен к чату
@@ -90,6 +94,10 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             // Проигрываем звуковое уводомление
             sound.play();
 
+            if(!$scope.current_chat.chat.messages) {
+                $scope.current_chat.chat.messages = [];
+            }
+
             // Добавляем сообщение в список сообщений
             $scope.current_chat.chat.messages.push({
                 date: data.date,
@@ -114,6 +122,9 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             text: $scope.text
         });
 
+        if (!$scope.current_chat.chat.messages) {
+            $scope.current_chat.chat.messages = [];
+        }
         // Добавляем сообщение в список сообщений
         $scope.current_chat.chat.messages.push({
             person: $scope.person,
