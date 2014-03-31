@@ -1,11 +1,12 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        agent.last_name = decodeURIComponent(agent.last_name);
+        return agent;
     }
 
     window.location = '/login';
@@ -16,12 +17,12 @@ function security($cookieStore) {
  */
 function AgentAuthLogoutCtrl($scope, $http, $cookieStore, socket) {
     // Получаем пользователя из cookie
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
 
     // Нажатие кнопки Logout
     $scope.logout = function() {
         // Оповещаем об отключении агента
-        socket.emit('agent:disconnect', { person_uid: person.uid });
+        socket.emit('agent:disconnect', { agent_uid: agent.uid });
 
         // Запрос на отключение агента
         $http.get('/logout')

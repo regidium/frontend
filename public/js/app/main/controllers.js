@@ -29,7 +29,7 @@ function MainAuthExternalServiceDisconnectCtrl() {
 }
 
 function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
-    $scope.person = {
+    $scope.agent = {
         email: '',
         password: ''
     };
@@ -40,8 +40,8 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 
     /** todo Валилидация данных */
     $scope.login = function() {
-        var email = $scope.person.email;
-        var password = sha1.encode($scope.person.password);
+        var email = $scope.agent.email;
+        var password = sha1.encode($scope.agent.password);
 
         $http.post('/login', { email: email, password: password }).
             success(function(data, status, headers, config) {
@@ -68,8 +68,9 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, flash) {
     var ua = UAParser('');
 
-    $scope.person = {
-        fullname: '',
+    $scope.agent = {
+        first_name: '',
+        last_name: '',
         email: '',
         password: undefined,
         confirm_password: undefined,
@@ -85,9 +86,9 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
 
     /** todo Валилидация данных */
     $scope.registration = function() {
-        $scope.person.password = sha1.encode($scope.person.password);
+        $scope.agent.password = sha1.encode($scope.agent.password);
 
-        $http.post('/registration', $scope.person).
+        $http.post('/registration', $scope.agent).
             success(function(data, status, headers, config) {
                 if (data && data.uid) {
                     window.location = '/agent';

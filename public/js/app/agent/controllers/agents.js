@@ -1,11 +1,12 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name= decodeURIComponent(agent.first_name);
+        agent.last_name= decodeURIComponent(agent.last_name);
+        return agent;
     }
 
     window.location = '/login';
@@ -17,32 +18,31 @@ function security($cookieStore) {
  * @url "/agent/agents"
  */
 function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
 
     // Блокировка формы редактирования
     $scope.disabled = true;
     // Список агентов
-    $scope.persons = [];
+    $scope.agents = [];
     // Выбранный агент
-    $scope.current_person = {};
+    $scope.current_agent = {};
 
     // Получаем список агентов
-    $scope.persons = Widgets.agents({ uid: person.agent.widget.uid }, function(data) {
+    $scope.agents = Widgets.agents({ uid: agent.widget.uid }, function(data) {
         // Делам текущим первого из списка
-        $scope.current_person = $scope.persons[0];
-        console.log($scope.current_person);
+        $scope.current_agent = $scope.agents[0];
+        console.log($scope.current_agent);
     });
 
     // Выбираем агента
-    $scope.select = function(person) {
+    $scope.select = function(agent) {
         $scope.disabled = true;
-        $scope.current_person = person;
+        $scope.current_agent = agent;
     };
 
     // Создаем нового агента
     $scope.create = function() {
-        $scope.current_person = {};
-        $scope.current_person.agent = {};
+        $scope.current_agent = {};
         $scope.disabled = false;
     };
 
@@ -54,26 +54,27 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     // Сохраняем агента
     $scope.save = function() {
         // Получаем UID агента
-        var person_uid = $scope.current_person.uid;
+        var agent_uid = $scope.current_agent.uid;
         var password = '';
-        if (!$scope.current_person.uid) {
+        if (!$scope.current_agent.uid) {
             // Если агент новый,то UID = new
-            person_uid = 'new';
-            password = sha1.encode($scope.current_person.password);
+            agent_uid = 'new';
+            password = sha1.encode($scope.current_agent.password);
         }
 
         var data = {
-            fullname: $scope.current_person.fullname,
-            job_title: $scope.current_person.agent.job_title,
-            avatar: $scope.current_person.avatar,
-            email: $scope.current_person.email,
+            first_name: $scope.current_agent.first_name,
+            last_name: $scope.current_agent.last_name,
+            job_title: $scope.current_agent.job_title,
+            avatar: $scope.current_agent.avatar,
+            email: $scope.current_agent.email,
             password: password,
-            type: $scope.current_person.agent.type,
-            status: $scope.current_person.agent.status,
-            accept_chats: $scope.current_person.agent.accept_chats
+            type: $scope.current_agent.type,
+            status: $scope.current_agent.status,
+            accept_chats: $scope.current_agent.accept_chats
         }
 
-        Widgets.saveAgent({ uid: person.agent.widget.uid, agent: person_uid }, data, function(returned) {
+        Widgets.saveAgent({ uid: agent.widget.uid, agent: agent_uid }, data, function(returned) {
             /** @todo Обработка ошибок */
             if (returned && returned.errors) {
                 console.log(returned.errors);
@@ -82,8 +83,8 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
                 })
             } else {
                 // Если создавали пользователя, то добавляем его в список
-                if (person_uid == 'new') {
-                    $scope.persons.push(returned);
+                if (agent_uid == 'new') {
+                    $scope.agents.push(returned);
                 }
 
                 $scope.disabled = true;
@@ -97,13 +98,13 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     };
 
     // Удаляем агента
-    $scope.remove = function(person) {
-        if (person.type != 1) {
+    $scope.remove = function(agent) {
+        if (agent.type != 1) {
             if (confirm('Are you sure you want to remove this agent?')) {
-                Agents.remove({ 'uid': person.uid }, person.uid, function() {
+                Agents.remove({ 'uid': agent.uid }, agent.uid, function() {
                     /** @todo Обработка ошибок */
                     flash.success = 'Agent success removed';
-                    $scope.persons.splice($scope.persons.indexOf(person), 1);
+                    $scope.agents.splice($scope.agents.indexOf(agent), 1);
                 });
             }
         } else {

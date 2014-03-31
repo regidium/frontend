@@ -1,11 +1,13 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        agent.last_name = decodeURIComponent(agent.last_name);
+
+        return agent;
     }
 
     window.location = '/login';
@@ -16,12 +18,12 @@ function security($cookieStore) {
  */
 function AgentAuthLogoutCtrl($scope, $http, $cookieStore, socket) {
     // Получаем пользователя из cookie
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
 
     // Нажатие кнопки Logout
     $scope.logout = function() {
         // Оповещаем об отключении агента
-        socket.emit('agent:disconnect', { person_uid: person.uid });
+        socket.emit('agent:disconnect', { agent_uid: agent.uid });
 
         // Запрос на отключение агента
         $http.get('/logout')
@@ -47,14 +49,14 @@ function AgentCtrl($scope, $cookieStore) {
  * @url "/agent/visitors"
  */
 function AgentVisitorsCtrl($scope, $cookieStore, socket, flash, Users, Widgets) {
-    var person = security($cookieStore);
-    var widget_uid =  person.agent.widget.uid;
+    var agent = security($cookieStore);
+    var widget_uid =  agent.widget.uid;
 
     $scope.users = [];
 
     // Получаем список пользователей по виджету
-    if (person.agent.widget) {
-        $scope.users = Widgets.users({ uid: person.agent.widget.uid });
+    if (agent.widget) {
+        $scope.users = Widgets.users({ uid: agent.widget.uid });
     }
 
     // Удаляем пользователя
@@ -79,7 +81,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, socket, flash, Users, Widgets) 
     socket.on('chat:created', function (data) {
         console.log('chat:created', data);
         // Добавляем пользователя в список пользователей онлайн
-        $scope.users[data.person.uid] = data.person;
+        $scope.users[data.agent.uid] = data.agent;
     });
 
     // Пользователь обновил страницу
@@ -103,31 +105,30 @@ function AgentVisitorsCtrl($scope, $cookieStore, socket, flash, Users, Widgets) 
  * @url "/agent/agents"
  */
 function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
 
     // Блокировка формы редактирования
     $scope.disabled = true;
     // Список агентов
-    $scope.persons = [];
+    $scope.agents = [];
     // Выбранный агент
-    $scope.person = {};
+    $scope.agent = {};
 
     // Получаем список агентов
-    $scope.persons = Widgets.agents({ uid: person.agent.widget.uid }, function(data) {
+    $scope.agents = Widgets.agents({ uid: agent.widget.uid }, function(data) {
         // Делам текущим первого из списка
-        $scope.person = $scope.persons[0];
+        $scope.agent = $scope.agents[0];
     });
 
     // Выбираем агента
-    $scope.select = function(person) {
+    $scope.select = function(agent) {
         $scope.disabled = true;
-        $scope.person = person;
+        $scope.agent = agent;
     };
 
     // Создаем нового агента
     $scope.create = function() {
-        $scope.person = {};
-        $scope.person.agent = {};
+        $scope.agent = {};
         $scope.disabled = false;
     };
 
@@ -139,36 +140,34 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     // Сохраняем агента
     $scope.save = function() {
         // Получаем UID агента
-        var person_uid = $scope.person.uid;
+        var agent_uid = $scope.agent.uid;
         var password = '';
-        if (!$scope.person.uid) {
+        if (!$scope.agent.uid) {
             // Если агент новый,то UID = new
-            person_uid = 'new';
-            password = sha1.encode($scope.person.password);
+            agent_uid = 'new';
+            password = sha1.encode($scope.agent.password);
         }
 
         var data = {
-            fullname: $scope.person.fullname,
-            job_title: $scope.person.agent.job_title,
-            avatar: $scope.person.avatar,
-            email: $scope.person.email,
+            first_name: $scope.agent.first_name,
+            last_name: $scope.agent.last_name,
+            job_title: $scope.agent.job_title,
+            avatar: $scope.agent.avatar,
+            email: $scope.agent.email,
             password: password,
-            type: $scope.person.agent.type,
-            status: $scope.person.agent.status,
-            accept_chats: $scope.person.agent.accept_chats
+            type: $scope.agent.type,
+            status: $scope.agent.status,
+            accept_chats: $scope.agent.accept_chats
         }
 
-        Widgets.saveAgent({ uid: person.agent.widget.uid, agent: person_uid }, data, function(returned) {
+        Widgets.saveAgent({ uid: agent.widget.uid, agent: agent_uid }, data, function(returned) {
             /** @todo Обработка ошибок */
             if (returned && returned.errors) {
                 console.log(returned.errors);
             } else {
                 // Если создавали пользователя, то добавляем его в список
-                if (person_uid == 'new') {
-                    var person = {};
-                    person = returned.person;
-                    person.person = returned;
-                    $scope.persons.push(person);
+                if (agent_uid == 'new') {
+                    $scope.agents.push(returned);
                 }
 
                 $scope.disabled = true;
@@ -182,13 +181,13 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     };
 
     // Удаляем агента
-    $scope.remove = function(person) {
-        if (person.type != 1) {
+    $scope.remove = function(agent) {
+        if (agent.type != 1) {
             if (confirm('Are you sure you want to remove this agent?')) {
-                Agents.remove({ 'uid': person.uid }, person.uid, function() {
+                Agents.remove({ 'uid': agent.uid }, agent.uid, function() {
                     /** @todo Обработка ошибок */
                     flash.success = 'Agent success removed';
-                    $scope.persons.splice($scope.persons.indexOf(person), 1);
+                    $scope.agents.splice($scope.agents.indexOf(agent), 1);
                 });
             }
         } else {
@@ -215,17 +214,17 @@ function AgentSettingsWidgetCtrl($scope, $cookieStore) {
  * @url "/agent/widget/style"
  */
 function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
-    $scope.person = security($cookieStore);
+    $scope.agent = security($cookieStore);
     $scope.settings = {};
 
-    Widgets.one({ uid: $scope.person.agent.widget.uid }, function(data) {
+    Widgets.one({ uid: $scope.agent.widget.uid }, function(data) {
         $scope.settings = data.settings;
     });
 
     $scope.submit = function() {
-        Widgets.saveSettings({ uid: $scope.person.agent.widget.uid }, $scope.settings);
+        Widgets.saveSettings({ uid: $scope.agent.widget.uid }, $scope.settings);
     }
-//    $scope.widget = Widgets.one({ uid: person.widget.uid });
+//    $scope.widget = Widgets.one({ uid: agent.widget.uid });
 
 /*    $scope.save = function() {
         Widgets.edit({ 'uid': $scope.widget.uid }, $scope.widget, function(data) {
@@ -243,12 +242,12 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
  * @url "/agent/widget/pay"
  */
 function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
     $scope.pay = {};
 
     $scope.submit = function() {
         alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
-        Widgets.pay({}, { uid: person.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
+        Widgets.pay({}, { uid: agent.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
             // @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
             $location.path('/agent/settings/widget');
         });
@@ -259,11 +258,11 @@ function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
  * @url "/agent/widget/plan"
  */
 function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
     $scope.widget = {};
 
     $scope.submit = function() {
-        Widgets.plan({}, { uid: person.widget.uid, plan: $scope.widget.plan }, function(data) {
+        Widgets.plan({}, { uid: agent.widget.uid, plan: $scope.widget.plan }, function(data) {
             $location.path('/agent/settings/widget');
         });
     }
@@ -290,8 +289,8 @@ function AgentStatisticsCtrl($scope, $cookieStore) {
  */
 function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     // Получаем агента из cookie
-    $scope.person = security($cookieStore);
-    var widget_uid = $scope.person.agent.widget.uid;
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
 
     $scope.chats = {};
 
@@ -329,13 +328,13 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     });
 
     $scope.selectChat = function(chat) {
-        //$scope.agent = $scope.person.agent;
+        //$scope.agent = $scope.agent;
         $scope.text = '';
         $scope.current_chat = chat;
         //$scope.current_chat.messages = [];
 
         // Подключаем агента к чату
-        socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $scope.current_chat.chat.uid, widget_uid: widget_uid });
+        socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: $scope.current_chat.chat.uid, widget_uid: widget_uid });
     }
 
 
@@ -344,7 +343,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         console.log('Socket chat:agent:entered');
 
         // Отсеиваем чужие оповещения
-        if (data.person.uid == $scope.person.uid) {
+        if (data.agent.uid == $scope.agent.uid) {
             $scope.current_chat.chat = data.chat;
 
             if(!data.chat.messages) {
@@ -365,7 +364,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             // Добавляем сообщение в список сообщений
             $scope.current_chat.chat.messages.push({
                 date: data.date,
-                person: data.person,
+                agent: data.agent,
                 text: data.text
             });
         }
@@ -382,14 +381,14 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         socket.emit('chat:message:send:agent', {
             widget_uid: widget_uid,
             chat_uid: $scope.current_chat.chat.uid,
-            person: $scope.person,
+            agent: $scope.agent,
             date: new Date(),
             text: $scope.text
         });
 
         // Добавляем сообщение в список сообщений
         $scope.current_chat.chat.messages.push({
-            person: $scope.person,
+            agent: $scope.agent,
             date: new Date(),
             text: $scope.text
         });
@@ -405,14 +404,14 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
  */
 function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound) {
     // Получаем агента из cookie
-    $scope.person = security($cookieStore);
-    var widget_uid = $scope.person.agent.widget.uid;
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
 
-    //$scope.agent = $scope.person.agent;
+    //$scope.agent = $scope.agent;
     $scope.text = '';
     $scope.chat = { uid: $routeParams.uid };
     $scope.chat.messages = [];
 
     // Подключаем агента к чату
-    socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $routeParams.uid, widget_uid: widget_uid });
+    socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: $routeParams.uid, widget_uid: widget_uid });
 }

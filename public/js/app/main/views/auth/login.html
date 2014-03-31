@@ -9,11 +9,11 @@
                 <div class="modal-body">
                     <p>
                         <form role="form" ng-submit='login()' name="login_form">
-                            <input ng-model="person.email" ng-required="true" name="login_form.email" type="email" placeholder="Email address" required="required" autofocus="autofocus" class="form-control" />
+                            <input ng-model="agent.email" ng-required="true" name="login_form.email" type="email" placeholder="Email address" required="required" autofocus="autofocus" class="form-control" />
                             <span class="has-error">
                                 <span ng-show="login_form.$error.email" class="help-block">Should be valid email address!</span>
                             </span>
-                            <input ng-model="person.password" ng-required="true" name="login_form.password" type="password" placeholder="Password" required="required" class="form-control" />
+                            <input ng-model="agent.password" ng-required="true" name="login_form.password" type="password" placeholder="Password" required="required" class="form-control" />
 <!--                            <label class="checkbox">
                                 <input type="checkbox" value="remember" /> Remember me
                             </label>-->

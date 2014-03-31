@@ -1,58 +1,58 @@
 <form class="form-horizontal" role="form" name="form">
     <fieldset ng-disabled="disabled">
-        <div class="form-group" ng-show="current_person.avatar">
-            <img class="avatar img-thumbnail" ng-src="{{current_person.avatar}}" />
+        <div class="form-group" ng-show="current_agent.avatar">
+            <img class="avatar img-thumbnail" ng-src="{{current_agent.avatar}}" />
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Name</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" placeholder="Name" ng-model="current_person.fullname" />
+                <input type="text" class="form-control" placeholder="Name" ng-model="current_agent.fullname" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Job title</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" placeholder="Job title" ng-model="current_person.agent.job_title" />
+                <input type="text" class="form-control" placeholder="Job title" ng-model="current_agent.job_title" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Avatar (пока без загрузки)</label>
             <div class="col-sm-9">
-                <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-model="current_person.avatar" />
+                <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-model="current_agent.avatar" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Email</label>
             <div class="col-sm-9">
-                <input type="email" name="form.email" class="form-control" placeholder="Email" ng-model="current_person.email" ng-required="true" />
+                <input type="email" name="form.email" class="form-control" placeholder="Email" ng-model="current_agent.email" ng-required="true" />
             </div>
             <span class="has-error pull-right">
                 <span ng-show="form.$error.email" class="help-block" translate>Should be valid email address!</span>
             </span>
         </div>
-        <div class="form-group" ng-hide="current_person.uid">
+        <div class="form-group" ng-hide="current_agent.uid">
             <label class="col-sm-3 control-label" translate>Password</label>
             <div class="col-sm-9">
-                <input type="password" name="form.password" class="form-control" placeholder="Password" ng-model="current_person.password" />
+                <input type="password" name="form.password" class="form-control" placeholder="Password" ng-model="current_agent.password" />
             </div>
         </div>
-        <div class="form-group" ng-hide="current_person.uid" ng-cloak="ng-cloak">
+        <div class="form-group" ng-hide="current_agent.uid" ng-cloak="ng-cloak">
             <label class="col-sm-3 control-label" translate>Confirm password</label>
             <div class="col-sm-9">
-                <input type="password" name="form.confirm_password" placeholder="Confirm password" class="form-control" ng-model="current_person.confirm_password" ui-equal-to="current_person.password" />
+                <input type="password" name="form.confirm_password" placeholder="Confirm password" class="form-control" ng-model="current_agent.confirm_password" ui-equal-to="current_agent.password" />
             </div>
             <span class="has-error pull-right">
                 <span ng-show="form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
             </span>
         </div>
-        <div class="form-group" ng-show="current_person.agent.type != 1">
+        <div class="form-group" ng-show="current_agent.type != 1">
             <label class="col-sm-3 control-label" translate>Type</label>
             <div class="col-sm-9">
                 <label>
-                    <input type="radio" ng-model="current_person.agent.type" value="2" translate /> Administrator
+                    <input type="radio" ng-model="current_agent.type" value="2" translate /> Administrator
                 </label>
                 <label>
-                    <input type="radio" ng-model="current_person.agent.type" value="3" translate /> Operator
+                    <input type="radio" ng-model="current_agent.type" value="3" translate /> Operator
                 </label>
             </div>
         </div>
@@ -60,13 +60,13 @@
             <label class="col-sm-3 control-label" translate>Status</label>
             <div class="col-sm-9">
                 <label>
-                    <input type="radio" ng-model="current_person.agent.status" value="1" translate /> Enabled
+                    <input type="radio" ng-model="current_agent.status" value="1" translate /> Enabled
                 </label>
                 <label>
-                    <input type="radio" ng-model="current_person.agent.status" value="2" translate /> Blocked
+                    <input type="radio" ng-model="current_agent.status" value="2" translate /> Blocked
                 </label>
                 <label>
-                    <input type="radio" ng-model="current_person.agent.status" value="3" translate /> Deleted
+                    <input type="radio" ng-model="current_agent.status" value="3" translate /> Deleted
                 </label>
             </div>
         </div>
@@ -74,10 +74,10 @@
             <label class="col-sm-3 control-label" translate>Accept chats</label>
             <div class="col-sm-9">
                 <label>
-                    <input type="radio" ng-model="current_person.agent.accept_chats" ng-value="true" translate /> Yes
+                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="true" translate /> Yes
                 </label>
                 <label>
-                    <input type="radio" ng-model="current_person.agent.accept_chats" ng-value="false" translate /> No
+                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="false" translate /> No
                 </label>
             </div>
         </div>
@@ -88,8 +88,8 @@
                         <button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid" translate>Save</button>
                         <button type="button" class="btn btn-default" ng-click="cancel()" translate>Cancel</button>
                     </div>
-                    <div class="form-group pull-right" ng-show="current_person.agent.type != 1">
-                        <button type="button" class="btn btn-danger" ng-click="remove()" ng-show="current_person.uid" translate>Remove</button>
+                    <div class="form-group pull-right" ng-show="current_agent.type != 1">
+                        <button type="button" class="btn btn-danger" ng-click="remove()" ng-show="current_agent.uid" translate>Remove</button>
                     </div>
                 </div>
             </div>

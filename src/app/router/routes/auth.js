@@ -4,7 +4,7 @@ module.exports.registration = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.uid) {
+            if (req.agent && req.agent.uid) {
                 return res.redirect('/agent');
             }
             callback(null);
@@ -63,7 +63,7 @@ exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.uid) {
+            if (req.agent && req.agent.uid) {
                 return res.redirect('/agent');
             }
             callback(null);
@@ -109,7 +109,7 @@ exports.login = function (req, res) {
         } else if (data.length == 0) {
             /** @todo Сделать обработчик ошибок */
             if (req.headers['xhr']) {
-                res.send({ errors: ['User no found!'] });
+                res.send({ errors: ['Agent no found!'] });
             } else {
                 res.redirect('/login');
             }
@@ -128,7 +128,7 @@ exports.logout = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.uid) {
+            if (req.agent && req.agent.uid) {
                 callback(null);
             } else {
                 return res.redirect('/');
@@ -137,7 +137,7 @@ exports.logout = function (req, res) {
 
         function (callback) {
             res.backend.get({
-                path: 'logouts/' + req.person.uid,
+                path: 'logouts/' + req.agent.uid,
                 onSuccess: function (body) {
                     callback(null);
                 },
@@ -189,7 +189,7 @@ exports.external_service_connect = function (req, res) {
             res.backend.post({
                 path: 'auths/' + req.params.provider + '/externalservice/connect',
                 data: {
-                    uid: req.person.uid,
+                    uid: req.agent.uid,
                     data: data,
                     security: { access_token: token }
                 },
@@ -204,7 +204,7 @@ exports.external_service_connect = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data.person) {
+        if (data.agent) {
             res.authorizer.login(res, data);
             res.redirect('/agent');
         } else {

@@ -9,13 +9,14 @@
                 <div class="modal-body">
                     <p>
                         <form role="form" ng-submit="registration()" name="registration_form">
-                            <input ng-model="person.fullname" type="text" placeholder="Full name" autofocus="autofocus" class="form-control" />
-                            <input ng-model="person.email" ng-required="true" name="registration_form.email" type="email" placeholder="Email address" class="form-control"/>
+                            <input ng-model="agent.first_name" type="text" placeholder="First name" autofocus="autofocus" class="form-control" />
+                            <input ng-model="agent.last_name" type="text" placeholder="Last name" autofocus="autofocus" class="form-control" />
+                            <input ng-model="agent.email" ng-required="true" name="registration_form.email" type="email" placeholder="Email address" class="form-control"/>
                             <span class="has-error">
                                 <span ng-show="registration_form.$error.email" class="help-block" translate>Should be valid email address!</span>
                             </span>
-                            <input ng-model="person.password" ng-required="true" type="password" name="registration_form.password" placeholder="Password" class="form-control"/>
-                            <input ng-model="person.confirm_password" ng-required="true" name="registration_form.confirm_password" ui-equal-to="person.password" type="password" placeholder="Confirm password" class="form-control"/>
+                            <input ng-model="agent.password" ng-required="true" type="password" name="registration_form.password" placeholder="Password" class="form-control"/>
+                            <input ng-model="agent.confirm_password" ng-required="true" name="registration_form.confirm_password" ui-equal-to="agent.password" type="password" placeholder="Confirm password" class="form-control"/>
                             <span class="has-error">
                                 <span ng-show="registration_form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
                             </span>

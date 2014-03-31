@@ -1,11 +1,11 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        return agent;
     }
 
     window.location = '/login';
@@ -29,18 +29,18 @@ function AgentSettingsWidgetCtrl($scope, $cookieStore) {
  * @url "/agent/widget/style"
  */
 function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
-    $scope.person = security($cookieStore);
+    $scope.agent = security($cookieStore);
     $scope.settings = {};
     $scope.current_menu = 'style';
 
-    Widgets.one({ uid: $scope.person.agent.widget.uid }, function(data) {
+    Widgets.one({ uid: $scope.agent.widget.uid }, function(data) {
         $scope.settings = data.settings;
     });
 
     $scope.submit = function() {
-        Widgets.saveSettings({ uid: $scope.person.agent.widget.uid }, $scope.settings);
+        Widgets.saveSettings({ uid: $scope.agent.widget.uid }, $scope.settings);
     }
-//    $scope.widget = Widgets.one({ uid: person.agent.widget..uid });
+//    $scope.widget = Widgets.one({ uid: agent.widget..uid });
 
 /*    $scope.save = function() {
         Widgets.edit({ 'uid': $scope.widget.uid }, $scope.widget, function(data) {
@@ -58,8 +58,8 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
  * @url "/agent/widget/code"
  */
 function AgentSettingsWidgetCodeCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
-    $scope.widget_uid = person.agent.widget.uid;
+    var agent = security($cookieStore);
+    $scope.widget_uid = agent.widget.uid;
     $scope.current_menu = 'code';
 }
 
@@ -67,13 +67,13 @@ function AgentSettingsWidgetCodeCtrl($scope, $cookieStore, $location, Widgets) {
  * @url "/agent/widget/pay"
  */
 function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
     $scope.pay = {};
     $scope.current_menu = 'pay';
 
     $scope.submit = function() {
         alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
-        Widgets.pay({}, { uid: person.agent.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
+        Widgets.pay({}, { uid: agent.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
             // @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
             $location.path('/agent/settings/widget');
         });
@@ -84,12 +84,12 @@ function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
  * @url "/agent/widget/plan"
  */
 function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
+    var agent = security($cookieStore);
     $scope.widget = {};
     $scope.current_menu = 'plan';
 
     $scope.submit = function() {
-        Widgets.plan({}, { uid: person.agent.widget.uid, plan: $scope.widget.plan }, function(data) {
+        Widgets.plan({}, { uid: agent.widget.uid, plan: $scope.widget.plan }, function(data) {
             $location.path('/agent/settings/widget');
         });
     }
@@ -99,8 +99,8 @@ function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
  * @url "/agent/widget/plan"
  */
 function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widgets) {
-    var person = security($cookieStore);
-    var widget_uid = person.agent.widget.uid;
+    var agent = security($cookieStore);
+    var widget_uid = agent.widget.uid;
     //$scope.current_trigger = {};
 
     Widgets.getTriggers({uid: widget_uid}, function(data) {

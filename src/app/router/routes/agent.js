@@ -2,7 +2,7 @@ module.exports.agent = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            if (req.person && req.person.uid) {
+            if (req.agent && req.agent.uid) {
                 callback(null);
             } else {
                 return res.redirect('/login');

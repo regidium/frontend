@@ -1,11 +1,12 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        agent.last_name = decodeURIComponent(agent.last_name);
+        return agent;
     }
 
     window.location = '/login';
@@ -17,8 +18,8 @@ function security($cookieStore) {
  */
 function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users, Widgets) {
     // Получаем агента из cookie
-    $scope.person = security($cookieStore);
-    var widget_uid = $scope.person.agent.widget.uid;
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
 
     $scope.chats = {};
 
@@ -77,6 +78,6 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, Users
         // Устанавливеам текущий ULR
         $location.path('/agent/chats');
         // Подключаем агента к чату
-        socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: current_chat.chat.uid, widget_uid: widget_uid });
+        socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: current_chat.chat.uid, widget_uid: widget_uid });
     }
 }

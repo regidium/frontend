@@ -5,16 +5,6 @@
     /* Services */
     /** @todo Внедрить пагинацию */
     angular.module('regidiumApp')
-        .factory('Users', function ($rootScope, $resource) {
-            return $resource($rootScope.config.apiUrl + 'users', null, {
-                all: { method: 'GET', url: $rootScope.config.apiUrl + 'users', isArray:true },
-                one: { method: 'GET', url: $rootScope.config.apiUrl + 'users/:uid' },
-                create: { method: 'POST', url: $rootScope.config.apiUrl + 'users' },
-                edit: { method: 'PUT', url: $rootScope.config.apiUrl + 'users/:uid' },
-                remove: { method: 'DELETE', url: $rootScope.config.apiUrl + 'users/:uid' },
-                allChats: { method: 'GET', url: $rootScope.config.apiUrl + 'users/:uid/chats', isArray:true }
-            });
-        })
         .factory('Agents', function($rootScope, $resource) {
             return $resource($rootScope.config.apiUrl + 'agents', null, {
                 all: { method: 'GET', url: $rootScope.config.apiUrl + 'agents', isArray:true },

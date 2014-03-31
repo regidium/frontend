@@ -1,11 +1,12 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        agent.last_name = decodeURIComponent(agent.last_name);
+        return agent;
     }
 
     window.location = '/login';
@@ -17,8 +18,8 @@ function security($cookieStore) {
  */
 function AgentArchivesCtrl($scope, $cookieStore, socket) {
     // Получаем агента из cookie
-    var person = security($cookieStore);
-    var widget_uid = person.agent.widget.uid;
+    var agent = security($cookieStore);
+    var widget_uid = agent.widget.uid;
 
     $scope.chats = {};
 

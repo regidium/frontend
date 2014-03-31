@@ -9,7 +9,7 @@
                 </accordion-heading>
                 <div class="list-group">
                     <a ng-repeat="chat in chats" ng-if="chat.chat.status == 1" ng-click="selectChat(chat)" ng-class="{active: chat.chat.uid == current_chat.chat.uid}" href="" class="list-group-item">
-                        {{chat.person.country}} | {{chat.person.fullname}} | {{chat.page}}
+                        {{chat.agent.country}} | {{chat.agent.fullname}} | {{chat.page}}
                     </a>
                 </div>
             </accordion-group>
@@ -20,7 +20,7 @@
                 </accordion-heading>
                 <div class="list-group">
                     <a ng-repeat="chat in chats" ng-if="chat.chat.status == 2" ng-click="selectChat(chat)" ng-class="{active: chat.chat.uid == current_chat.chat.uid}" href="" class="list-group-item">
-                        {{chat.person.country}} | {{chat.person.fullname}} | {{chat.page}}
+                        {{chat.agent.country}} | {{chat.agent.first_name}} | {{chat.page}}
                     </a>
                 </div>
             </accordion-group>
@@ -31,18 +31,18 @@
                 </accordion-heading>
                 <div class="list-group">
                     <a ng-repeat="chat in chats" ng-if="chat.chat.status == 3" ng-click="selectChat(chat)" ng-class="{active: chat.chat.uid == current_chat.chat.uid}" href="" class="list-group-item">
-                        {{chat.person.ip}} | {{chat.person.country}} | {{chat.person.fullname}} | {{chat.page}}
+                        {{chat.agent.ip}} | {{chat.agent.country}} | {{chat.agent.first_name}} | {{chat.page}}
                     </a>
                 </div>
             </accordion-group>
         </accordion>
     </div>
     <div ng-show="current_chat.chat" class="col-md-3">
-        <p>{{current_chat.person.uid}}: {{current_chat.person.fullname}}</p>
-        <p>{{current_chat.person.country}}, {{current_chat.person.city}}, {{current_chat.person.ip}}</p>
+        <p>{{current_chat.agent.uid}}: {{current_chat.agent.first_name}}</p>
+        <p>{{current_chat.agent.country}}, {{current_chat.agent.city}}, {{current_chat.agent.ip}}</p>
         <p>
             <button ng-click="startChat(current_chat)" href="" class="btn btn-warning" translate>Start chat</button>
         </p>
-        <p><span ng-class="current_chat.person.os" class="icon">{{current_chat.person.os}}</span> <span ng-class="current_chat.person.browser" class="icon">{{current_chat.person.browser}}</span></p>
+        <p><span ng-class="current_chat.agent.os" class="icon">{{current_chat.agent.os}}</span> <span ng-class="current_chat.agent.browser" class="icon">{{current_chat.agent.browser}}</span></p>
     </div>
 </div>

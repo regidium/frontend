@@ -1,11 +1,13 @@
 'use strict';
 
 function security($cookieStore) {
-    var person = $cookieStore.get('person');
+    var agent = $cookieStore.get('agent');
 
-    if (person) {
-        person.fullname = decodeURIComponent(person.fullname);
-        return person;
+    if (agent) {
+        agent.first_name = decodeURIComponent(agent.first_name);
+        agent.last_name = decodeURIComponent(agent.last_name);
+
+        return agent;
     }
 
     window.location = '/login';
@@ -17,8 +19,8 @@ function security($cookieStore) {
  */
 function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     // Получаем агента из cookie
-    $scope.person = security($cookieStore);
-    var widget_uid = $scope.person.agent.widget.uid;
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
 
     $scope.chats = {};
 
@@ -65,7 +67,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
 
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', {
-            person: $scope.person,
+            agent: $scope.agent,
             chat_uid: $scope.current_chat.chat.uid,
             widget_uid: widget_uid
         });
@@ -76,7 +78,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         console.log('Socket chat:agent:entered');
 
         // Отсеиваем чужие оповещения
-        if (data.person.uid == $scope.person.uid) {
+        if (data.agent.uid == $scope.agent.uid) {
             $scope.current_chat = data;
 
             if(!data.chat.messages) {
@@ -101,7 +103,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             // Добавляем сообщение в список сообщений
             $scope.current_chat.chat.messages.push({
                 date: data.date,
-                person: data.person,
+                agent: data.agent,
                 text: data.text
             });
         }
@@ -117,7 +119,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         socket.emit('chat:message:send:agent', {
             widget_uid: widget_uid,
             chat_uid: $scope.current_chat.chat.uid,
-            person: $scope.person,
+            agent: $scope.agent,
             date: new Date(),
             text: $scope.text
         });
@@ -127,7 +129,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         }
         // Добавляем сообщение в список сообщений
         $scope.current_chat.chat.messages.push({
-            person: $scope.person,
+            agent: $scope.agent,
             date: new Date(),
             text: $scope.text
         });
@@ -144,14 +146,14 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
 /*
 function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound) {
     // Получаем агента из cookie
-    $scope.person = security($cookieStore);
-    var widget_uid = $scope.person.agent.widget.uid;
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
 
-    //$scope.agent = $scope.person.agent;
+    //$scope.agent = $scope.agent;
     $scope.text = '';
     $scope.chat = { uid: $routeParams.uid };
     $scope.chat.messages = [];
 
     // Подключаем агента к чату
-    socket.emit('chat:agent:enter', { person: $scope.person, chat_uid: $routeParams.uid, widget_uid: widget_uid });
+    socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: $routeParams.uid, widget_uid: widget_uid });
 }*/

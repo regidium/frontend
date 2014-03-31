@@ -1,15 +1,15 @@
 <div class="col-md-3">
     <div class="sidebar hidden-print affix-top" role="complementary">
         <ul class="nav sidenav">
-            <li ng-repeat="person in persons | filter:search | orderBy:'uid'">
-                <a href="" ng-click="select(person)" class="active">
-                    {{person.fullname}}
-                    <img height="25px" ng-src="{{person.avatar}}" />
+            <li ng-repeat="agent in agents | filter:search | orderBy:'uid'">
+                <a href="" ng-click="select(agent)" class="active">
+                    {{agent.first_name}} {{agent.last_name}}
+                    <img height="25px" ng-src="{{agent.avatar}}" />
                 </a>
             </li>
         </ul>
         <div>
-            <a ng-click="create()" href="" class="btn btn-warning">Create Agent</a>
+            <a ng-click="create()" href="" class="btn btn-warning" translate>Create Agent</a>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ self.login = function (res, object) {
 
 self.logout = function (res) {
     res.clearCookie(config.authorizer.key);
-    res.clearCookie('person');
+    res.clearCookie('agent');
 };
 
 self.check = function (req, res, next) {
@@ -38,8 +38,8 @@ self.flush_object_data = function (obj, cb) {
     async.waterfall([
 
         function (callback) {
-            if (obj.person) {
-                obj.object_id = obj.person.uid;
+            if (obj.agent) {
+                obj.object_id = obj.agent.uid;
             }
 
             if (obj.object_id) {
@@ -61,7 +61,7 @@ self.flush_object_data = function (obj, cb) {
 
         function (data, callback) {
             if (data && data.uid) {
-                obj.person = data;
+                obj.agent = data;
                 delete obj.object_id;
             } else {
                 console.error('Backend return error response! ', data);
@@ -120,16 +120,16 @@ self.decode = function (encoded) {
 };
 
 self.flush_auth = function(res, object, next) {
-    if (object.person) {
-        var data = JSON.stringify(object.person, function(key, val) {
-            if (key == 'fullname') {
+    if (object.agent) {
+        var data = JSON.stringify(object.agent, function(key, val) {
+            if (key == 'first_name' || key == 'last_name' || key == 'job_title') {
                 return encodeURIComponent(val);
             } else {
                 return val;
             }
         });
         try {
-            res.cookie('person', data, {
+            res.cookie('agent', data, {
                 //expires: new Date(self.calcLifetime(true)),
                 path: '/'
             });
