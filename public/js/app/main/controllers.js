@@ -45,15 +45,14 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
 
         $http.post('/login', { email: email, password: password }).
             success(function(data, status, headers, config) {
-                if (data && data.uid) {
+                if (data && data.agent.uid) {
                     window.location = '/agent';
                 } else {
                     _.each(data.errors, function(val, key) {
                         flash.error = val;
                     });
                 }
-            }).
-            error(function(data, status, headers, config) {
+            }).error(function(data, status, headers, config) {
                 if (data && data.errors) {
                     console.log(data.errors);
                     flash.error = data.errors;
@@ -90,7 +89,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
 
         $http.post('/registration', $scope.agent).
             success(function(data, status, headers, config) {
-                if (data && data.uid) {
+                if (data && data.agent.uid) {
                     window.location = '/agent';
                 } else {
                     flash.error = 'Backend return error request!';

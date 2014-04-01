@@ -40,9 +40,8 @@ module.exports.registration = function (req, res) {
         }
 
     ], function (err, data) {
-        console.log(data);
-        if (data && data.uid) {
-            res.authorizer.login(res, data);
+        if (data && data.agent) {
+            res.authorizer.login(res, data.agent);
             if (req.headers['xhr']) {
                 res.send(data);
             } else {
@@ -99,8 +98,8 @@ exports.login = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data && data.uid) {
-            res.authorizer.login(res, data);
+        if (data && data.agent) {
+            res.authorizer.login(res, data.agent);
             if (req.headers['xhr']) {
                 res.send(data);
             } else {
@@ -114,6 +113,7 @@ exports.login = function (req, res) {
                 res.redirect('/login');
             }
         } else if (err) {
+            console.log(err);
             /** @todo Сделать обработчик ошибок */
             if (req.headers['xhr']) {
                 res.send({ errors: ['Backend return bad data!'] });
@@ -197,6 +197,7 @@ exports.external_service_connect = function (req, res) {
                     callback(null, data);
                 },
                 onError: function (data) {
+                    /** @todo Сделать обработчик ошибок */
                     console.log(data);
                     callback(data);
                 }

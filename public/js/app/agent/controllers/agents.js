@@ -31,7 +31,6 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, Agents, W
     $scope.agents = Widgets.agents({ uid: agent.widget.uid }, function(data) {
         // Делам текущим первого из списка
         $scope.current_agent = $scope.agents[0];
-        console.log($scope.current_agent);
     });
 
     // Выбираем агента

@@ -38,6 +38,7 @@ self.flush_object_data = function (obj, cb) {
     async.waterfall([
 
         function (callback) {
+            console.log(1);
             if (obj.agent) {
                 obj.object_id = obj.agent.uid;
             }
@@ -60,11 +61,11 @@ self.flush_object_data = function (obj, cb) {
         },
 
         function (data, callback) {
-            if (data && data.uid) {
-                obj.agent = data;
+            if (data && data.agent) {
+                obj.agent = data.agent;
                 delete obj.object_id;
             } else {
-                console.error('Backend return error response! ', data);
+                console.log('Backend return error response! ', data);
             }
             cb();
         }

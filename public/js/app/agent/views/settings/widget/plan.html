@@ -6,7 +6,7 @@
             <div class="panel-heading">
                 <h1 translate>Select Widget Plan</h1>
             </div>
-            <form ng-submit='submit()' name="plan_form" class="form-horizontal" role="form">
+            <form ng-submit='submit()' name="plan_form" role="form">
                 <fieldset>
                     <div class="form-group col-sm-10">
                         <div class="radio">
@@ -34,9 +34,9 @@
                             </label>
                         </div>
                     </div>
-                    <p>
+                    <div class="form-group col-sm-12">
                         <button type="submit" ng-disabled="plan_form.$invalid" class="btn btn-lg btn-primary btn-block">Select</button>
-                    </p>
+                    </div>
                 </fieldset>
             </form>
         </div>

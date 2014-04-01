@@ -20,9 +20,9 @@
                             <span class="has-error">
                                 <span ng-show="registration_form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
                             </span>
-                            <label class="checkbox">
+<!--                             <label class="checkbox">
                                 <input type="checkbox" value="remember" translate />Remember me
-                            </label>
+                            </label> -->
                             <p>
                                 <button type="submit" ng-disabled="registration_form.$invalid" class="btn btn-lg btn-primary btn-block" translate>Registration</button>
                             </p>
@@ -31,22 +31,28 @@
                             </p>
                         </form>
                     </p>
-                    <p>
-                        <ul>
-                            <li class="vk">
-                                <a href='/auth/external/service/vkontakte/connect' translate>VK</a>
-                            </li>
-                            <li class="fb">
-                                <a href='/auth/external/service/facebook/connect' translate>Facebook</a>
-                            </li>
-                            <li class="gg">
-                                <a href='/auth/external/service/google/connect' translate>Google</a>
-                            </li>
-                            <li class="tw">
-                                <a href='/auth/external/service/twitter/connect' translate>Twitter</a>
-                            </li>
-                        </ul>
-                    </p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="/auth/external/service/vkontakte/connect" alt="ВКонтакте">
+                                <i class="fa fa-3x fa-vk"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/auth/external/service/facebook/connect" alt="Facebook">
+                                <i class="fa fa-3x fa-facebook-square"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/auth/external/service/google/connect" alt="Google">
+                                <i class="fa fa-3x fa-google-plus"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/auth/external/service/twitter/connect" alt="Twitter">
+                                <i class="fa fa-3x fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

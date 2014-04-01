@@ -6,24 +6,32 @@
             <div class="panel-heading">
                 <h1 translate>Pay widget</h1>
             </div>
-            <form ng-submit='submit()' name="pay_form" class="form-horizontal" role="form">
+            <form ng-submit='submit()' name="pay_form" role="form">
                 <fieldset>
                     <div class="form-group col-sm-10">
-                        <div class="radio" ng-repeat="payment_method in payment_methods">
+                        <div class="radio">
                             <label>
                                 <input ng-model="pay.payment_method" type="radio" value="1" /> Electronic money
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
                                 <input ng-model="pay.payment_method" type="radio" value="2" /> Plastic card
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
                                 <input ng-model="pay.payment_method" type="radio" value="3" /> Cashless payments
                             </label>
                         </div>
                     </div>
-                    <div class="form-group col-sm-10">
+                    <div class="form-group col-sm-3">
                         <label class="control-label" translate>Amount</label>
                         <input ng-model="pay.amount" type="text" class="form-control" />
                     </div>
-                    <p>
+                    <div class="form-group col-sm-12">
                         <button type="submit" ng-disabled="pay_form.$invalid" class="btn btn-lg btn-primary btn-block">Pay</button>
-                    </p>
+                    </div>
                 </fieldset>
             </form>
         </div>

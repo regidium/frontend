@@ -22,6 +22,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
     $scope.agent = security($cookieStore);
     var widget_uid = $scope.agent.widget.uid;
 
+    // Резервируем $scope переменную для списка онлайн чатов
     $scope.chats = {};
 
     // Запрашиваем список чатов онлайн
@@ -102,7 +103,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
 
             // Добавляем сообщение в список сообщений
             $scope.current_chat.chat.messages.push({
-                date: data.date,
+                created_at: data.created_at,
                 agent: data.agent,
                 text: data.text
             });
@@ -115,12 +116,14 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             return false;
         }
 
+        var created_at = +new Date;
+
         // Оповещаем об отпраке сообщения
         socket.emit('chat:message:send:agent', {
             widget_uid: widget_uid,
             chat_uid: $scope.current_chat.chat.uid,
             agent: $scope.agent,
-            date: new Date(),
+            created_at: created_at,
             text: $scope.text
         });
 
@@ -130,7 +133,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         // Добавляем сообщение в список сообщений
         $scope.current_chat.chat.messages.push({
             agent: $scope.agent,
-            date: new Date(),
+            created_at: created_at,
             text: $scope.text
         });
 

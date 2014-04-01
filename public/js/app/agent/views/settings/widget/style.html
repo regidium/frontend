@@ -4,15 +4,15 @@
     <div class="content">
         <form ng-submit='submit()' name="style_form" class="form-horizontal" role="form">
             <fieldset>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" translate>Header color</label>
-                    <div class="col-sm-9">
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-2 control-label" translate>Header color</label>
+                    <div class="col-sm-10">
                         <input type="color" class="form-control" placeholder="Header color" ng-model="settings.header_color" />
                     </div>
                 </div>
-                <p>
+                <div class="form-group col-sm-12">
                     <button type="submit" ng-disabled="style_form.$invalid" class="btn btn-lg btn-primary btn-block">Save</button>
-                </p>
+                </div>
             </fieldset>
         </form>
     </div>
