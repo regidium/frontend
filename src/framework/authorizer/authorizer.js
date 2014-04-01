@@ -29,8 +29,8 @@ self.check = function (req, res, next) {
     if (!object_id) return next();
     req.object_id = object_id;
     self.flush_object_data(req, function () {
-        next();
         self.flush_auth(res, req, next);
+        next();
     });
 };
 
@@ -38,16 +38,15 @@ self.flush_object_data = function (obj, cb) {
     async.waterfall([
 
         function (callback) {
-            console.log(1);
             if (obj.agent) {
                 obj.object_id = obj.agent.uid;
             }
 
             if (obj.object_id) {
                 callback(null);
+            } else {
+                cb();
             }
-
-            else cb();
         },
 
         function (callback) {
