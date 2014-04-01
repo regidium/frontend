@@ -65,7 +65,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
         }
 
         // Добавляем чат в список чатов онлайн
-        $scope.chats[data.chat.uid] = data;
+        $scope.chats[data.chat.uid] = data.chat;
     });
 
     // Чат отключен
