@@ -138,12 +138,15 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket) {
     };
 
     // Удаляем агента
-    $scope.remove = function(agent) {
-        if (agent.type != 1) {
+    $scope.remove = function() {
+        if ($scope.current_agent.type != 1) {
             if (confirm('Are you sure you want to remove this agent?')) {
 
                 // Отправляем событие сохранения агента
-                socket.emit('agent:remove', { agent_uid: agent.uid, widget_uid: widget_uid });
+                socket.emit('agent:remove', { agent_uid: $scope.current_agent.uid, widget_uid: widget_uid });
+
+                $scope.current_agent = $scope.agents[0];
+                $scope.disabled = true;
 
                 // Agents.remove({ 'uid': agent.uid }, agent.uid, function() {
                 //     /** @todo Обработка ошибок */
