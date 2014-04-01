@@ -46,24 +46,35 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket) {
     socket.on('agent:saved', function(data) {
         console.log('Socket agent:saved');
 
+        var existed = false;
+
         angular.forEach($scope.agents, function(agent, key) {
             if (agent.uid == data.agent.uid) {
                 agent = data.agent;
-            } else {
-                $scope.agents.push(data.agent);
+                existed = true;
             }
         });
+
+        if (existed == false) {
+            $scope.agents.push(data.agent);
+        }
     });
 
     // Получено событие удаления агента
     socket.on('agent:removed', function(data) {
         console.log('Socket agent:removed');
 
+        var existed = {};
+
         angular.forEach($scope.agents, function(agent, key) {
             if (agent.uid == data.agent_uid) {
-                $scope.agents.splice($scope.agents.indexOf(agent), 1);
+                existed = agent;
             }
         });
+
+        if (existed) {
+            $scope.agents.splice($scope.agents.indexOf(existed), 1);
+        }
     });
 
     // Получаем список агентов

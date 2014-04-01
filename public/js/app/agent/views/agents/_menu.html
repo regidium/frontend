@@ -1,7 +1,7 @@
 <div class="col-md-3">
     <div class="sidebar hidden-print affix-top" role="complementary">
         <ul class="nav sidenav">
-            <li ng-repeat="agent in agents | filter:search | orderBy:'uid'">
+            <li ng-repeat="agent in agents ">
                 <a href="" ng-click="select(agent)" class="active">
                     {{agent.first_name}} {{agent.last_name}}
                     <img height="25px" ng-src="{{agent.avatar}}" />
