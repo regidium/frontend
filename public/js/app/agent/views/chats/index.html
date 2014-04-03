@@ -10,8 +10,13 @@
     <div ng-show="current_chat">
         <div class="col-md-9">
             <div class="well message-spot overflowable" auto-scroll>
-                <p ng-repeat='message in current_chat.chat.messages;'>
-                    <span ng-class="{red: message.sender_type == 2, green: message.sender_type == 1}">{{message.created_at | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}</span>
+                <p ng-repeat='message in current_chat.messages;'>
+                    <span ng-if="message.sender_type == 1" class="green">
+                        {{ message.created_at * 1000 | date:'shortTime' }}: {{current_chat.user.first_name}}: {{message.text}}
+                    </span>
+                    <span ng-if="message.sender_type == 2" class="red">
+                        {{ message.created_at * 1000 | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}
+                    </span>
                 </p>
             </div>
             <form ng-submit="sendMessage()" class="form-horizontal" role="form">
@@ -24,9 +29,9 @@
             </form>
         </div>
         <div class="col-md-3">
-            <p>{{current_chat.agent.uid}}: {{current_chat.agent.first_name}}</p>
-            <p>{{current_chat.agent.country}}, {{current_chat.agent.city}}</p>
-            <p>{{current_chat.agent.os}} {{current_chat.agent.browser}}</p>
+            <p>{{current_chat.uid}}: {{current_chat.user.first_name}}</p>
+            <p>{{current_chat.user.country}}, {{current_chat.user.city}}</p>
+            <p>{{current_chat.user.os}} {{current_chat.user.browser}}</p>
         </div>
     </div>
 </div>

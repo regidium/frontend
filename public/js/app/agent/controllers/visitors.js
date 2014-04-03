@@ -25,12 +25,6 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
 
     $scope.current_chat = {};
 
-    $scope.counter = {
-        online: 0,
-        chatting: 0,
-        offline: 0
-    };
-
     // Запрашиваем список чатов
     socket.emit('chat:existed', { widget_uid: widget_uid });
 
@@ -40,48 +34,33 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
 
         // Наполняем список чатов
         angular.forEach(data, function(chat) {
-            if (chat.status == 1) {
-                $scope.counter.online = $scope.counter.online + 1;
-            } else if (chat.status == 2) {
-                $scope.counter.chatting = $scope.counter.chatting + 1;
-            } else if (chat.status == 3) {
-                $scope.counter.offline = $scope.counter.offline + 1;
-            }
-
             $scope.chats[chat.uid] = chat;
         });
+    });
+
+    // Пользователь изменил авторизационные данные
+    socket.on('chat:user:authed', function (data) {
+        console.log('Socket chat:user:authed');
+
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].user = data.user;
+        }
     });
 
     // Чат подключен
     socket.on('chat:connected', function (data) {
         console.log('Socket chat:connected');
 
-        if (data.chat.status == 1) {
-            $scope.counter.online = $scope.counter.online + 1;
-        } else if (data.chat.status == 2) {
-            $scope.counter.chatting = $scope.counter.chatting + 1;
-        } else if (data.chat.status == 3) {
-            $scope.counter.offline = $scope.counter.offline + 1;
-        }
-
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
     });
 
     // Чат отключен
-    socket.on('chat:disconnected', function (data) {
-        console.log('Socket chat:disconnected');
+    socket.on('chat:disconnect', function (data) {
+        console.log('Socket chat:disconnect');
 
         if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid == data.chat_uid) {
             $scope.current_chat = {};
-        }
-
-        if ($scope.chats[data.chat_uid].status == 1) {
-            $scope.counter.online = $scope.counter.online - 1;
-        } else if ($scope.chats[data.chat_uid].status == 2) {
-            $scope.counter.chatting = $scope.counter.chatting - 1;
-        } else if ($scope.chats[data.chat_uid].status == 3) {
-            $scope.counter.offline = $scope.counter.offline - 1;
         }
 
         // Переносим чат из списка чатов онлайн в список покинувших сайт
@@ -104,10 +83,14 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
 
     // Начало чата с пользователем
     $scope.startChat = function(current_chat) {
-        // Устанавливеам текущий ULR
+        // Устанавливеам текущий URL
         $location.path('/agent/chats');
         // Подключаем агента к чату
-        socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: current_chat.uid, widget_uid: widget_uid });
+        socket.emit('chat:agent:enter', {
+            agent: $scope.agent,
+            chat: current_chat,
+            widget_uid: widget_uid
+        });
     }
 
     $scope.getOsClass = function(os_string) {
