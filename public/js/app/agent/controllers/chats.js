@@ -69,7 +69,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', {
             agent: $scope.agent,
-            chat_uid: $scope.current_chat.chat.uid,
+            chat_uid: $scope.current_chat.uid,
             widget_uid: widget_uid
         });
     }
@@ -83,7 +83,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             $scope.current_chat = data;
 
             if(!data.chat.messages) {
-                $scope.current_chat.chat.messages = [];
+                $scope.current_chat.messages = [];
             }
         }
     });
@@ -93,16 +93,16 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         console.log('Socket chat:message:send:user');
 
         // Отсеиваем чужие оповещения
-        if ($scope.current_chat && $scope.current_chat.chat && data.chat_uid == $scope.current_chat.chat.uid) {
+        if ($scope.current_chat && $scope.current_chat && data.chat_uid == $scope.current_chat.uid) {
             // Проигрываем звуковое уводомление
             sound.play();
 
-            if(!$scope.current_chat.chat.messages) {
-                $scope.current_chat.chat.messages = [];
+            if(!$scope.current_chat.messages) {
+                $scope.current_chat.messages = [];
             }
 
             // Добавляем сообщение в список сообщений
-            $scope.current_chat.chat.messages.push({
+            $scope.current_chat.messages.push({
                 created_at: data.created_at,
                 agent: data.agent,
                 text: data.text
@@ -121,17 +121,17 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         // Оповещаем об отпраке сообщения
         socket.emit('chat:message:send:agent', {
             widget_uid: widget_uid,
-            chat_uid: $scope.current_chat.chat.uid,
+            chat_uid: $scope.current_chat.uid,
             agent: $scope.agent,
             created_at: created_at,
             text: $scope.text
         });
 
-        if (!$scope.current_chat.chat.messages) {
-            $scope.current_chat.chat.messages = [];
+        if (!$scope.current_chat.messages) {
+            $scope.current_chat.messages = [];
         }
         // Добавляем сообщение в список сообщений
-        $scope.current_chat.chat.messages.push({
+        $scope.current_chat.messages.push({
             agent: $scope.agent,
             created_at: created_at,
             text: $scope.text
