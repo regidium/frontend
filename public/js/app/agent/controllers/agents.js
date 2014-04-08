@@ -31,9 +31,8 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
 
     // Запрашиваем список агентов
-    socket.emit('agent:existed', { widget_uid: widget_uid }, function() {
-         agentBlockUI.start();
-    });
+    socket.emit('agent:existed', { widget_uid: widget_uid });
+    agentBlockUI.start();
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
