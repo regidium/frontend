@@ -10,7 +10,7 @@
     <div ng-show="current_chat">
         <div class="col-md-9">
             <div class="well message-spot overflowable" auto-scroll>
-                <p ng-repeat='message in current_chat.messages;'>
+                <p ng-repeat='message in current_chat.messages track by $index;'>
                     <span ng-if="message.sender_type == 1" class="green">
                         {{ message.created_at * 1000 | date:'shortTime' }}: {{current_chat.user.first_name}}: {{message.text}}
                     </span>

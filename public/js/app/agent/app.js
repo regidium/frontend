@@ -12,6 +12,7 @@
         'chieffancypants.loadingBar',
         'ui.bootstrap',
         'angular-underscore',
+        'blockUI',
         'regidiumApp.commonDirectives'
     ]).config(['$locationProvider', '$routeProvider', '$translateProvider', 'flashProvider', function($locationProvider, $routeProvider, $translateProvider, flashProvider) {
         $locationProvider.html5Mode(true);

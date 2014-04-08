@@ -17,7 +17,7 @@ function security($cookieStore) {
  * @todo Разделять online & offline
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket) {
+function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, blockUI) {
     var agent = security($cookieStore);
     var widget_uid = agent.widget.uid;
 
@@ -28,8 +28,12 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket) {
     // Выбранный агент
     $scope.current_agent = {};
 
+    var agentBlockUI = blockUI.instances.get('agentBlockUI');
+
     // Запрашиваем список агентов
-    socket.emit('agent:existed', { widget_uid: widget_uid });
+    socket.emit('agent:existed', { widget_uid: widget_uid }, function() {
+         agentBlockUI.start();
+    });
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
@@ -40,6 +44,8 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket) {
 
          // Делам текущим первого из списка
          $scope.current_agent = $scope.agents[0];
+
+         agentBlockUI.stop(); 
     });
 
     // Получено событие сохранения агента
