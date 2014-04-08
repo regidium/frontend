@@ -1,5 +1,6 @@
 <div class="col-md-12">
     <h3>List of all chats</h3>
+    <div block-ui="chatsBlockUI"></div>
     <p>
         <span ng-repeat="chat in chats">
             <a href="" ng-click="selectChat(chat)">
@@ -8,6 +9,7 @@
         </span>
     </p>
     <div ng-show="current_chat">
+        <div block-ui="currentChatBlockUI"></div>
         <div class="col-md-9">
             <div class="well message-spot overflowable" auto-scroll>
                 <p ng-repeat='message in current_chat.messages track by $index;'>

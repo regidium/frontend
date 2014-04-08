@@ -20,6 +20,9 @@ function security($cookieStore) {
 function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, blockUI) {
     var agent = security($cookieStore);
     var widget_uid = agent.widget.uid;
+    // Определяем блоки блокировки
+    var agentBlockUI = blockUI.instances.get('agentBlockUI');
+    var menuBlockUI = blockUI.instances.get('menuBlockUI');
 
     // Блокировка формы редактирования
     $scope.disabled = true;
@@ -28,11 +31,11 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
     // Выбранный агент
     $scope.current_agent = {};
 
-    var agentBlockUI = blockUI.instances.get('agentBlockUI');
-
     // Запрашиваем список агентов
     socket.emit('agent:existed', { widget_uid: widget_uid });
+    // Блокируем ожидающие блоки
     agentBlockUI.start();
+    menuBlockUI.start();
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
@@ -41,10 +44,12 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
         // Наполняем список чатов онлайн
         $scope.agents = data.agents;
 
-         // Делам текущим первого из списка
-         $scope.current_agent = $scope.agents[0];
+        // Делам текущим первого из списка
+        $scope.current_agent = $scope.agents[0];
 
-         agentBlockUI.stop(); 
+        // Разблокировка ожидающих блоков
+        agentBlockUI.stop(); 
+        menuBlockUI.stop(); 
     });
 
     // Получено событие сохранения агента

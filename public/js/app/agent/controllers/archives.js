@@ -16,15 +16,19 @@ function security($cookieStore) {
  * @todo Внедрить пагинацию
  * @url "/agent/archives"
  */
-function AgentArchivesCtrl($scope, $cookieStore, socket) {
+function AgentArchivesCtrl($scope, $cookieStore, socket, blockUI) {
     // Получаем агента из cookie
     var agent = security($cookieStore);
     var widget_uid = agent.widget.uid;
+    // Определяем блоки блокировки
+    var archivesBlockUI = blockUI.instances.get('archivesBlockUI');
 
     $scope.chats = {};
 
     // Запрашиваем список архивных чатов
     socket.emit('chat:archives', { widget_uid: widget_uid });
+    // Блокируем ожидающие блоки
+    archivesBlockUI.start();
 
     // Получаем список архивных чатов
     socket.on('chat:archives:list', function(data) {
@@ -32,5 +36,8 @@ function AgentArchivesCtrl($scope, $cookieStore, socket) {
 
         // Наполняем список архивных чатов
         $scope.chats = data;
+
+        // Разблокировка ожидающих блоков
+        archivesBlockUI.stop(); 
     });
 }

@@ -16,10 +16,12 @@ function security($cookieStore) {
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
+function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, blockUI) {
     // Получаем агента из cookie
     $scope.agent = security($cookieStore);
     var widget_uid = $scope.agent.widget.uid;
+    // Определяем блоки блокировки
+    var visitorsBlockUI = blockUI.instances.get('visitorsBlockUI');
 
     $scope.chats = {};
 
@@ -27,6 +29,8 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
 
     // Запрашиваем список чатов
     socket.emit('chat:existed', { widget_uid: widget_uid });
+    // Блокируем ожидающие блоки
+    visitorsBlockUI.start();
 
     // Получаем список чатов
     socket.on('chat:existed:list', function(data) {
@@ -36,6 +40,9 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
         angular.forEach(data, function(chat) {
             $scope.chats[chat.uid] = chat;
         });
+
+        // Разблокировка ожидающих блоков
+        visitorsBlockUI.stop(); 
     });
 
     // Пользователь изменил авторизационные данные
@@ -93,6 +100,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash) {
         });
     }
 
+    /** @todo убрать в сервис */
     $scope.getOsClass = function(os_string) {
         if (os_string && os_string.indexOf('inux') != -1) {
             return 'fa-linux';

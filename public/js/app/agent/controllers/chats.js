@@ -21,16 +21,21 @@ function security($cookieStore) {
  * @todo Внедрить пагинацию
  * @url "/agent/chats"
  */
-function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
+function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
     // Получаем агента из cookie
     $scope.agent = security($cookieStore);
     var widget_uid = $scope.agent.widget.uid;
+    // Определяем блоки блокировки
+    var chatsBlockUI = blockUI.instances.get('chatsBlockUI');
+    var currentChatBlockUI = blockUI.instances.get('currentChatBlockUI');
 
     // Резервируем $scope переменную для списка онлайн чатов
     $scope.chats = {};
 
     // Запрашиваем список чатов онлайн
     socket.emit('chat:online', { widget_uid: widget_uid });
+    // Блокируем ожидающие блоки
+    chatsBlockUI.start();
 
     // Получаем список чатов онлайн
     socket.on('chat:online:list', function(data) {
@@ -40,6 +45,9 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         angular.forEach(data.chats, function(chat){
             $scope.chats[chat.uid] = chat;
         });
+
+        // Разблокировка ожидающих блоков
+        chatsBlockUI.stop(); 
     });
 
     // Чат подключен
@@ -78,6 +86,9 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
             chat: $scope.current_chat,
             widget_uid: widget_uid
         });
+
+        // Блокируем ожидающие блоки
+        currentChatBlockUI.start();
     }
 
     // Агент подключен к чату
@@ -87,6 +98,8 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         // Отсеиваем чужие оповещения
         if (data.agent.uid == $scope.agent.uid) {
             $scope.current_chat = data.chat;
+            // Разблокировка ожидающих блоков
+            currentChatBlockUI.stop(); 
         }
     });
 
