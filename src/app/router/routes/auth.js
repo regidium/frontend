@@ -40,8 +40,8 @@ module.exports.registration = function (req, res) {
         }
 
     ], function (err, data) {
-        if (data && data.agent) {
-            res.authorizer.login(res, data.uid);
+        if (data && data.uid) {
+            res.authorizer.login(res, data);
             if (req.headers['xhr']) {
                 res.send(data);
             } else {
