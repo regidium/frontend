@@ -89,7 +89,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
 
         $http.post('/registration', $scope.agent).
             success(function(data, status, headers, config) {
-                if (data && data.agent.uid) {
+                if (data && data.uid) {
                     window.location = '/agent';
                 } else {
                     flash.error = 'Backend return error request!';
