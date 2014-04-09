@@ -4,7 +4,7 @@
     <p>
         <span ng-repeat="chat in chats">
             <a href="" ng-click="selectChat(chat)">
-                <img class="img-circle" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+" style="width: 140px; height: 140px;" />
+                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 60px; background-color: #BEBDBD">{{chat.user.ip}}</span>
             </a>
         </span>
     </p>
@@ -31,7 +31,7 @@
             </form>
         </div>
         <div class="col-md-3">
-            <p>{{current_chat.uid}}: {{current_chat.user.first_name}}</p>
+            <p>{{current_chat.user.ip}}: {{current_chat.user.first_name}}</p>
             <p>{{current_chat.user.country}}, {{current_chat.user.city}}</p>
             <p>{{current_chat.user.os}} {{current_chat.user.browser}}</p>
         </div>
