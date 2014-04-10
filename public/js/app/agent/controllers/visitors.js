@@ -45,6 +45,16 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, block
         visitorsBlockUI.stop(); 
     });
 
+    // Event сервер оповестил о необходимости обновить список пользователей
+    socket.on('service:update:users:list', function (data) {
+        console.log('Socket service:update:users:list');
+
+        // Запрашиваем список чатов
+        socket.emit('chat:existed', { widget_uid: widget_uid });
+        // Блокируем ожидающие блоки
+        visitorsBlockUI.start();
+    });
+
     // Пользователь изменил авторизационные данные
     socket.on('chat:user:authed', function (data) {
         console.log('Socket chat:user:authed');

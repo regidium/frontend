@@ -50,7 +50,21 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
         chatsBlockUI.stop(); 
     });
 
+    // Event сервер оповестил о необходимости обновить список пользователей
+    socket.on('service:update:users:list', function (data) {
+        console.log('Socket service:update:users:list');
+
+        // Если агент не ведет беседу
+        if (!$scope.current_chat) {
+            // Запрашиваем список чатов онлайн
+            socket.emit('chat:online', { widget_uid: widget_uid });
+            // Блокируем ожидающие блоки
+            chatsBlockUI.start();
+        }
+    });
+
     // Чат подключен
+    /** @todo Фильтруются ли по статусу? */
     socket.on('chat:connected', function (data) {
         console.log('Socket chat:connected', data);
 
