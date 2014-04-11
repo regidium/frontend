@@ -113,11 +113,11 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
     // Сохраняем агента
     $scope.save = function() {
         // Получаем UID агента
-        var agent_uid = $scope.current_agent.uid;
+        var uid = $scope.current_agent.uid;
         var password = '';
         if (!$scope.current_agent.uid) {
             // Если агент новый,то UID = new
-            agent_uid = 'new';
+            uid = 'new';
             password = sha1.encode($scope.current_agent.password);
         }
 
@@ -131,7 +131,7 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
             type: $scope.current_agent.type,
             status: $scope.current_agent.status,
             accept_chats: $scope.current_agent.accept_chats,
-            agent_uid: agent_uid,
+            uid: uid,
             widget_uid: widget_uid
         };
 
