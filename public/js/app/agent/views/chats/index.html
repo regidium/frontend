@@ -1,13 +1,13 @@
 <div class="col-md-12">
     <h3>List of all chats</h3>
     <div block-ui="chatsBlockUI"></div>
-    <p>
-        <span ng-repeat="chat in chats">
+    <div class="col-md-12">
+        <div ng-repeat="chat in chats" class="col-md-2">
             <a href="" ng-click="selectChat(chat)">
                 <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 60px; background-color: #BEBDBD">{{chat.user.ip}}</span>
             </a>
-        </span>
-    </p>
+        </div>
+    </div>
     <div ng-show="current_chat">
         <div block-ui="currentChatBlockUI"></div>
         <div class="col-md-9">

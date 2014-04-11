@@ -68,17 +68,19 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
     socket.on('chat:connected', function (data) {
         console.log('Socket chat:connected', data);
 
-        // Добавляем чат в список чатов онлайн
-        $scope.chats[data.chat.uid] = data.chat;
+        if (data.chat.status == 2) {
+            // Добавляем чат в список чатов онлайн
+            $scope.chats[data.chat.uid] = data.chat;
+        }
     });
 
     // Чат отключен
     socket.on('chat:disconnected', function (data) {
         console.log('Socket chat:disconnected', data);
 
-        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+/*        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
             delete $scope.current_chat.uid;
-        }
+        }*/
 
         // Удаляем чат из списка чатов онлайн
         delete $scope.chats[data.chat_uid];

@@ -357,7 +357,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound) {
         console.log('Socket chat:message:send:user');
 
         // Отсеиваем чужие оповещения
-        if (data.chat_uid == $scope.current_chat.chat.uid) {
+        if (data.chat.uid == $scope.current_chat.chat.uid) {
             // Проигрываем звуковое уводомление
             sound.play();
 
