@@ -42,7 +42,7 @@
         <p>{{current_chat.uid}}: {{current_chat.user.first_name}} {{current_chat.user.email}}</p>
         <p>{{current_chat.user.country}}, {{current_chat.user.city}}, {{current_chat.user.ip}}</p>
         <p>
-            <button ng-click="startChat(current_chat)" href="" class="btn btn-warning" translate>Start chat</button>
+            <button ng-show="current_chat.status == 1" ng-click="startChat(current_chat)" href="" class="btn btn-warning" translate>Start chat</button>
         </p>
         <p>
             <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
