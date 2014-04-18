@@ -11,6 +11,8 @@ block header
     .collapse.navbar-collapse(role="navigation")
         ul.nav.navbar-nav
             li
+                span(ng-bind="chatting_count" class="label label-default") {{chatting_count}}
+            li
                 a(href="/agent/chats", translate) Chats
             li
                 a(href="/agent/visitors", translate) Visitors

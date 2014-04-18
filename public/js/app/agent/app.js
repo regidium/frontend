@@ -59,6 +59,32 @@
 
         var agent = $cookieStore.get('agent');
         socket.emit('agent:connect', { agent: agent, widget_uid: agent.widget.uid });
+
+        $rootScope.chatting = {};
+        $rootScope.chatting_count = 0;
+
+        // Оповещание о новом чате
+        socket.on('chat:connected', function (data) {
+            console.log('Socket chat:connected');
+            if (data.chat.status == 2 && !data.chat.agent) {
+                $rootScope.chatting[data.chat.uid] = data.chat.uid;
+                $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
+            }
+        });
+        // Оповещание о закрытии чата
+        socket.on('chat:disconnected', function (data) {
+            console.log('Socket chat:disconnected');
+
+            delete $rootScope.chatting[data.chat_uid];
+            $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
+        });
+        // Агент подключился к чату
+        socket.on('chat:agent:entered', function (data) {
+            console.log('Socket chat:agent:entered', data);
+
+            delete $rootScope.chatting[data.chat.uid];
+            $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
+        });
     });
 
 })(angular);

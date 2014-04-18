@@ -28,7 +28,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, block
     $scope.current_chat = {};
 
     // Запрашиваем список чатов
-    socket.emit('chat:existed', { widget_uid: widget_uid });
+    socket.emit('chat:existed', { widget_uid: widget_uid, agent_uid: $scope.agent.uid });
     // Блокируем ожидающие блоки
     visitorsBlockUI.start();
 
@@ -50,7 +50,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, block
         console.log('Socket service:update:users:list');
 
         // Запрашиваем список чатов
-        socket.emit('chat:existed', { widget_uid: widget_uid });
+        socket.emit('chat:existed', { widget_uid: widget_uid, agent_uid: $scope.agent.uid });
         // Блокируем ожидающие блоки
         visitorsBlockUI.start();
     });

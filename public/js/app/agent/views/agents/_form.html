@@ -77,6 +77,20 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-3 control-label" translate>Period Visitors Render</label>
+            <div class="col-sm-9">
+                <label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="1" translate /> Session
+                </label>
+                <label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="2" translate /> Day
+                </label>
+                <label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="3" translate /> Week
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-3 control-label" translate>Accept chats</label>
             <div class="col-sm-9">
                 <label>

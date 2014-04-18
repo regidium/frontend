@@ -131,6 +131,7 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
             type: $scope.current_agent.type,
             status: $scope.current_agent.status,
             accept_chats: $scope.current_agent.accept_chats,
+            render_visitors_period: $scope.current_agent.render_visitors_period,
             uid: uid,
             widget_uid: widget_uid
         };
