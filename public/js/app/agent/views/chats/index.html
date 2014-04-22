@@ -4,7 +4,11 @@
     <div class="col-md-12">
         <div ng-repeat="chat in chats" class="col-md-2">
             <a href="" ng-click="selectChat(chat)">
-                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 60px; background-color: #BEBDBD">{{chat.user.ip}}</span>
+                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 60px; background-color: #BEBDBD">
+                {{chat.user.ip}}
+                <br/>
+                {#{(chat.messages|filter:!readed).length}#}
+                </span>
             </a>
         </div>
     </div>
