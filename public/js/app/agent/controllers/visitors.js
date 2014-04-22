@@ -16,7 +16,7 @@ function security($cookieStore) {
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, blockUI) {
+function AgentVisitorsCtrl($rootScope, $scope, $cookieStore, $location, socket, flash, blockUI) {
     // Получаем агента из cookie
     $scope.agent = security($cookieStore);
     var widget_uid = $scope.agent.widget.uid;
@@ -82,7 +82,7 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, block
 
         // Переносим чат из списка чатов онлайн в список покинувших сайт
         if ($scope.chats[data.chat_uid]) {
-            $scope.chats[data.chat_uid].status = 3;
+            $scope.chats[data.chat_uid].status = $rootScope.c.CHAT_STATUS_OFFLINE;
         }
     });
 
@@ -112,16 +112,39 @@ function AgentVisitorsCtrl($scope, $cookieStore, $location, socket, flash, block
 
     /** @todo убрать в сервис */
     $scope.getOsClass = function(os_string) {
-        if (os_string && os_string.indexOf('inux') != -1) {
-            return 'fa-linux';
-        } else if (os_string && os_string.indexOf('indows') != -1) {
-            return 'fa-windows';
-        } else if (os_string && os_string.indexOf('pple') != -1) {
-            return 'fa-apple';
-        } else if (os_string && os_string.indexOf('ndroid') != -1) {
-            return 'fa-android';
-        } else {
-            return 'fa-square-o';
+        if (os_string) {
+            os_string = os_string.toLowerCase()
+            if (os_string.indexOf('linux') != -1) {
+                return 'fa-linux';
+            } else if (os_string.indexOf('windows') != -1) {
+                return 'fa-windows';
+            } else if (os_string.indexOf('apple') != -1) {
+                return 'fa-apple';
+            } else if (os_string.indexOf('osx') != -1) {
+                return 'fa-apple';
+            } else if (os_string.indexOf('android') != -1) {
+                return 'fa-android';
+            } else {
+                return '';
+            }
+        }
+    }
+
+    /** @todo убрать в сервис */
+    $scope.getBrowserClass = function(browser_string) {
+        if (browser_string) {
+            browser_string = browser_string.toLowerCase()
+            if (browser_string.indexOf('chrome') != -1) {
+                return 'icon-chrome';
+            } else if (browser_string.indexOf('firefox') != -1) {
+                return 'icon-firefox';
+            } else if (browser_string.indexOf('opera') != -1) {
+                return 'icon-opera';
+            } else if (browser_string.indexOf('internet explorer') != -1) {
+                return 'icon-ie';
+            } else {
+                return '';
+            }
         }
     }
 }

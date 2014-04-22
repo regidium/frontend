@@ -48,6 +48,10 @@ img.avatar {
   word-wrap: break-word;
 }
 
+.well.message-spot p.not-readed {
+  background-color: #FFF;
+}
+
 footer {
   margin-top: 20px;
   text-align: center;

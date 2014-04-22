@@ -1,37 +1,37 @@
 <div class="col-md-12">
-    <h3>List of all visitors</h3>
+    <h3 translate>List of all visitors</h3>
     <div block-ui="visitorsBlockUI"></div>
     <div class="col-md-9">
         <accordion close-others="true">
             <accordion-group is-open="is_open1">
-                <accordion-heading translate>
-                    На сайте (<span>0</span>)
+                <accordion-heading>
+                    <span translate>On site</span> (<span>0</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open1, 'glyphicon-chevron-right': !is_open1}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == 1" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_ONLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | {{chat.page}}
                     </a>
                 </div>
             </accordion-group>
             <accordion-group is-open="is_open2" >
-                <accordion-heading translate>
-                    В чате (<span>0</span>)
+                <accordion-heading>
+                    <span translate>In chat</span> (<span>0</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open2, 'glyphicon-chevron-right': !is_open2}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == 2" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_CHATTING" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | {{chat.page}}
                     </a>
                 </div>
             </accordion-group>
             <accordion-group is-open="is_open3">
-                <accordion-heading translate>
-                    Покинули сайт (<span>0</span>)
+                <accordion-heading>
+                    <span translate>Left site</span> (<span>0</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open3, 'glyphicon-chevron-right': !is_open3}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == 3" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_OFFLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | {{chat.page}}
                     </a>
                 </div>
@@ -46,7 +46,7 @@
         </p>
         <p>
             <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
-            <span>{{current_chat.user.browser}}</span>
+            <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
         </p>
     </div>
 </div>

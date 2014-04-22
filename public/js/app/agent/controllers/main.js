@@ -12,6 +12,43 @@ function security($cookieStore) {
     window.location = '/login';
 }
 
+function AgentMenuCtrl($rootScope, $scope, $cookieStore, socket, sound) {
+    $scope.agent = security($cookieStore);
+    var widget_uid = $scope.agent.widget.uid;
+
+    $scope.new_messages = {};
+
+    socket.emit('chat:message:new:get', {
+        widget_uid: widget_uid
+    });
+
+    // Event сервер вернул список непрочитанных сообщений
+    socket.on('chat:message:new:list', function (data) {
+        console.log('Socket chat:message:new:list');
+
+        $scope.new_messages = data.new_messages;
+        $scope.new_messages_count = Object.keys($scope.new_messages).length;
+    });
+
+    // Пользователь написал сообщение
+    socket.on('chat:message:sended:user', function (data) {
+        console.log('Socket chat:message:sended:user');
+
+        /** @todo выбрать звук для уведомления */
+        //sound.play();
+        $scope.new_messages[data.message.uid] = data.message.uid;
+        $scope.new_messages_count = Object.keys($scope.new_messages).length;
+    });
+
+    // Агент прочел сообщение
+    socket.on('chat:message:readed:agent', function (data) {
+        console.log('Socket chat:message:readed:agent', data);
+
+        delete $scope.new_messages[data.message_uid];
+        $scope.new_messages_count = Object.keys($scope.chatting).length;
+    });
+};
+
 /**
  * @url "/logout"
  */

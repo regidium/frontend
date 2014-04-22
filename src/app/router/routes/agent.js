@@ -10,7 +10,7 @@ module.exports.agent = function (req, res) {
         }
 
     ], function (err, result) {
-        if (req.headers['xhr']) {
+        if (req.xhr) {
             res.send(result);
         } else {
             res.render('agent/index');

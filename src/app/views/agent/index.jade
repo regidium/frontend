@@ -1,37 +1,38 @@
 extends ../common/layout
 
 block header
-    .navbar-header
-        button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
-            span.sr-only(translate) Toggle navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-        a.navbar-brand(href="/agent", translate) Regidium
-    .collapse.navbar-collapse(role="navigation")
-        ul.nav.navbar-nav
-            li
-                span(ng-bind="chatting_count" class="label label-default") {{chatting_count}}
-            li
-                a(href="/agent/chats", translate) Chats
-            li
-                a(href="/agent/visitors", translate) Visitors
-            li
-                a(href="/agent/archives", translate) Archives
-            li
-                a(href="/agent/agents", translate) Agents
-            li
-                a(href="/agent/statistics", translate) Statistics
-            li.dropdown
-                a.dropdown-toggle(href="", data-toggle="dropdown", translate) Settings
-                ul.dropdown-menu
-                    li
-                        a(href="/agent/settings/widget") Widget
-                    li
-                        a(href="/agent/settings/productivity") Productivity
-        ul.nav.navbar-nav.navbar-right
-            li(ng-controller="AgentAuthLogoutCtrl")
-                a(href="", ng-click="logout()", translate) Logout
+    div(ng-controller="AgentMenuCtrl")
+        .navbar-header
+            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                span.sr-only(translate) Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href="/agent") Regidium
+        .collapse.navbar-collapse(role="navigation")
+            ul.nav.navbar-nav
+                li
+                    span(ng-bind="new_messages_count" class="label label-default") {{new_messages_count}}
+                li
+                    a(href="/agent/chats", translate) Chats
+                li
+                    a(href="/agent/visitors", translate) Visitors
+                li
+                    a(href="/agent/archives", translate) Archives
+                li
+                    a(href="/agent/agents", translate) Agents
+                li
+                    a(href="/agent/statistics", translate) Statistics
+                li.dropdown
+                    a.dropdown-toggle(href="", data-toggle="dropdown", translate) Settings
+                    ul.dropdown-menu
+                        li
+                            a(href="/agent/settings/widget") Widget
+                        li
+                            a(href="/agent/settings/productivity") Productivity
+            ul.nav.navbar-nav.navbar-right
+                li(ng-controller="AgentAuthLogoutCtrl")
+                    a(href="", ng-click="logout()", translate) Logout
 
 block content
     div(ng-controller="AgentCtrl")

@@ -1,9 +1,5 @@
 'use strict';
 
-var SENDER_TYPE_USER = 1;
-var SENDER_TYPE_AGENT = 2;
-var SENDER_TYPE_ROBOT = 3;
-
 function security($cookieStore) {
     var agent = $cookieStore.get('agent');
 
@@ -21,7 +17,7 @@ function security($cookieStore) {
  * @todo Внедрить пагинацию
  * @url "/agent/chats"
  */
-function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
+function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, blockUI) {
     // Получаем агента из cookie
     $scope.agent = security($cookieStore);
     var widget_uid = $scope.agent.widget.uid;
@@ -68,7 +64,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
     socket.on('chat:connected', function (data) {
         console.log('Socket chat:connected', data);
 
-        if (data.chat.status == 2) {
+        if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
             // Добавляем чат в список чатов онлайн
             $scope.chats[data.chat.uid] = data.chat;
         }
@@ -114,6 +110,17 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
         // Отсеиваем чужие оповещения
         if (data.agent.uid == $scope.agent.uid) {
             $scope.current_chat = data.chat;
+            if ($scope.current_chat.messages) {
+                angular.forEach($scope.current_chat.messages, function(message, key) {
+                    if (!message.readed) {
+                        socket.emit('chat:message:read:agent', {
+                            message_uid: message.uid,
+                            chat_uid: $scope.current_chat.uid,
+                            widget_uid: widget_uid
+                        });
+                    }
+                });
+            }
             // Разблокировка ожидающих блоков
             currentChatBlockUI.stop(); 
         }
@@ -134,7 +141,25 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
 
             // Добавляем сообщение в список сообщений
             $scope.current_chat.messages.push(data.message);
+
+            // Оповещаем слушаталей о прочтении сообщения агентом
+            socket.emit('chat:message:read:agent', {
+                event_send: true,
+                message_uid: data.message.uid,
+                chat_uid: data.chat_uid,
+                widget_uid: widget_uid
+            });
         }
+    });
+
+    socket.on('chat:message:readed:user', function (data) {
+        console.log('Socket chat:message:readed:user');
+
+        angular.forEach($scope.current_chat.messages, function(message) {
+            if (message.uid == data.message_uid) {
+                message.readed = true;
+            }
+        })
     });
 
     $scope.sendMessage = function () {
@@ -144,7 +169,7 @@ function AgentChatsCtrl($scope, $cookieStore, flash, socket, sound, blockUI) {
         }
 
         var message = {
-            sender_type: SENDER_TYPE_AGENT,
+            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_AGENT,
             created_at: (+new Date) / 1000,
             text: $scope.text
         };

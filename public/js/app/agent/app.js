@@ -51,7 +51,7 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($rootScope, $cookieStore, $translate, config, socket, flash) {
+    }]).run(function($rootScope, $cookieStore, $translate, config, socket, flash, sound) {
         /** @todo форматировать языки (ru_RU в ru) */
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
         $rootScope.lang = lang;
@@ -60,31 +60,34 @@
         var agent = $cookieStore.get('agent');
         socket.emit('agent:connect', { agent: agent, widget_uid: agent.widget.uid });
 
-        $rootScope.chatting = {};
-        $rootScope.chatting_count = 0;
+        // Константы
+        $rootScope.c = {};
 
-        // Оповещание о новом чате
-        socket.on('chat:connected', function (data) {
-            console.log('Socket chat:connected');
-            if (data.chat.status == 2 && !data.chat.agent) {
-                $rootScope.chatting[data.chat.uid] = data.chat.uid;
-                $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
-            }
-        });
-        // Оповещание о закрытии чата
-        socket.on('chat:disconnected', function (data) {
-            console.log('Socket chat:disconnected');
+        $rootScope.c.CHAT_STATUS_ONLINE   = 1;
+        $rootScope.c.CHAT_STATUS_CHATTING = 2;
+        $rootScope.c.CHAT_STATUS_OFFLINE  = 3;
+        $rootScope.c.CHAT_STATUS_ARCHIVED = 4; // @depricated
+        $rootScope.c.CHAT_STATUS_DELETED  = 5; // @depricated
 
-            delete $rootScope.chatting[data.chat_uid];
-            $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
-        });
-        // Агент подключился к чату
-        socket.on('chat:agent:entered', function (data) {
-            console.log('Socket chat:agent:entered', data);
+        $rootScope.c.TRIGGER_EVENT_WIDGET_CREATED = 1;
+        $rootScope.c.TRIGGER_EVENT_WORD_SEND = 2;
+        $rootScope.c.TRIGGER_EVENT_TIME_ONE_PAGE = 3;
+        $rootScope.c.TRIGGER_EVENT_VISIT_PAGE = 4;
+        $rootScope.c.TRIGGER_EVENT_VISIT_FROM_URL = 5;
+        $rootScope.c.TRIGGER_EVENT_VISIT_FROM_KEY_WORD = 6;
+        $rootScope.c.TRIGGER_EVENT_CHAT_OPENED = 7;
+        $rootScope.c.TRIGGER_EVENT_CHAT_CLOSED = 8;
+        $rootScope.c.TRIGGER_EVENT_MESSAGE_START = 9;
+        $rootScope.c.TRIGGER_EVENT_MESSAGE_SEND = 10;
 
-            delete $rootScope.chatting[data.chat.uid];
-            $rootScope.chatting_count = Object.keys($rootScope.chatting).length;
-        });
+        $rootScope.c.TRIGGER_RESULT_MESSAGE_SEND = 1;
+        $rootScope.c.TRIGGER_RESULT_AGENTS_ALERT = 2;
+        $rootScope.c.TRIGGER_RESULT_WIDGET_OPEN = 3;
+        $rootScope.c.TRIGGER_RESULT_WIDGET_BELL = 4;
+
+        $rootScope.c.MESSAGE_SENDER_TYPE_USER = 1;
+        $rootScope.c.MESSAGE_SENDER_TYPE_AGENT = 2;
+        $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT = 3;
     });
 
 })(angular);
