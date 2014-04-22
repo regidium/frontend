@@ -128,10 +128,7 @@ function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widget
     };
 
     $scope.new = function() {
-        console.log('new2');
-        $scope.current_trigger = {
-            uid: 'new'
-        };
+        $scope.current_trigger = {};
     }
 
     $scope.select = function(trigger) {
@@ -143,8 +140,12 @@ function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widget
     }
 
     $scope.submit = function(trigger) {
-        Widgets.saveTrigger({ uid: widget_uid, trigger_uid: trigger.uid }, $scope.current_trigger, function(data) {
-            if (trigger.uid == 'new') {
+        var trigger_uid = trigger.uid;
+        if (!trigger_uid) {
+            trigger_uid = 'new';
+        }
+        Widgets.saveTrigger({ uid: widget_uid, trigger_uid: trigger_uid }, $scope.current_trigger, function(data) {
+            if (trigger_uid == 'new') {
                 $scope.triggers.push(data);
             }
             delete $scope.current_trigger;
