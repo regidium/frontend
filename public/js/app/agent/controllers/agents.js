@@ -87,12 +87,6 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
         }
     });
 
-    // Получаем список агентов
-    // $scope.agents = Widgets.agents({ uid: agent.widget.uid }, function(data) {
-    //     // Делам текущим первого из списка
-    //     $scope.current_agent = $scope.agents[0];
-    // });
-
     // Выбираем агента
     $scope.select = function(agent) {
         $scope.disabled = true;

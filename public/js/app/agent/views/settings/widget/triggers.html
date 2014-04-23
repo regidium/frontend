@@ -1,6 +1,7 @@
 <div ng-include="'js/app/agent/views/settings/widget/_menu.html'"></div>
 
 <div class="col-md-9" role="main">
+    <div block-ui="triggerBlockUI"></div>
     <div class="content">
         <button ng-hide="current_trigger" type="button" class="btn btn-primary" ng-click="new()" translate>New</button>
         <button ng-show="current_trigger && current_trigger.uid != 'new'" type="button" class="btn btn-danger" ng-click="remove(current_trigger)" translate>Remove</button>

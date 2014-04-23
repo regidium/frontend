@@ -14,7 +14,7 @@ function security($cookieStore) {
 /**
  * @url "/agent/settings"
  */
-function AgentSettingsCtrl($scope, $cookieStore, Widgets) {
+function AgentSettingsCtrl($scope, $cookieStore) {
     security($cookieStore);
 }
 
@@ -28,42 +28,52 @@ function AgentSettingsWidgetCtrl($scope, $cookieStore) {
 /**
  * @url "/agent/widget/style"
  */
-function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, Widgets) {
+function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, socket, blockUI) {
     $scope.agent = security($cookieStore);
     $scope.settings = {};
     $scope.current_menu = 'style';
+    // Определяем блоки блокировки
+    var styleBlockUI = blockUI.instances.get('styleBlockUI');
+    var menuBlockUI = blockUI.instances.get('menuBlockUI');
 
-    Widgets.one({ uid: $scope.agent.widget.uid }, function(data) {
+    // Делаем запрос информации о виджете
+    socket.emit('widget:info:get', { widget_uid: $scope.agent.widget.uid });
+
+    // Блокируем ожидающие блоки
+    styleBlockUI.start();
+    menuBlockUI.start();
+
+    // Event сервер прислала информацию о виджете
+    socket.on('widget:info:sended', function(data) {
         $scope.settings = data.settings;
-    });
+
+        // Разблокировка ожидающих блоков
+        styleBlockUI.stop(); 
+        menuBlockUI.stop(); 
+    })
+
+    // Настройки стялей виджета изменены
+    socket.on('widget:setting:style:edited', function(data) {
+        $scope.settings = data.settings;
+    })
 
     $scope.submit = function() {
-        Widgets.saveSettings({ uid: $scope.agent.widget.uid }, $scope.settings);
+        // Сохраняем настройки
+        socket.emit('widget:setting:style:edit', { settings: $scope.settings, widget_uid: $scope.agent.widget.uid });
     }
-//    $scope.widget = Widgets.one({ uid: agent.widget..uid });
-
-/*    $scope.save = function() {
-        Widgets.edit({ 'uid': $scope.widget.uid }, $scope.widget, function(data) {
-            *//** @todo Обработка ошибок *//*
-            if (data && data.errors) {
-                console.log(data.errors);
-            } else {
-                $location.path('/agent/widgets');
-            }
-        });
-    };*/
 }
 
 /**
  * @url "/agent/widget/code"
  */
-function AgentSettingsWidgetCodeCtrl($scope, $cookieStore, $location, Widgets) {
+function AgentSettingsWidgetCodeCtrl($scope, $cookieStore, $location) {
     var agent = security($cookieStore);
     $scope.widget_uid = agent.widget.uid;
     $scope.current_menu = 'code';
 }
 
 /**
+ * @todo Убрать Widgets
  * @url "/agent/widget/pay"
  */
 function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
@@ -81,6 +91,7 @@ function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
 }
 
 /**
+ * @todo Убрать Widgets
  * @url "/agent/widget/plan"
  */
 function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
@@ -96,36 +107,128 @@ function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
 }
 
 /**
- * @url "/agent/widget/plan"
+ * @url "/agent/widget/triggers"
  */
-function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widgets) {
+function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $location, socket, blockUI, Widgets) {
     var agent = security($cookieStore);
     var widget_uid = agent.widget.uid;
     //$scope.current_trigger = {};
+    // Определяем блоки блокировки
+    var triggerBlockUI = blockUI.instances.get('triggerBlockUI');
+    var menuBlockUI = blockUI.instances.get('menuBlockUI');
 
-    Widgets.getTriggers({uid: widget_uid}, function(data) {
-        $scope.triggers = data;
-    });
+    // Делаем запрос информации о виджете
+    socket.emit('widget:info:get', { widget_uid: agent.widget.uid });
+
+    // Блокируем ожидающие блоки
+    triggerBlockUI.start();
+    menuBlockUI.start();
+
+    // Event сервер прислала информацию о виджете
+    socket.on('widget:info:sended', function(data) {
+        $scope.triggers = data.triggers;
+
+        // Разблокировка ожидающих блоков
+        triggerBlockUI.stop(); 
+        menuBlockUI.stop(); 
+    })
+
+    // Настройки триггеров виджета изменены
+    socket.on('widget:setting:triggers:edited', function(data) {
+        var exists = false;
+        var triggers = [];
+
+        angular.forEach($scope.triggers, function(trigger) {
+            if (trigger.uid == data.trigger.uid) {
+                trigger = data.trigger;
+                this.push(trigger)
+                exists = true;
+            }
+        }, triggers);
+        $scope.triggers = triggers;
+
+        if (exists == false) {
+            $scope.triggers.push(data.trigger);
+        }
+    })
+
+    // Триггер удален
+    socket.on('widget:setting:triggers:removed', function(data) {
+        angular.forEach($scope.triggers, function(trigger) {
+            if (trigger.uid == data.trigger_uid) {
+                $scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
+            }
+        });
+
+        if ($scope.current_trigger.uid == data.trigger_uid) {
+            delete $scope.current_trigger;
+        }
+    })
+
+    /** @todo Избавится от new */
+    $scope.submit = function() {
+        var trigger_uid = $scope.current_trigger.uid;
+        if (!trigger_uid) {
+            trigger_uid = 'new';
+        }
+        
+        // Сохраняем триггер
+        socket.emit('widget:setting:triggers:edit', { trigger: $scope.current_trigger, trigger_uid: trigger_uid, widget_uid: agent.widget.uid });
+
+        // Добавляем новый триггер в список триггеров
+        // if (trigger_uid == 'new') {
+        //     $scope.triggers.push(trigger);
+        // }
+
+        delete $scope.current_trigger;
+    }
+
+    $scope.remove = function(trigger) {
+        // Удаляем триггер
+        socket.emit('widget:setting:triggers:remove', { trigger_uid: trigger.uid, widget_uid: agent.widget.uid });
+
+        $scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
+        delete $scope.current_trigger;
+    }
 
     $scope.events = {
-        1: {name: 'EVENT_WIDGET_CREATED', param: false },
-        2: {name: 'EVENT_WORD_SEND', param: true },
-        3: {name: 'EVENT_TIME_ONE_PAGE', param: true },
-        4: {name: 'EVENT_VISIT_PAGE', param: true },
-        5: {name: 'EVENT_VISIT_FROM_URL', param: true },
-        6: {name: 'EVENT_VISIT_FROM_KEY_WORD', param: true },
-        7: {name: 'EVENT_CHAT_OPENED', param: false },
-        8: {name: 'EVENT_CHAT_CLOSED', param: false },
-        9: {name: 'EVENT_MESSAGE_START', param: false },
-        10: {name: 'EVENT_MESSAGE_SEND', param: false }
+        1: {name: 'WIDGET CREATED', param: false },
+        2: {name: 'WORD SEND', param: true },
+        3: {name: 'TIME ONE PAGE', param: true },
+        4: {name: 'VISIT PAGE', param: true },
+        5: {name: 'VISIT FROM URL', param: true },
+        6: {name: 'VISIT FROM KEYWORD', param: true },
+        7: {name: 'WIDGET OPENED', param: false },
+        8: {name: 'WIDGET CLOSED', param: false },
+        9: {name: 'MESSAGE START', param: false },
+        10: {name: 'MESSAGE SEND', param: false }
     };
 
     $scope.results = {
-        1: {name: 'RESULT_MESSAGE_SEND', param: true },
-        2: {name: 'RESULT_OPERATORS_ALERT', param: false },
-        3: {name: 'RESULT_WIDGET_OPEN', param: false },
-        4: {name: 'RESULT_WIDGET_BELL', param: false }
+        1: {name: 'SEND MESSAGE', param: true },
+        2: {name: 'ALERT OPERATORS', param: false },
+        3: {name: 'OPEN WIDGET', param: false },
+        4: {name: 'BELL WIDGET', param: false }
     };
+    // $scope.events = {
+    //     $rootScope.c.TRIGGER_EVENT_WIDGET_CREATED: {name: 'WIDGET CREATED', param: false },
+    //     $rootScope.c.TRIGGER_EVENT_WORD_SEND: {name: 'WORD SEND', param: true },
+    //     $rootScope.c.TRIGGER_EVENT_TIME_ONE_PAGE: {name: 'TIME ONE PAGE', param: true },
+    //     $rootScope.c.TRIGGER_EVENT_VISIT_PAGE: {name: 'VISIT PAGE', param: true },
+    //     $rootScope.c.TRIGGER_EVENT_VISIT_FROM_URL: {name: 'VISIT FROM URL', param: true },
+    //     $rootScope.c.TRIGGER_EVENT_VISIT_FROM_KEY_WORD: {name: 'VISIT FROM KEYWORD', param: true },
+    //     $rootScope.c.TRIGGER_EVENT_CHAT_OPENED: {name: 'WIDGET OPENED', param: false },
+    //     $rootScope.c.TRIGGER_EVENT_CHAT_CLOSED: {name: 'WIDGET CLOSED', param: false },
+    //     $rootScope.c.TRIGGER_EVENT_MESSAGE_START: {name: 'MESSAGE START', param: false },
+    //     $rootScope.c.TRIGGER_EVENT_MESSAGE_SEND: {name: 'MESSAGE SEND', param: false }
+    // };
+
+    // $scope.results = {
+    //     $rootScope.c.TRIGGER_RESULT_MESSAGE_SEND: {name: 'SEND MESSAGE', param: true },
+    //     $rootScope.c.TRIGGER_RESULT_AGENTS_ALERT: {name: 'ALERT OPERATORS', param: false },
+    //     $rootScope.c.TRIGGER_RESULT_WIDGET_OPEN: {name: 'OPEN WIDGET', param: false },
+    //     $rootScope.c.TRIGGER_RESULT_WIDGET_BELL: {name: 'BELL WIDGET', param: false }
+    // };
 
     $scope.new = function() {
         $scope.current_trigger = {};
@@ -135,28 +238,8 @@ function AgentSettingsWidgetTriggersCtrl($scope, $cookieStore, $location, Widget
         $scope.current_trigger = trigger;
     }
 
-    $scope.close = function(trigger) {
+    $scope.close = function() {
         delete $scope.current_trigger;
-    }
-
-    $scope.submit = function(trigger) {
-        var trigger_uid = trigger.uid;
-        if (!trigger_uid) {
-            trigger_uid = 'new';
-        }
-        Widgets.saveTrigger({ uid: widget_uid, trigger_uid: trigger_uid }, $scope.current_trigger, function(data) {
-            if (trigger_uid == 'new') {
-                $scope.triggers.push(data);
-            }
-            delete $scope.current_trigger;
-        });
-    }
-
-    $scope.remove = function(trigger) {
-        Widgets.deleteTrigger({ uid: widget_uid, trigger_uid: trigger.uid }, {}, function(data) {
-            $scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
-            delete $scope.current_trigger;
-        });
     }
 }
 
