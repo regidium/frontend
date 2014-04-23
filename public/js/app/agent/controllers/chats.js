@@ -162,6 +162,19 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
         })
     });
 
+    $scope.leaveChat = function () {
+        if ($scope.current_chat && $scope.current_chat.uid) {
+            // Оповещаем слушаталей о выходе агента из чата
+            socket.emit('chat:agent:leave', {
+                agent: $scope.agent,
+                chat_uid: $scope.current_chat.uid,
+                widget_uid: widget_uid
+            });
+
+            delete $scope.current_chat;
+        }
+    }
+
     $scope.sendMessage = function () {
         // Блокируем отправку пустых сообщений
         if ($scope.text.length == 0) {
@@ -192,22 +205,3 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
         $scope.text = '';
     };
 }
-
-/**
- * @url "/agent/chat/:uid"
- * @todo REFACTORING!!!
- */
-/*
-function AgentChatCtrl($scope, $cookieStore, $routeParams, flash, socket, sound) {
-    // Получаем агента из cookie
-    $scope.agent = security($cookieStore);
-    var widget_uid = $scope.agent.widget.uid;
-
-    //$scope.agent = $scope.agent;
-    $scope.text = '';
-    $scope.chat = { uid: $routeParams.uid };
-    $scope.chat.messages = [];
-
-    // Подключаем агента к чату
-    socket.emit('chat:agent:enter', { agent: $scope.agent, chat_uid: $routeParams.uid, widget_uid: widget_uid });
-}*/
