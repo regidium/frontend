@@ -160,7 +160,7 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
             }
         });
 
-        if ($scope.current_trigger.uid == data.trigger_uid) {
+        if ($scope.current_trigger && $scope.current_trigger.uid == data.trigger_uid) {
             delete $scope.current_trigger;
         }
     })
