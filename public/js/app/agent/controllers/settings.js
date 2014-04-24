@@ -183,11 +183,11 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
         delete $scope.current_trigger;
     }
 
-    $scope.remove = function(trigger) {
+    $scope.remove = function() {
         // Удаляем триггер
-        socket.emit('widget:setting:triggers:remove', { trigger_uid: trigger.uid, widget_uid: agent.widget.uid });
+        socket.emit('widget:setting:triggers:remove', { trigger_uid: $scope.current_trigger.uid, widget_uid: agent.widget.uid });
 
-        $scope.triggers.splice($scope.triggers.indexOf(trigger), 1);
+        $scope.triggers.splice($scope.triggers.indexOf($scope.current_trigger), 1);
         delete $scope.current_trigger;
     }
 
