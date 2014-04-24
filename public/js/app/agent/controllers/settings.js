@@ -171,9 +171,18 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
         if (!trigger_uid) {
             trigger_uid = 'new';
         }
+
+        var trigger = {
+            name: $scope.current_trigger.name,
+            priority: $scope.current_trigger.priority,
+            event: $scope.current_trigger.event,
+            event_params: $scope.current_trigger.event_params,
+            result: $scope.current_trigger.result,
+            result_params: $scope.current_trigger.result_params,
+        }
         
         // Сохраняем триггер
-        socket.emit('widget:setting:triggers:edit', { trigger: $scope.current_trigger, trigger_uid: trigger_uid, widget_uid: agent.widget.uid });
+        socket.emit('widget:setting:triggers:edit', { trigger: trigger, trigger_uid: trigger_uid, widget_uid: agent.widget.uid });
 
         // Добавляем новый триггер в список триггеров
         // if (trigger_uid == 'new') {
