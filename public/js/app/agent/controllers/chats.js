@@ -104,6 +104,10 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
         $scope.text = '';
         $scope.current_chat = chat;
 
+        if ($scope.current_chat.current_url) {
+            $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+        }
+
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', {
             agent: $rootScope.agent,

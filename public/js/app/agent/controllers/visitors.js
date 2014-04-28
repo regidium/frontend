@@ -81,6 +81,9 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
     $scope.selectChat = function(chat) {
         // Устанавливеам текущий выбранный чат
         $scope.current_chat = chat;
+        if ($scope.current_chat.current_url) {
+            $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+        }
     }
 
     // Начало чата с пользователем
