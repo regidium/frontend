@@ -1,25 +1,11 @@
 'use strict';
 
-function security($cookieStore) {
-    var agent = $cookieStore.get('agent');
-
-    if (agent) {
-        agent.first_name= decodeURIComponent(agent.first_name);
-        agent.last_name= decodeURIComponent(agent.last_name);
-        return agent;
-    }
-
-    window.location = '/login';
-}
-
 /**
  * @todo Внедрить пагинацию
  * @todo Разделять online & offline
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, blockUI) {
-    var agent = security($cookieStore);
-    var widget_uid = agent.widget.uid;
+function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -32,7 +18,7 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
     $scope.current_agent = {};
 
     // Запрашиваем список агентов
-    socket.emit('agent:existed', { widget_uid: widget_uid });
+    socket.emit('agent:existed', { widget_uid: $rootScope.widget.uid });
     // Блокируем ожидающие блоки
     agentBlockUI.start();
     menuBlockUI.start();
@@ -127,11 +113,11 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
             accept_chats: $scope.current_agent.accept_chats,
             render_visitors_period: $scope.current_agent.render_visitors_period,
             uid: uid,
-            widget_uid: widget_uid
+            widget_uid: $rootScope.widget.uid
         };
 
         // Отправляем событие сохранения агента
-        socket.emit('agent:save', { agent: agent_data, widget_uid: widget_uid });
+        socket.emit('agent:save', { agent: agent_data, widget_uid: $rootScope.widget.uid });
 
         // Блокируем редактирование формы
         $scope.disabled = true;
@@ -148,16 +134,10 @@ function AgentAgentsCtrl($scope, $cookieStore, $location, flash, sha1, socket, b
             if (confirm('Are you sure you want to remove this agent?')) {
 
                 // Отправляем событие сохранения агента
-                socket.emit('agent:remove', { agent_uid: $scope.current_agent.uid, widget_uid: widget_uid });
+                socket.emit('agent:remove', { agent_uid: $scope.current_agent.uid, widget_uid: $rootScope.widget.uid });
 
                 $scope.current_agent = $scope.agents[0];
                 $scope.disabled = true;
-
-                // Agents.remove({ 'uid': agent.uid }, agent.uid, function() {
-                //     /** @todo Обработка ошибок */
-                //     flash.success = 'Agent success removed';
-                //     $scope.agents.splice($scope.agents.indexOf(agent), 1);
-                // });
             }
         } else {
             flash.success = 'Владелец виджета не может быть удален!';

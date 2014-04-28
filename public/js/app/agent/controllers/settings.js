@@ -1,35 +1,21 @@
 'use strict';
 
-function security($cookieStore) {
-    var agent = $cookieStore.get('agent');
-
-    if (agent) {
-        agent.first_name = decodeURIComponent(agent.first_name);
-        return agent;
-    }
-
-    window.location = '/login';
-}
-
 /**
  * @url "/agent/settings"
  */
-function AgentSettingsCtrl($scope, $cookieStore) {
-    security($cookieStore);
+function AgentSettingsCtrl($scope) {
 }
 
 /**
  * @url "/agent/settings/widget"
  */
-function AgentSettingsWidgetCtrl($scope, $cookieStore) {
-    security($cookieStore);
+function AgentSettingsWidgetCtrl($scope) {
 }
 
 /**
  * @url "/agent/widget/style"
  */
-function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, socket, blockUI) {
-    $scope.agent = security($cookieStore);
+function AgentSettingsWidgetStyleCtrl($rootScope, $scope, socket, blockUI) {
     $scope.settings = {};
     $scope.current_menu = 'style';
     // Определяем блоки блокировки
@@ -37,7 +23,7 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, socket, blockUI) {
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
 
     // Делаем запрос информации о виджете
-    socket.emit('widget:info:get', { widget_uid: $scope.agent.widget.uid });
+    socket.emit('widget:info:get', { widget_uid: $rootScope.widget.uid });
 
     // Блокируем ожидающие блоки
     styleBlockUI.start();
@@ -59,66 +45,59 @@ function AgentSettingsWidgetStyleCtrl($scope, $cookieStore, socket, blockUI) {
 
     $scope.submit = function() {
         // Сохраняем настройки
-        socket.emit('widget:setting:style:edit', { settings: $scope.settings, widget_uid: $scope.agent.widget.uid });
+        socket.emit('widget:setting:style:edit', { settings: $scope.settings, widget_uid: $rootScope.widget.uid });
     }
 }
 
 /**
  * @url "/agent/widget/code"
  */
-function AgentSettingsWidgetCodeCtrl($scope, $cookieStore, $location) {
-    var agent = security($cookieStore);
-    $scope.widget_uid = agent.widget.uid;
+function AgentSettingsWidgetCodeCtrl($rootScope, $scope) {
+    $scope.widget_uid = $rootScope.widget.uid;
     $scope.current_menu = 'code';
 }
 
 /**
- * @todo Убрать Widgets
+ * @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
  * @url "/agent/widget/pay"
  */
-function AgentSettingsWidgetPayCtrl($scope, $cookieStore, $location, Widgets) {
-    var agent = security($cookieStore);
+function AgentSettingsWidgetPayCtrl($rootScope, $scope, $location, socket) {
     $scope.pay = {};
     $scope.current_menu = 'pay';
 
     $scope.submit = function() {
         alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
-        Widgets.pay({}, { uid: agent.widget.uid, payment_method: $scope.pay.payment_method, amount: $scope.pay.amount }, function(data) {
-            // @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
-            $location.path('/agent/settings/widget');
-        });
+
+        socket.emit('widget:payment:made', { pay: $scope.pay, widget_uid: $rootScope.widget.uid });
+
+        $location.path('/agent/settings/widget');
     }
 }
 
 /**
- * @todo Убрать Widgets
  * @url "/agent/widget/plan"
  */
-function AgentSettingsWidgetPlanCtrl($scope, $cookieStore, $location, Widgets) {
-    var agent = security($cookieStore);
-    $scope.widget = {};
+function AgentSettingsWidgetPlanCtrl($rootScope, $scope, $location, socket) {
+    $scope.plan = $rootScope.widget.plan;
     $scope.current_menu = 'plan';
 
     $scope.submit = function() {
-        Widgets.plan({}, { uid: agent.widget.uid, plan: $scope.widget.plan }, function(data) {
-            $location.path('/agent/settings/widget');
-        });
+        socket.emit('widget:plan:change', { plan: $scope.plan, widget_uid: $rootScope.widget.uid });
+
+        $location.path('/agent/settings/widget');
     }
 }
 
 /**
  * @url "/agent/widget/triggers"
  */
-function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $location, socket, blockUI, Widgets) {
-    var agent = security($cookieStore);
-    var widget_uid = agent.widget.uid;
-    //$scope.current_trigger = {};
+function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, socket, blockUI) {
     // Определяем блоки блокировки
     var triggerBlockUI = blockUI.instances.get('triggerBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
 
     // Делаем запрос информации о виджете
-    socket.emit('widget:info:get', { widget_uid: agent.widget.uid });
+    socket.emit('widget:info:get', { widget_uid: $rootScope.widget.uid });
 
     // Блокируем ожидающие блоки
     triggerBlockUI.start();
@@ -179,11 +158,11 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
             event: $scope.current_trigger.event,
             event_params: $scope.current_trigger.event_params,
             result: $scope.current_trigger.result,
-            result_params: $scope.current_trigger.result_params,
+            result_params: $scope.current_trigger.result_params
         }
         
         // Сохраняем триггер
-        socket.emit('widget:setting:triggers:edit', { trigger: trigger, widget_uid: agent.widget.uid });
+        socket.emit('widget:setting:triggers:edit', { trigger: trigger, widget_uid: $rootScope.widget.uid });
 
         // Добавляем новый триггер в список триггеров
         // if (trigger_uid == 'new') {
@@ -195,7 +174,7 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
 
     $scope.remove = function() {
         // Удаляем триггер
-        socket.emit('widget:setting:triggers:remove', { trigger_uid: $scope.current_trigger.uid, widget_uid: agent.widget.uid });
+        socket.emit('widget:setting:triggers:remove', { trigger_uid: $scope.current_trigger.uid, widget_uid: $rootScope.widget.uid });
 
         $scope.triggers.splice($scope.triggers.indexOf($scope.current_trigger), 1);
         delete $scope.current_trigger;
@@ -257,6 +236,5 @@ function AgentSettingsWidgetTriggersCtrl($rootScope, $scope, $cookieStore, $loca
  * @todo
  * @url "/agent/settings/productivity"
  */
-function AgentSettingsProductivityCtrl($scope, $cookieStore) {
-    security($cookieStore);
+function AgentSettingsProductivityCtrl($scope) {
 }

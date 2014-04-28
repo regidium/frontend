@@ -36,7 +36,6 @@ head.load(
     "/js/app/common/config/config.js",
     "/js/app/common/services.js",
     "/js/app/common/directives.js",
-    "/js/app/common/models.js",
     function() {
         console.log("Done loading agent JS");
     }

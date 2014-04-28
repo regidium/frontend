@@ -1,35 +1,21 @@
 'use strict';
 
-function security($cookieStore) {
-    var agent = $cookieStore.get('agent');
-
-    if (agent) {
-        agent.first_name = decodeURIComponent(agent.first_name);
-        agent.last_name = decodeURIComponent(agent.last_name);
-
-        return agent;
-    }
-
-    window.location = '/login';
-}
-
 /**
  * @todo Внедрить пагинацию
  * @url "/agent/chats"
  */
-function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, blockUI) {
-    // Получаем агента из cookie
-    $scope.agent = security($cookieStore);
-    var widget_uid = $scope.agent.widget.uid;
+function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, blockUI) {
     // Определяем блоки блокировки
     var chatsBlockUI = blockUI.instances.get('chatsBlockUI');
     var currentChatBlockUI = blockUI.instances.get('currentChatBlockUI');
+
+    var timeouts = {};
 
     // Резервируем $scope переменную для списка онлайн чатов
     $scope.chats = {};
 
     // Запрашиваем список чатов онлайн
-    socket.emit('chat:online', { widget_uid: widget_uid });
+    socket.emit('chat:online', { widget_uid: $rootScope.widget.uid });
     // Блокируем ожидающие блоки
     chatsBlockUI.start();
 
@@ -53,7 +39,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
         // Если агент не ведет беседу
         if (!$scope.current_chat) {
             // Запрашиваем список чатов онлайн
-            socket.emit('chat:online', { widget_uid: widget_uid });
+            socket.emit('chat:online', { widget_uid: $rootScope.widget.uid });
             // Блокируем ожидающие блоки
             chatsBlockUI.start();
         }
@@ -64,9 +50,19 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
     socket.on('chat:connected', function (data) {
         console.log('Socket chat:connected', data);
 
+        var message = {
+            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
+            created_at: (+new Date) / 1000,
+            text: 'User back to site'
+        };
+
         if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
             // Добавляем чат в список чатов онлайн
             $scope.chats[data.chat.uid] = data.chat;
+        }
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat.uid) {
+            $scope.current_chat.messages.push(message);
         }
     });
 
@@ -74,12 +70,28 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
     socket.on('chat:disconnected', function (data) {
         console.log('Socket chat:disconnected', data);
 
-/*        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
-            delete $scope.current_chat.uid;
-        }*/
+        // if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+        //     delete $scope.current_chat.uid;
+        // }
 
         // Удаляем чат из списка чатов онлайн
-        delete $scope.chats[data.chat_uid];
+        //delete $scope.chats[data.chat_uid];
+
+        timeouts[data.chat_uid] = $timeout(function() {
+            var message = {
+                sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
+                created_at: (+new Date) / 1000,
+                text: 'User leave site'
+            };
+
+            if ($scope.chats[data.chat_uid]) {
+                $scope.chats[data.chat_uid].messages.push(message);
+            }
+
+            if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+                $scope.current_chat.messages.push(message);
+            }
+        }, 500);
     });
 
     // Пользователь закрыл чат
@@ -94,9 +106,9 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
 
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', {
-            agent: $scope.agent,
+            agent: $rootScope.agent,
             chat: $scope.current_chat,
-            widget_uid: widget_uid
+            widget_uid: $rootScope.widget.uid
         });
 
         // Блокируем ожидающие блоки
@@ -108,7 +120,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
         console.log('Socket chat:agent:entered', data);
 
         // Отсеиваем чужие оповещения
-        if (data.agent.uid == $scope.agent.uid) {
+        if (data.agent.uid == $rootScope.agent.uid) {
             $scope.current_chat = data.chat;
             if ($scope.current_chat.messages) {
                 angular.forEach($scope.current_chat.messages, function(message, key) {
@@ -116,7 +128,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
                         socket.emit('chat:message:read:agent', {
                             message_uid: message.uid,
                             chat_uid: $scope.current_chat.uid,
-                            widget_uid: widget_uid
+                            widget_uid: $rootScope.widget.uid
                         });
                     }
                 });
@@ -133,7 +145,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
         // Отсеиваем чужие оповещения
         if ($scope.current_chat && data.chat_uid == $scope.current_chat.uid) {
             // Проигрываем звуковое уводомление
-            sound.play();
+            sound.play('chat');
 
             if(!$scope.current_chat.messages) {
                 $scope.current_chat.messages = [];
@@ -147,7 +159,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
                 event_send: true,
                 message_uid: data.message.uid,
                 chat_uid: data.chat_uid,
-                widget_uid: widget_uid
+                widget_uid: $rootScope.widget.uid
             });
         }
     });
@@ -159,16 +171,30 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
             if (message.uid == data.message_uid) {
                 message.readed = true;
             }
-        })
+        });
     });
+
+    // Изменен URL чата
+    socket.on('chat:url:change', function (data) {
+        console.log('Socket chat:url:change', data);
+
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].current_url = data.new_url;
+        }
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            $scope.current_chat.current_url = data.new_url;
+        }
+    });
+
 
     $scope.leaveChat = function () {
         if ($scope.current_chat && $scope.current_chat.uid) {
             // Оповещаем слушаталей о выходе агента из чата
             socket.emit('chat:agent:leave', {
-                agent: $scope.agent,
+                agent: $rootScope.agent,
                 chat_uid: $scope.current_chat.uid,
-                widget_uid: widget_uid
+                widget_uid: $rootScope.widget.uid
             });
 
             delete $scope.current_chat;
@@ -189,7 +215,7 @@ function AgentChatsCtrl($rootScope, $scope, $cookieStore, flash, socket, sound, 
 
         // Оповещаем об отпраке сообщения
         socket.emit('chat:message:send:agent', {
-            widget_uid: widget_uid,
+            widget_uid: $rootScope.widget.uid,
             chat_uid: $scope.current_chat.uid,
             message: message
         });

@@ -57,8 +57,15 @@
         $rootScope.lang = lang;
         $translate.uses(lang);
 
-        var agent = $cookieStore.get('agent');
-        socket.emit('agent:connect', { agent: agent, widget_uid: agent.widget.uid });
+        $rootScope.agent = $cookieStore.get('agent');
+        if ($rootScope.agent) {
+            $rootScope.agent.first_name = decodeURIComponent($rootScope.agent.first_name);
+            $rootScope.agent.last_name = decodeURIComponent($rootScope.agent.last_name);
+        } else {
+            window.location = '/login';
+        }
+        socket.emit('agent:connect', { agent: $rootScope.agent, widget_uid: $rootScope.agent.widget.uid });
+        $rootScope.widget = $rootScope.agent.widget;
 
         // Константы
         $rootScope.c = {};

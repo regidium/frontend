@@ -1,25 +1,10 @@
 'use strict';
 
-function security($cookieStore) {
-    var agent = $cookieStore.get('agent');
-
-    if (agent) {
-        agent.first_name = decodeURIComponent(agent.first_name);
-        agent.last_name = decodeURIComponent(agent.last_name);
-        return agent;
-    }
-
-    window.location = '/login';
-}
-
 /**
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($rootScope, $scope, $cookieStore, $location, socket, flash, blockUI) {
-    // Получаем агента из cookie
-    $scope.agent = security($cookieStore);
-    var widget_uid = $scope.agent.widget.uid;
+function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var visitorsBlockUI = blockUI.instances.get('visitorsBlockUI');
 
@@ -28,7 +13,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $cookieStore, $location, socket, 
     $scope.current_chat = {};
 
     // Запрашиваем список чатов
-    socket.emit('chat:existed', { widget_uid: widget_uid, agent_uid: $scope.agent.uid });
+    socket.emit('chat:existed', { widget_uid: $rootScope.widget.uid, agent_uid: $rootScope.agent.uid });
     // Блокируем ожидающие блоки
     visitorsBlockUI.start();
 
@@ -50,7 +35,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $cookieStore, $location, socket, 
         console.log('Socket service:update:users:list');
 
         // Запрашиваем список чатов
-        socket.emit('chat:existed', { widget_uid: widget_uid, agent_uid: $scope.agent.uid });
+        socket.emit('chat:existed', { widget_uid: $rootScope.widget.uid, agent_uid: $rootScope.agent.uid });
         // Блокируем ожидающие блоки
         visitorsBlockUI.start();
     });
@@ -104,9 +89,9 @@ function AgentVisitorsCtrl($rootScope, $scope, $cookieStore, $location, socket, 
         $location.path('/agent/chats');
         // Подключаем агента к чату
         socket.emit('chat:agent:enter', {
-            agent: $scope.agent,
+            agent: $rootScope.agent,
             chat: current_chat,
-            widget_uid: widget_uid
+            widget_uid: $rootScope.widget.uid
         });
     }
 
