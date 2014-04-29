@@ -22,10 +22,12 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Получаем список чатов онлайн
     socket.on('chat:online:list', function(data) {
-        console.log('Socket chat:online:list', data);
+        $rootScope.log('Socket chat:online:list', data);
 
         // Наполняем список чатов онлайн
-        angular.forEach(data.chats, function(chat){
+        angular.forEach(data.chats, function(chat) {
+            chat.current_url = decodeURIComponent(chat.current_url);
+
             $scope.chats[chat.uid] = chat;
         });
 
@@ -35,7 +37,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Event сервер оповестил о необходимости обновить список пользователей
     socket.on('service:update:users:list', function (data) {
-        console.log('Socket service:update:users:list');
+        $rootScope.log('Socket service:update:users:list');
 
         // Если агент не ведет беседу
         if (!$scope.current_chat) {
@@ -49,7 +51,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
     // Чат подключен
     /** @todo Фильтруются ли по статусу? */
     socket.on('chat:connected', function (data) {
-        console.log('Socket chat:connected', data);
+        $rootScope.log('Socket chat:connected', data);
 
         var message = {
             sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
@@ -69,7 +71,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Чат отключен
     socket.on('chat:disconnected', function (data) {
-        console.log('Socket chat:disconnected', data);
+        $rootScope.log('Socket chat:disconnected', data);
 
         // if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
         //     delete $scope.current_chat.uid;
@@ -98,7 +100,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
     // Пользователь закрыл чат
     /** @todo */
     socket.on('chat:ended', function (data) {
-        console.log('Socket chat:ended');
+        $rootScope.log('Socket chat:ended');
     });
 
     $scope.selectChat = function(chat) {
@@ -122,7 +124,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Агент подключен к чату
     socket.on('chat:agent:entered', function (data) {
-        console.log('Socket chat:agent:entered', data);
+        $rootScope.log('Socket chat:agent:entered', data);
 
         // Отсеиваем чужие оповещения
         if (data.agent.uid == $rootScope.agent.uid) {
@@ -145,7 +147,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Пользователь написал сообщение
     socket.on('chat:message:sended:user', function (data) {
-        console.log('Socket chat:message:sended:user');
+        $rootScope.log('Socket chat:message:sended:user');
 
         // Отсеиваем чужие оповещения
         if ($scope.current_chat && data.chat_uid == $scope.current_chat.uid) {
@@ -172,7 +174,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
     });
 
     socket.on('chat:message:readed:user', function (data) {
-        console.log('Socket chat:message:readed:user');
+        $rootScope.log('Socket chat:message:readed:user');
 
         angular.forEach($scope.current_chat.messages, function(message) {
             if (message.uid == data.message_uid) {
@@ -183,7 +185,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
 
     // Изменен URL чата
     socket.on('chat:url:change', function (data) {
-        console.log('Socket chat:url:change', data);
+        $rootScope.log('Socket chat:url:change', data);
 
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].current_url = data.new_url;

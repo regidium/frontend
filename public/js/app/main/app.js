@@ -29,7 +29,9 @@
             suffix: '.json'
         });
 
-        $translateProvider.useMissingTranslationHandlerLog();
+        if (env == 'development') {
+            $translateProvider.useMissingTranslationHandlerLog();
+        }
 
         $translateProvider.useLocalStorage();
         $translateProvider.preferredLanguage('en');
@@ -38,14 +40,21 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($http, $rootScope, $translate) {
+    }]).run(function($http, $rootScope, $translate, $http) {
+        $rootScope.env = env || 'production';
+
         $http.defaults.headers.common.xhr = true;
+
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
-        if (lang.length > 2) {
-            lang = lang.substring(0, 2);
-        }
+        lang = lang.substring(0, 2);
         $rootScope.lang = lang;
         $translate.uses(lang);
+
+        $rootScope.log = function(text) {
+            if ($rootScope.env) {
+                console.log(text);
+            }
+        }
     });
 
 })(angular);

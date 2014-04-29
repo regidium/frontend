@@ -10,7 +10,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Event сервер вернул список непрочитанных сообщений
     socket.on('widget:message:new:list', function (data) {
-        console.log('Socket widget:message:new:list');
+        $rootScope.log('Socket widget:message:new:list');
 
         $scope.new_messages = data.new_messages;
         $scope.new_messages_count = Object.keys($scope.new_messages).length;
@@ -18,7 +18,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Пользователь написал сообщение
     socket.on('chat:message:sended:user', function (data) {
-        console.log('Socket chat:message:sended:user');
+        $rootScope.log('Socket chat:message:sended:user');
 
         /** @todo выбрать звук для уведомления */
         //soundBeep.play();
@@ -28,7 +28,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Агент прочел сообщение
     socket.on('chat:message:readed:agent', function (data) {
-        console.log('Socket chat:message:readed:agent', data);
+        $rootScope.log('Socket chat:message:readed:agent', data);
 
         delete $scope.new_messages[data.message_uid];
         $scope.new_messages_count = Object.keys($scope.chatting).length;

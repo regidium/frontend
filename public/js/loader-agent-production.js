@@ -1,12 +1,14 @@
+var env = 'production';
+
 head.load(
     // Common
-    "//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js",
-    "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js",
-    "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js",
-    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js",
-    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js",
-    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js",
-    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/jquery/2.10.0/jquery.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js",
+    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js",
+    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js",
+    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js",
+    "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js",
     "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.min.js",
     "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js",
     "/js/libs/angular/angular-translate/angular-translate.min.js",

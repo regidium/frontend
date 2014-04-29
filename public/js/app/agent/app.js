@@ -41,8 +41,9 @@
             suffix: '.json'
         });
 
-        /** @todo включить для перевода */
-        //$translateProvider.useMissingTranslationHandlerLog();
+        if (env == 'development') {
+            $translateProvider.useMissingTranslationHandlerLog();
+        }
 
         $translateProvider.useLocalStorage();
         $translateProvider.preferredLanguage('en');
@@ -51,16 +52,27 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($rootScope, $cookieStore, $translate, config, socket, flash, sound) {
-        /** @todo форматировать языки (ru_RU в ru) */
+    }]).run(function($rootScope, $cookieStore, $translate, $http, config, socket, flash, sound) {
+        $rootScope.env = env || 'production';
+
+        $http.defaults.headers.common.xhr = true;
+
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
+        lang = lang.substring(0, 2);
         $rootScope.lang = lang;
         $translate.uses(lang);
+
+        $rootScope.log = function(text) {
+            if ($rootScope.env) {
+                console.log(text);
+            }
+        }
 
         $rootScope.agent = $cookieStore.get('agent');
         if ($rootScope.agent) {
             $rootScope.agent.first_name = decodeURIComponent($rootScope.agent.first_name);
             $rootScope.agent.last_name = decodeURIComponent($rootScope.agent.last_name);
+            $rootScope.agent.job_title = decodeURIComponent($rootScope.agent.job_title);
         } else {
             window.location = '/login';
         }

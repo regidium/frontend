@@ -25,7 +25,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
-        console.log('Socket agent:existed:list');
+        $rootScope.log('Socket agent:existed:list');
 
         // Наполняем список чатов онлайн
         $scope.agents = data.agents;
@@ -40,7 +40,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получено событие сохранения агента
     socket.on('agent:saved', function(data) {
-        console.log('Socket agent:saved');
+        $rootScope.log('Socket agent:saved');
 
         var existed = false;
 
@@ -58,7 +58,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получено событие удаления агента
     socket.on('agent:removed', function(data) {
-        console.log('Socket agent:removed');
+        $rootScope.log('Socket agent:removed');
 
         var existed = {};
 

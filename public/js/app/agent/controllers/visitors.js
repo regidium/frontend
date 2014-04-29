@@ -19,10 +19,12 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Получаем список чатов
     socket.on('chat:existed:list', function(data) {
-        console.log('Socket chat:existed:list');
+        $rootScope.log('Socket chat:existed:list');
 
         // Наполняем список чатов
         angular.forEach(data, function(chat) {
+            chat.current_url = decodeURIComponent(chat.current_url);
+
             $scope.chats[chat.uid] = chat;
         });
 
@@ -32,7 +34,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Event сервер оповестил о необходимости обновить список пользователей
     socket.on('service:update:users:list', function (data) {
-        console.log('Socket service:update:users:list');
+        $rootScope.log('Socket service:update:users:list');
 
         // Запрашиваем список чатов
         socket.emit('chat:existed', { widget_uid: $rootScope.widget.uid, agent_uid: $rootScope.agent.uid });
@@ -42,7 +44,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Пользователь изменил авторизационные данные
     socket.on('chat:user:authed', function (data) {
-        console.log('Socket chat:user:authed');
+        $rootScope.log('Socket chat:user:authed');
 
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].user = data.user;
@@ -51,7 +53,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Чат подключен
     socket.on('chat:connected', function (data) {
-        console.log('Socket chat:connected');
+        $rootScope.log('Socket chat:connected');
 
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
@@ -59,7 +61,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Чат отключен
     socket.on('chat:disconnect', function (data) {
-        console.log('Socket chat:disconnect');
+        $rootScope.log('Socket chat:disconnect');
 
         if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid == data.chat_uid) {
             $scope.current_chat = {};
@@ -74,7 +76,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
     // Пользователь закрыл чат
     /** @todo */
     socket.on('chat:ended', function (data) {
-        console.log('Socket chat:ended');
+        $rootScope.log('Socket chat:ended');
     });
 
     // Выбор чата

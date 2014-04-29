@@ -14,10 +14,10 @@ function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $ht
         }).
         error(function(data, status, headers, config) {
             if (data && data.errors) {
-                console.log(data.errors);
+                $rootScope.log(data.errors);
                 flash.error = data.errors;
             } else {
-                console.log('System error!');
+                $rootScope.log('System error!');
                 flash.error = 'System error!';
             }
     });
@@ -54,10 +54,10 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
                 }
             }).error(function(data, status, headers, config) {
                 if (data && data.errors) {
-                    console.log(data.errors);
+                    $rootScope.log(data.errors);
                     flash.error = data.errors;
                 } else {
-                    console.log('System error!');
+                    $rootScope.log('System error!');
                     flash.error = 'System error!';
                 }
         });
@@ -97,10 +97,10 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
             }).
             error(function(data, status, headers, config) {
                 if (data && data.errors) {
-                    console.log(data.errors);
+                    $rootScope.log(data.errors);
                     flash.error = data.errors;
                 } else {
-                    console.log('System error!');
+                    $rootScope.log('System error!');
                     flash.error = 'System error!';
                 }
         });

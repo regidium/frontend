@@ -17,7 +17,7 @@ function AgentArchivesCtrl($rootScope, $scope, socket, blockUI) {
 
     // Получаем список архивных чатов
     socket.on('chat:archives:list', function(data) {
-        console.log('Socket chat:archives:list', data);
+        $rootScope.log('Socket chat:archives:list', data);
 
         // Наполняем список архивных чатов
         $scope.chats = data;
