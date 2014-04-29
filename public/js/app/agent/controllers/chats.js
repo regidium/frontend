@@ -155,6 +155,8 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
                 $scope.current_chat.messages = [];
             }
 
+            data.message.readed = true;
+
             // Добавляем сообщение в список сообщений
             $scope.current_chat.messages.push(data.message);
 
