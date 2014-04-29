@@ -5,6 +5,7 @@
  * @url "/agent/chats"
  */
 function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, blockUI) {
+    var soundChat = sound.init('chat');
     // Определяем блоки блокировки
     var chatsBlockUI = blockUI.instances.get('chatsBlockUI');
     var currentChatBlockUI = blockUI.instances.get('currentChatBlockUI');
@@ -149,7 +150,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, flash, socket, sound, bloc
         // Отсеиваем чужие оповещения
         if ($scope.current_chat && data.chat_uid == $scope.current_chat.uid) {
             // Проигрываем звуковое уводомление
-            sound.play('chat');
+            soundChat.play();
 
             if(!$scope.current_chat.messages) {
                 $scope.current_chat.messages = [];

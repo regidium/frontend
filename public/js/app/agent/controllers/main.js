@@ -1,6 +1,7 @@
 'use strict';
 
 function AgentMenuCtrl($rootScope, $scope, socket, sound) {
+    //var soundBeep = sound.init('beep');
     $scope.new_messages = {};
 
     socket.emit('widget:message:new:get', {
@@ -20,7 +21,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
         console.log('Socket chat:message:sended:user');
 
         /** @todo выбрать звук для уведомления */
-        //sound.play('beep');
+        //soundBeep.play();
         $scope.new_messages[data.message.uid] = data.message.uid;
         $scope.new_messages_count = Object.keys($scope.new_messages).length;
     });

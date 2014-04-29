@@ -6,30 +6,28 @@
     angular.module('regidiumApp')
         .factory('sound', function () {
             return {
-                play: function(name) {
-                    var s = document.createElement('audio');
-                    var ogg = '/sound/chat/' + name + '.ogg';
-                    var wav = '/sound/chat/' + name + '.wav';
-                    var mp3 = '/sound/chat/' + name + '.mp3';
-                    var types = {
-                        ogg: 'audio/ogg; codecs="vorbis"',
-                        wav: 'audio/wav; codecs="1"',
-                        mp3: 'audio/mpeg;'
-                    };
+                init: function(name) {
+                    var sound = document.createElement('audio');
+
+                    var types = [
+                        {type: 'audio/ogg; codecs="vorbis"', file: '/sound/' + name + '.ogg'},
+                        {type: 'audio/wav; codecs="1"', file: '/sound/' + name + '.wav'},
+                        {type: 'audio/mpeg;', file: '/sound/' + name + '.mp3'}
+                    ];
 
                     var audio_file = '';
-                    _.each(types, function(type, file) {
-                        var e = s.canPlayType(type);
+                    _.each(types, function(type) {
+                        var e = sound.canPlayType(type.type);
                         if ('probably' === e || 'maybe' === e) {
-                            audio_file = file;
+                            audio_file = type.file;
                         }
                     });
 
                     if (audio_file) {
-                        s.setAttribute('src', audio_file);
+                        sound.setAttribute('src', audio_file);
                     }
 
-                    return s.play();
+                    return sound;
                 }
             };
         })
