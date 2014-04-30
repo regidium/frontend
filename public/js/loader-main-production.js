@@ -2,7 +2,7 @@ var env = 'production';
 
 head.load(
     // Common
-    "//cdnjs.cloudflare.com/ajax/libs/jquery/2.10.0/jquery.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js",
     "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js",
     "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js",
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js",
