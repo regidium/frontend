@@ -85,10 +85,15 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
 
     /** todo Валилидация данных */
     $scope.registration = function() {
-        $scope.agent.password = sha1.encode($scope.agent.password);
-        $scope.agent.confirm_password = sha1.encode($scope.agent.confirm_password);
+        var agent = {
+            first_name: $scope.agent.first_name,
+            last_name: $scope.agent.last_name,
+            email: $scope.agent.email,
+            password: sha1.encode($scope.agent.password),
+            confirm_password: sha1.encode($scope.agent.confirm_password),
+        };
 
-        $http.post('/registration', $scope.agent).
+        $http.post('/registration', agent).
             success(function(data, status, headers, config) {
                 if (data && data.uid) {
                     window.location = '/agent';
