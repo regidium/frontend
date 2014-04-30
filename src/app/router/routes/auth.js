@@ -34,7 +34,11 @@ module.exports.registration = function (req, res) {
                 onErrors: function (body) {
                     /** @todo Сделать обработчик ошибок */
                     console.log(body);
-                    return body;
+                    if (req.xhr || req.headers['xhr']) {
+                        res.send({ errors: ['Backend return bad data!'] });
+                    } else {
+                        res.redirect('/registration');
+                    }
                 }
             });
         }
