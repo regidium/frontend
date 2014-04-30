@@ -86,6 +86,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
     /** todo Валилидация данных */
     $scope.registration = function() {
         $scope.agent.password = sha1.encode($scope.agent.password);
+        $scope.agent.confirm_password = sha1.encode($scope.agent.confirm_password);
 
         $http.post('/registration', $scope.agent).
             success(function(data, status, headers, config) {
