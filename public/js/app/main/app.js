@@ -40,7 +40,7 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($http, $rootScope, $translate, $http) {
+    }]).run(function($http, $rootScope, $translate) {
         $rootScope.env = env || 'production';
 
         $http.defaults.headers.common.xhr = true;
