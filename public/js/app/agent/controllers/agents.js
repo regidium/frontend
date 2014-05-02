@@ -5,7 +5,7 @@
  * @todo Разделять online & offline
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
+function AgentAgentsCtrl($rootScope, $scope, $log, flash, sha1, socket, blockUI) {
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -25,7 +25,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
-        $rootScope.log('Socket agent:existed:list');
+        $log.debug('Socket agent:existed:list');
 
         // Наполняем список чатов онлайн
         $scope.agents = data.agents;
@@ -40,7 +40,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получено событие сохранения агента
     socket.on('agent:saved', function(data) {
-        $rootScope.log('Socket agent:saved');
+        $log.debug('Socket agent:saved');
 
         var existed = false;
 
@@ -58,7 +58,7 @@ function AgentAgentsCtrl($rootScope, $scope, flash, sha1, socket, blockUI) {
 
     // Получено событие удаления агента
     socket.on('agent:removed', function(data) {
-        $rootScope.log('Socket agent:removed');
+        $log.debug('Socket agent:removed');
 
         var existed = {};
 

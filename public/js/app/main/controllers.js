@@ -2,7 +2,7 @@
 
 function MainCtrl() {}
 
-function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $http, sha1, flash) {
+function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $http, $log, sha1, flash) {
     $location.url('/login');
     $http.get('/auth/external/service/' + $routeParams.provider + '/connect').
         success(function(data, status, headers, config) {
@@ -11,13 +11,12 @@ function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $ht
             } else {
                 flash.error = 'Backend return error request!';
             }
-        }).
-        error(function(data, status, headers, config) {
+        }).error(function(data, status, headers, config) {
             if (data && data.errors) {
-                $rootScope.log(data.errors);
+                $log.debug(data.errors);
                 flash.error = data.errors;
             } else {
-                $rootScope.log('System error!');
+                $log.debug('System error!');
                 flash.error = 'System error!';
             }
     });
@@ -28,7 +27,7 @@ function MainAuthExternalServiceDisconnectCtrl() {
 
 }
 
-function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
+function MainAuthLoginCtrl($scope, $location, $http, $log, sha1, flash) {
     $scope.agent = {
         email: '',
         password: ''
@@ -54,17 +53,17 @@ function MainAuthLoginCtrl($scope, $location, $http, sha1, flash) {
                 }
             }).error(function(data, status, headers, config) {
                 if (data && data.errors) {
-                    $rootScope.log(data.errors);
+                    $log.debug(data.errors);
                     flash.error = data.errors;
                 } else {
-                    $rootScope.log('System error!');
+                    $log.debug('System error!');
                     flash.error = 'System error!';
                 }
         });
     };
 }
 
-function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, flash) {
+function MainAuthRegistrationCtrl($rootScope, $scope, $location, $log, $http, sha1, flash) {
     var ua = UAParser('');
 
     $scope.agent = {
@@ -90,7 +89,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
             last_name: $scope.agent.last_name,
             email: $scope.agent.email,
             password: sha1.encode($scope.agent.password),
-            confirm_password: sha1.encode($scope.agent.confirm_password),
+            confirm_password: sha1.encode($scope.agent.confirm_password)
         };
 
         $http.post('/registration', agent).
@@ -100,13 +99,12 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $http, sha1, fl
                 } else {
                     flash.error = 'Backend return error request!';
                 }
-            }).
-            error(function(data, status, headers, config) {
+            }).error(function(data, status, headers, config) {
                 if (data && data.errors) {
-                    $rootScope.log(data.errors);
+                    $log.debug(data.errors);
                     flash.error = data.errors;
                 } else {
-                    $rootScope.log('System error!');
+                    $log.debug('System error!');
                     flash.error = 'System error!';
                 }
         });

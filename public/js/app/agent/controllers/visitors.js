@@ -4,7 +4,7 @@
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI) {
+function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var visitorsBlockUI = blockUI.instances.get('visitorsBlockUI');
 
@@ -12,14 +12,30 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     $scope.current_chat = {};
 
+    // ================================================================
+
     // Запрашиваем список чатов
     socket.emit('chat:existed', { widget_uid: $rootScope.widget.uid, agent_uid: $rootScope.agent.uid });
+
     // Блокируем ожидающие блоки
     visitorsBlockUI.start();
 
+    // Изменен URL чата
+    socket.on('chat:url:change', function (data) {
+        $log.debug('Socket chat:url:change', data);
+
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].current_url = data.new_url;
+        }
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            $scope.current_chat.current_url = data.new_url;
+        }
+    });
+
     // Получаем список чатов
     socket.on('chat:existed:list', function(data) {
-        $rootScope.log('Socket chat:existed:list');
+        $log.debug('Socket chat:existed:list');
 
         // Наполняем список чатов
         angular.forEach(data, function(chat) {
@@ -34,7 +50,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Event сервер оповестил о необходимости обновить список пользователей
     socket.on('service:update:users:list', function (data) {
-        $rootScope.log('Socket service:update:users:list');
+        $log.debug('Socket service:update:users:list');
 
         // Запрашиваем список чатов
         socket.emit('chat:existed', { widget_uid: $rootScope.widget.uid, agent_uid: $rootScope.agent.uid });
@@ -44,7 +60,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Пользователь изменил авторизационные данные
     socket.on('chat:user:authed', function (data) {
-        $rootScope.log('Socket chat:user:authed');
+        $log.debug('Socket chat:user:authed');
 
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].user = data.user;
@@ -53,7 +69,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Чат подключен
     socket.on('chat:connected', function (data) {
-        $rootScope.log('Socket chat:connected');
+        $log.debug('Socket chat:connected');
 
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
@@ -61,7 +77,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
 
     // Чат отключен
     socket.on('chat:disconnect', function (data) {
-        $rootScope.log('Socket chat:disconnect');
+        $log.debug('Socket chat:disconnect');
 
         if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid == data.chat_uid) {
             $scope.current_chat = {};
@@ -76,8 +92,10 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
     // Пользователь закрыл чат
     /** @todo */
     socket.on('chat:ended', function (data) {
-        $rootScope.log('Socket chat:ended');
+        $log.debug('Socket chat:ended');
     });
+
+    // ================================================================
 
     // Выбор чата
     $scope.selectChat = function(chat) {
@@ -98,43 +116,5 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, socket, flash, blockUI
             chat: current_chat,
             widget_uid: $rootScope.widget.uid
         });
-    }
-
-    /** @todo убрать в сервис */
-    $scope.getOsClass = function(os_string) {
-        if (os_string) {
-            os_string = os_string.toLowerCase()
-            if (os_string.indexOf('linux') != -1) {
-                return 'fa-linux';
-            } else if (os_string.indexOf('windows') != -1) {
-                return 'fa-windows';
-            } else if (os_string.indexOf('apple') != -1) {
-                return 'fa-apple';
-            } else if (os_string.indexOf('osx') != -1) {
-                return 'fa-apple';
-            } else if (os_string.indexOf('android') != -1) {
-                return 'fa-android';
-            } else {
-                return '';
-            }
-        }
-    }
-
-    /** @todo убрать в сервис */
-    $scope.getBrowserClass = function(browser_string) {
-        if (browser_string) {
-            browser_string = browser_string.toLowerCase()
-            if (browser_string.indexOf('chrome') != -1) {
-                return 'icon-chrome';
-            } else if (browser_string.indexOf('firefox') != -1) {
-                return 'icon-firefox';
-            } else if (browser_string.indexOf('opera') != -1) {
-                return 'icon-opera';
-            } else if (browser_string.indexOf('internet explorer') != -1) {
-                return 'icon-ie';
-            } else {
-                return '';
-            }
-        }
     }
 }

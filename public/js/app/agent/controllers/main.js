@@ -1,6 +1,6 @@
 'use strict';
 
-function AgentMenuCtrl($rootScope, $scope, socket, sound) {
+function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
     //var soundBeep = sound.init('beep');
     $scope.new_messages = {};
 
@@ -10,7 +10,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Event сервер вернул список непрочитанных сообщений
     socket.on('widget:message:new:list', function (data) {
-        $rootScope.log('Socket widget:message:new:list');
+        $log.debug('Socket widget:message:new:list');
 
         $scope.new_messages = data.new_messages;
         $scope.new_messages_count = Object.keys($scope.new_messages).length;
@@ -18,7 +18,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Пользователь написал сообщение
     socket.on('chat:message:sended:user', function (data) {
-        $rootScope.log('Socket chat:message:sended:user');
+        $log.debug('Socket chat:message:sended:user');
 
         /** @todo выбрать звук для уведомления */
         //soundBeep.play();
@@ -28,7 +28,7 @@ function AgentMenuCtrl($rootScope, $scope, socket, sound) {
 
     // Агент прочел сообщение
     socket.on('chat:message:readed:agent', function (data) {
-        $rootScope.log('Socket chat:message:readed:agent', data);
+        $log.debug('Socket chat:message:readed:agent', data);
 
         delete $scope.new_messages[data.message_uid];
         $scope.new_messages_count = Object.keys($scope.chatting).length;
@@ -48,8 +48,7 @@ function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
         $http.get('/logout')
             .success(function(data, status, headers, config) {
                 window.location = '/';
-            })
-            .error(function(data, status, headers, config) {
+            }).error(function(data, status, headers, config) {
                 window.location = '/';
             });
     }

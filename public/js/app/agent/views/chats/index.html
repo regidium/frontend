@@ -37,7 +37,10 @@
         <div class="col-md-3" ng-show="current_chat">
             <p>{{current_chat.user.ip}}: {{current_chat.user.first_name}}</p>
             <p>{{current_chat.user.country}}, {{current_chat.user.city}}</p>
-            <p>{{current_chat.user.os}} {{current_chat.user.browser}}</p>
+            <p>
+                <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
+                <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
+            </p>
             <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
             <p><a href="" class="btn btn-danger" ng-click="leaveChat()" translate>Leave chat</a></p>
         </div>

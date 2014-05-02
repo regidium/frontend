@@ -4,7 +4,7 @@
  * @todo Внедрить пагинацию
  * @url "/agent/archives"
  */
-function AgentArchivesCtrl($rootScope, $scope, socket, blockUI) {
+function AgentArchivesCtrl($rootScope, $scope, $log, socket, blockUI) {
     // Определяем блоки блокировки
     var archivesBlockUI = blockUI.instances.get('archivesBlockUI');
 
@@ -17,7 +17,7 @@ function AgentArchivesCtrl($rootScope, $scope, socket, blockUI) {
 
     // Получаем список архивных чатов
     socket.on('chat:archives:list', function(data) {
-        $rootScope.log('Socket chat:archives:list', data);
+        $log.debug('Socket chat:archives:list', data);
 
         // Наполняем список архивных чатов
         $scope.chats = data;

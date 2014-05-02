@@ -37,6 +37,11 @@ img.avatar {
   height: 100px;
 }
 
+img.company-logo {
+  width: 79px;
+  height: 79px;
+}
+
 .overflowable {
   height: 400px;
 }
@@ -55,6 +60,7 @@ img.avatar {
 footer {
   margin-top: 20px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .px35 {
