@@ -10,9 +10,9 @@
                     var sound = document.createElement('audio');
 
                     var types = [
-                        {type: 'audio/ogg; codecs="vorbis"', file: '/sound/' + name + '.ogg'},
-                        {type: 'audio/wav; codecs="1"', file: '/sound/' + name + '.wav'},
-                        {type: 'audio/mpeg;', file: '/sound/' + name + '.mp3'}
+                        {type: 'audio/ogg; codecs="vorbis"', file: '/sound/chat/' + name + '.ogg'},
+                        {type: 'audio/wav; codecs="1"', file: '/sound/chat/' + name + '.wav'},
+                        {type: 'audio/mpeg;', file: '/sound/chat/' + name + '.mp3'}
                     ];
 
                     var audio_file = '';

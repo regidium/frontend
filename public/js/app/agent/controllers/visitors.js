@@ -43,7 +43,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
 
             $scope.chats[chat.uid] = chat;
         });
-
+console.log($scope.chats);
         // Разблокировка ожидающих блоков
         visitorsBlockUI.stop(); 
     });

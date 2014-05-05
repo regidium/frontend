@@ -2,10 +2,10 @@ var env = 'development';
 
 head.load(
     // Common
-    "/js/libs/jquery/jquery.min.js",
-    "/js/libs/underscore/underscore-min.js",
-    "/js/libs/bootstrap/js/bootstrap.min.js",
-    "/js/libs/angular/angular.min.js",
+    "/js/libs/jquery/jquery.js",
+    "/js/libs/underscore/underscore.js",
+    "/js/libs/bootstrap/js/bootstrap.js",
+    "/js/libs/angular/angular.js",
     "/js/libs/angular/angular-route/angular-route.min.js",
     "/js/libs/angular/angular-resource/angular-resource.min.js",
     "/js/libs/angular/angular-cookies/angular-cookies.min.js",
