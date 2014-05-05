@@ -44,7 +44,7 @@ function MainAuthLoginCtrl($scope, $location, $http, $log, sha1, flash) {
 
         $http.post('/login', { email: email, password: password }).
             success(function(data, status, headers, config) {
-                if (data && data.agent.uid) {
+                if (data && data.agent && data.agent.uid) {
                     window.location = '/agent';
                 } else {
                     _.each(data.errors, function(val, key) {
