@@ -128,6 +128,7 @@ self.flush_auth = function(res, object, next) {
                 return val;
             }
         });
+
         try {
             res.cookie('agent', data, {
                 //expires: new Date(self.calcLifetime(true)),

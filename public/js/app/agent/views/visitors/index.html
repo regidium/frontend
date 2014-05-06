@@ -5,7 +5,7 @@
         <accordion close-others="true">
             <accordion-group is-open="is_open1">
                 <accordion-heading>
-                    <span translate>On site</span> (<span>0</span>)
+                    <span translate>On site</span> (<span>{{(chats | filter:{status: c.CHAT_STATUS_ONLINE}).length}}</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open1, 'glyphicon-chevron-right': !is_open1}"></i>
                 </accordion-heading>
                 <div class="list-group">
@@ -16,7 +16,7 @@
             </accordion-group>
             <accordion-group is-open="is_open2" >
                 <accordion-heading>
-                    <span translate>In chat</span> (<span>0</span>)
+                    <span translate>In chat</span> (<span>{{(chats | filter:{status: c.CHAT_STATUS_CHATTING}).length}}</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open2, 'glyphicon-chevron-right': !is_open2}"></i>
                 </accordion-heading>
                 <div class="list-group">
@@ -27,7 +27,7 @@
             </accordion-group>
             <accordion-group is-open="is_open3">
                 <accordion-heading>
-                    <span translate>Left site</span> (<span>0</span>)
+                    <span translate>Left site</span> (<span>{{(chats | filter:{status: c.CHAT_STATUS_OFFLINE}).length}}</span>)
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open3, 'glyphicon-chevron-right': !is_open3}"></i>
                 </accordion-heading>
                 <div class="list-group">

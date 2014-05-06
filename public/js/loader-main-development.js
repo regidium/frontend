@@ -19,6 +19,7 @@ head.load(
     "/js/libs/angular/angular-loading-bar/loading-bar.min.js",
     "/js/libs/angular/angular-flash/angular-flash.min.js",
     "/js/libs/angular/angular-underscore/angular-underscore.js",
+    "/js/libs/angular/angular-block-ui/angular-block-ui.min.js",
     // Main
     "/js/app/main/app.js",
     "/js/app/main/controllers.js",

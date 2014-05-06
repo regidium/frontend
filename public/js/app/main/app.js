@@ -10,6 +10,7 @@
         'angular-flash.flash-alert-directive',
         'chieffancypants.loadingBar',
         'angular-underscore',
+        'blockUI',
         'regidiumApp.commonDirectives',
         'regidiumApp.mainDirectives'
     ]).config(['$locationProvider', '$routeProvider', '$translateProvider', '$logProvider', 'flashProvider', function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {

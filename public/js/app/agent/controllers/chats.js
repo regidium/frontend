@@ -148,13 +148,12 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
 
     // Пользователь написал сообщение
     socket.on('chat:message:sended:user', function (data) {
-        $log.debug('Socket chat:message:sended:user');
+        $log.debug('Chat', 'Socket chat:message:sended:user');
 
         // Отсеиваем чужие оповещения
         if ($scope.current_chat && data.chat_uid == $scope.current_chat.uid) {
             // Проигрываем звуковое уводомление
             soundChat.play();
-            console.log(soundChat);
 
             if(!$scope.current_chat.messages) {
                 $scope.current_chat.messages = [];

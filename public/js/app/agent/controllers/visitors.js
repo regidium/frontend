@@ -70,7 +70,7 @@ console.log($scope.chats);
     // Чат подключен
     socket.on('chat:connected', function (data) {
         $log.debug('Socket chat:connected');
-
+console.log(data.chat);
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
     });

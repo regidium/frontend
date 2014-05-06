@@ -107,9 +107,23 @@
         // Получаем агента из cookie или отправляем на страницу авторизации
         $rootScope.agent = $cookieStore.get('agent');
         if ($rootScope.agent) {
-            $rootScope.agent.first_name = decodeURIComponent($rootScope.agent.first_name);
-            $rootScope.agent.last_name = decodeURIComponent($rootScope.agent.last_name);
-            $rootScope.agent.job_title = decodeURIComponent($rootScope.agent.job_title);
+            if ($rootScope.agent.first_name) {
+                $rootScope.agent.first_name = decodeURIComponent($rootScope.agent.first_name);
+            } else {
+                $rootScope.agent.first_name = '';
+            }
+
+            if ($rootScope.agent.last_name) {
+                $rootScope.agent.last_name = decodeURIComponent($rootScope.agent.last_name);
+            } else {
+                $rootScope.agent.last_name = '';
+            }
+
+            if ($rootScope.agent.job_title) {
+                $rootScope.agent.job_title = decodeURIComponent($rootScope.agent.job_title);
+            } else {
+                $rootScope.agent.job_title = '';
+            }
         } else {
             window.location = '/login';
         }

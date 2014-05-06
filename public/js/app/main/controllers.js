@@ -39,6 +39,7 @@ function MainAuthLoginCtrl($scope, $location, $http, $log, sha1, flash) {
 
     /** todo Валилидация данных */
     $scope.login = function() {
+
         var email = $scope.agent.email;
         var password = sha1.encode($scope.agent.password);
 
@@ -87,6 +88,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $log, $http, sh
         var agent = {
             first_name: $scope.agent.first_name,
             last_name: $scope.agent.last_name,
+            job_totle: '',
             email: $scope.agent.email,
             password: sha1.encode($scope.agent.password),
             confirm_password: sha1.encode($scope.agent.confirm_password)

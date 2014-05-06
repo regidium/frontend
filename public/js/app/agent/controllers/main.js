@@ -17,8 +17,8 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
     });
 
     // Пользователь написал сообщение
-    socket.on('chat:message:sended:user', function (data) {
-        $log.debug('Socket chat:message:sended:user');
+    socket.on('chat:message:add:new', function (data) {
+        $log.debug('Main', 'Socket chat:message:add:new');
 
         /** @todo выбрать звук для уведомления */
         //soundBeep.play();
@@ -27,8 +27,8 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
     });
 
     // Агент прочел сообщение
-    socket.on('chat:message:readed:agent', function (data) {
-        $log.debug('Socket chat:message:readed:agent', data);
+    socket.on('chat:message:remove:new', function (data) {
+        $log.debug('Main', 'Socket chat:message:remove:new', data);
 
         delete $scope.new_messages[data.message_uid];
         $scope.new_messages_count = Object.keys($scope.chatting).length;
