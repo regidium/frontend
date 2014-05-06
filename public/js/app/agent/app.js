@@ -12,6 +12,7 @@
         'ui.bootstrap',
         'angular-underscore',
         'blockUI',
+        'angularMoment',
         'regidiumApp.commonDirectives'
     ]).config(['$locationProvider', '$routeProvider', '$translateProvider', '$logProvider', 'flashProvider', function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
         $locationProvider.html5Mode(true);
@@ -37,7 +38,7 @@
 
         // Настраиваем переводчик
         $translateProvider.useStaticFilesLoader({
-            prefix: 'js/app/main/translations/',
+            prefix: 'js/app/agent/translations/',
             suffix: '.json'
         });
 
@@ -55,7 +56,7 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($rootScope, $cookieStore, $translate, $http, config, socket, flash, sound) {
+    }]).run(function($rootScope, $cookieStore, $translate, $http, amMoment, config, socket, flash, sound ) {
         $rootScope.env = env || 'production';
 
         $http.defaults.headers.common.xhr = true;
@@ -65,6 +66,8 @@
         lang = lang.substring(0, 2);
         $rootScope.lang = lang;
         $translate.uses(lang);
+
+        amMoment.changeLanguage(lang);
 
         /** @todo убрать в сервис */
         $rootScope.getOsClass = function(os_string) {
@@ -162,5 +165,9 @@
         $rootScope.c.MESSAGE_SENDER_TYPE_USER = 1;
         $rootScope.c.MESSAGE_SENDER_TYPE_AGENT = 2;
         $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT = 3;
+    }).constant('angularMomentConfig', {
+        preprocess: 'unix',
+        // @todo
+        timezone: 'Europe/London'
     });
 })(angular);

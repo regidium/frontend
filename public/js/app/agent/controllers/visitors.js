@@ -12,6 +12,25 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
 
     $scope.current_chat = {};
 
+    var visitorsPageState = localStorage.getItem('visitorsPageState');
+    switch (visitorsPageState) {
+        case '1':
+            $scope.is_open_online = true;
+            break;
+        case '2':
+            $scope.is_open_chatting = true;
+            break;
+        case '3':
+            $scope.is_open_offline = true;
+            break;
+    }
+
+    $scope.accordionSwith = function(list, state) {
+        if (!state) {
+            localStorage.setItem('visitorsPageState', list);
+        }
+    }
+
     // ================================================================
 
     // Запрашиваем список чатов
@@ -43,7 +62,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
 
             $scope.chats[chat.uid] = chat;
         });
-console.log($scope.chats);
+
         // Разблокировка ожидающих блоков
         visitorsBlockUI.stop(); 
     });

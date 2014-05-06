@@ -4,10 +4,12 @@
     <div class="col-md-12">
         <div ng-repeat="chat in chats" class="col-md-2">
             <a href="" ng-click="selectChat(chat)">
-                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 60px; background-color: #BEBDBD">
+                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 42px; background-color: #BEBDBD">
                 {{chat.user.ip}}
                 <br/>
-                {{(chat.messages|filter:{readed:false}).length}}
+                <span translate>new</span>: {{(chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length}}
+                <br/>
+                <span am-time-ago="chat.started_at" am-preprocess="unix"></span>
                 </span>
             </a>
         </div>

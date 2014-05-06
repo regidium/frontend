@@ -122,6 +122,15 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         currentChatBlockUI.start();
     }
 
+
+    // Агент подключен к чату
+    socket.on('chat:message:readed:agent', function (data) {
+        $log.debug('Socket chat:message:readed:agent', data);
+
+        // Обновляем количество не прочтенных сообщений в кружках
+        $scope.chats[data.chat_uid].messages[data.message_uid].readed = true;
+    });
+
     // Агент подключен к чату
     socket.on('chat:agent:entered', function (data) {
         $log.debug('Socket chat:agent:entered', data);
@@ -132,6 +141,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             $scope.current_chat = data.chat;
             if ($scope.current_chat.messages) {
                 angular.forEach($scope.current_chat.messages, function(message, key) {
+                    console.log(message.readed);
                     if (!message.readed) {
                         socket.emit('chat:message:read:agent', {
                             message_uid: message.uid,
@@ -149,6 +159,9 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
     // Пользователь написал сообщение
     socket.on('chat:message:sended:user', function (data) {
         $log.debug('Chat', 'Socket chat:message:sended:user');
+
+        // Обновляем количество не прочтенных сообщений в кружках
+        $scope.chats[data.chat_uid].messages.push(data.message);
 
         // Отсеиваем чужие оповещения
         if ($scope.current_chat && data.chat_uid == $scope.current_chat.uid) {

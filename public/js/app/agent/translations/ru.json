@@ -1,3 +1,30 @@
 {
 
+    "List of all chats": "Список чатов",
+    "List of all visitors": "Список посетителей",
+
+    "On site": "На сайте",
+    "In chat": "В чате",
+    "Left site": "Покинули сайт",
+
+    "Please login": "Авторизируйтесь",
+    "Start chat": "Начать чат",
+    "Send": "Отправить",
+
+    "Toggle navigation": "Переключить навигацию",
+
+    "Chats": "Чаты",
+    "Visitors": "Посетители",
+    "Archives": "Архивы",
+    "Agents": "Агенты",
+    "Statistics": "Статистика",
+    "Settings": "Настройки",
+    "Widget": "Виджет",
+    "Productivity": "Продуктивность",
+    "Logout": "Выход",
+
+    "visited": "зашел",
+    "left": "вышел",
+
+    "new": "новых"
 }
