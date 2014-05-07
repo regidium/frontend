@@ -3,7 +3,7 @@
     'use strict';
 
     /* Services */
-    angular.module('regidiumApp')
+    app
         .factory('sound', function () {
             return {
                 init: function(name) {
