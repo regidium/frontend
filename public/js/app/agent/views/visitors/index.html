@@ -9,7 +9,7 @@
                     <i ng-click="accordionSwith(1, is_open_online)" class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open_online, 'glyphicon-chevron-right': !is_open_online}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_ONLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats | orderObjectBy:started_at:true" ng-if="chat.status == c.CHAT_STATUS_ONLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | {{chat.current_url}} | <span translate>visited</span>:  <span am-time-ago="chat.started_at" am-preprocess="unix"></span>
                     </a>
                 </div>
@@ -20,7 +20,7 @@
                     <i ng-click="accordionSwith(2, is_open_chatting)" class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open_chatting, 'glyphicon-chevron-right': !is_open_chatting}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_CHATTING" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats | orderObjectBy:started_at:true" ng-if="chat.status == c.CHAT_STATUS_CHATTING" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | {{chat.current_url}} | <span translate>visited</span>:  <span am-time-ago="chat.started_at" am-preprocess="unix"></span>
                     </a>
                 </div>
@@ -31,7 +31,7 @@
                     <i ng-click="accordionSwith(3, is_open_offline)" class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': is_open_offline, 'glyphicon-chevron-right': !is_open_offline}"></i>
                 </accordion-heading>
                 <div class="list-group">
-                    <a ng-repeat="chat in chats" ng-if="chat.status == c.CHAT_STATUS_OFFLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
+                    <a ng-repeat="chat in chats | orderObjectBy:ended_at:true" ng-if="chat.status == c.CHAT_STATUS_OFFLINE" ng-click="selectChat(chat)" ng-class="{active: chat.uid == current_chat.uid}" href="" class="list-group-item">
                         {{chat.user.ip}} | {{chat.user.country}} | {{chat.user.first_name}} | <span translate>left</span>: <span am-time-ago="chat.ended_at" am-preprocess="unix"></span>
                     </a>
                 </div>
