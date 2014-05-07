@@ -27,12 +27,12 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
 
     $scope.accordionSwith = function(list, state) {
         if (!state) {
-            switch (visitorsPageState) {
+            switch (list) {
                 case 1:
-                    $filter('orderBy')($scope.chats, started_at, true)
+                    $filter('orderBy')($scope.chats, started_at, false)
                     break;
                 case 2:
-                    $filter('orderBy')($scope.chats, started_at, true)
+                    $filter('orderBy')($scope.chats, started_at, false)
                     break;
                 case 3:
                     $filter('orderBy')($scope.chats, ended_at, true)
