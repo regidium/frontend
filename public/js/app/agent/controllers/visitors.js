@@ -89,7 +89,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
     // Чат подключен
     socket.on('chat:connected', function (data) {
         $log.debug('Socket chat:connected');
-console.log(data.chat);
+
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
     });
@@ -105,6 +105,7 @@ console.log(data.chat);
         // Переносим чат из списка чатов онлайн в список покинувших сайт
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].status = $rootScope.c.CHAT_STATUS_OFFLINE;
+            $scope.chats[data.chat_uid].ended_at = new Date() / 1000;
         }
     });
 
