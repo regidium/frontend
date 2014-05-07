@@ -29,13 +29,13 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
         if (!state) {
             switch (list) {
                 case 1:
-                    $filter('orderBy')($scope.chats, started_at, false)
+                    $filter('orderBy')($scope.chats, 'started_at', false)
                     break;
                 case 2:
-                    $filter('orderBy')($scope.chats, started_at, false)
+                    $filter('orderBy')($scope.chats, 'started_at', false)
                     break;
                 case 3:
-                    $filter('orderBy')($scope.chats, ended_at, true)
+                    $filter('orderBy')($scope.chats, 'ended_at', true)
                     break;
             }
             localStorage.setItem('visitorsPageState', list);
