@@ -4,7 +4,7 @@
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
+function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var visitorsBlockUI = blockUI.instances.get('visitorsBlockUI');
 
