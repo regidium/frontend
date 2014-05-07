@@ -105,7 +105,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, socket, flash, b
         // Переносим чат из списка чатов онлайн в список покинувших сайт
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].status = $rootScope.c.CHAT_STATUS_OFFLINE;
-            $scope.chats[data.chat_uid].ended_at = new Date() / 1000;
+            $scope.chats[data.chat_uid].ended_at = Math.round(+new Date()/1000);
         }
     });
 
