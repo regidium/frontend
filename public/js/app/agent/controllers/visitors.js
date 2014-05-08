@@ -62,7 +62,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
                 try {
                     chat.current_url = decodeURIComponent(chat.current_url);
                 } catch(e) {
-                    console.log(chat);
+                    $log.debug(chat);
                 }
             }
 
@@ -128,7 +128,11 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
         // Устанавливеам текущий выбранный чат
         $scope.current_chat = chat;
         if ($scope.current_chat.current_url) {
-            $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+                try {
+                    $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+                } catch(e) {
+                    $log.debug($scope.current_chat);
+                }
         }
     }
 
