@@ -58,7 +58,9 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
 
         // Наполняем список чатов
         angular.forEach(data, function(chat) {
-            chat.current_url = decodeURIComponent(chat.current_url);
+            if (chat.current_url) {
+                chat.current_url = decodeURIComponent(chat.current_url);
+            }
 
             $scope.chats[chat.uid] = chat;
         });
