@@ -25,7 +25,6 @@ head.load(
     // Main
     "/js/app/main/app.js",
     "/js/app/main/controllers.js",
-    "/js/app/main/directives.js",
     "/js/app/common/services.js",
     "/js/app/common/directives.js",
     function() {
