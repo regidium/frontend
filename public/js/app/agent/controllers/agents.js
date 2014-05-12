@@ -5,7 +5,7 @@
  * @todo Разделять online & offline
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($rootScope, $scope, $log, flash, sha1, socket, blockUI) {
+function AgentAgentsCtrl($rootScope, $scope, $log, $fileUploader, flash, sha1, socket, blockUI) {
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -88,6 +88,26 @@ function AgentAgentsCtrl($rootScope, $scope, $log, flash, sha1, socket, blockUI)
     // Редактируем существующего агента
     $scope.edit = function() {
         $scope.disabled = false;
+
+        // Определяем загрузчик файлов
+        var uploader = $scope.uploader = $fileUploader.create({
+            scope: $scope,
+            url: $rootScope.config.fsUrl + 'upload/' + $rootScope.widget.uid + '/agent/avatar/' + $scope.current_agent.uid,
+            filters: [
+                function(item) {
+                    var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+                    type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+                    return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                }
+            ]
+        });
+
+        // Добавляем обрабочик загрузки файла
+        uploader.bind('success', function (event, xhr, item, response) {
+            if (response && response.url) {
+                $scope.current_agent.avatar = response.url;
+            }
+        });
     };
 
     // Сохраняем агента
@@ -109,7 +129,6 @@ function AgentAgentsCtrl($rootScope, $scope, $log, flash, sha1, socket, blockUI)
             email: $scope.current_agent.email,
             password: password,
             type: $scope.current_agent.type,
-            status: $scope.current_agent.status,
             accept_chats: $scope.current_agent.accept_chats,
             render_visitors_period: $scope.current_agent.render_visitors_period,
             uid: uid,

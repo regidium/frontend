@@ -1,4 +1,5 @@
 (function(angular) {
+
     'use strict';
 
     var app = angular.module('regidiumApp', [
@@ -13,8 +14,9 @@
         'angular-underscore',
         'blockUI',
         'angularMoment',
+        'angularFileUpload',
         'regidiumApp.commonDirectives'
-    ]).config(['$locationProvider', '$routeProvider', '$translateProvider', '$logProvider', 'flashProvider', function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
+    ]).config(function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
         $locationProvider.html5Mode(true);
 
         $routeProvider
@@ -56,7 +58,7 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($rootScope, $cookieStore, $translate, $http, amMoment, config, socket, flash, sound ) {
+    }).run(function($rootScope, $cookieStore, $translate, $http, amMoment, config, socket, flash, sound) {
         $rootScope.env = env || 'production';
 
         $http.defaults.headers.common.xhr = true;
@@ -140,11 +142,13 @@
         // Константы
         $rootScope.c = {};
 
+        $rootScope.c.AGENT_STATUS_ONLINE   = 1;
+        $rootScope.c.AGENT_STATUS_OFFLINE  = 3;
+
         $rootScope.c.CHAT_STATUS_ONLINE   = 1;
         $rootScope.c.CHAT_STATUS_CHATTING = 2;
         $rootScope.c.CHAT_STATUS_OFFLINE  = 3;
-        $rootScope.c.CHAT_STATUS_ARCHIVED = 4; // @depricated
-        $rootScope.c.CHAT_STATUS_DELETED  = 5; // @depricated
+        $rootScope.c.CHAT_STATUS_CLOSED   = 4;
 
         $rootScope.c.TRIGGER_EVENT_WIDGET_CREATED = 1;
         $rootScope.c.TRIGGER_EVENT_WORD_SEND = 2;
@@ -170,4 +174,5 @@
         // @todo
         timezone: 'Europe/London'
     });
+
 })(angular);

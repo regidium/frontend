@@ -1,4 +1,5 @@
 (function(angular) {
+
     'use strict';
 
     var app = angular.module('regidiumApp', [
@@ -13,7 +14,7 @@
         'blockUI',
         'regidiumApp.commonDirectives',
         'regidiumApp.mainDirectives'
-    ]).config(['$locationProvider', '$routeProvider', '$translateProvider', '$logProvider', 'flashProvider', function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
+    ]).config(function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
         $locationProvider.html5Mode(true);
 
         $routeProvider
@@ -43,7 +44,7 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }]).run(function($http, $rootScope, $translate) {
+    }).run(function($http, $rootScope, $translate) {
         $rootScope.env = env || 'production';
 
         $http.defaults.headers.common.xhr = true;

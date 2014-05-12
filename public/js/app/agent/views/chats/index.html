@@ -3,6 +3,7 @@
     <div block-ui="chatsBlockUI"></div>
     <div class="col-md-12">
         <div ng-repeat="chat in chats" class="col-md-2">
+            <button ng-click="closeChat(chat)" type="button" class="close">×</button>
             <a href="" ng-click="selectChat(chat)">
                 <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 42px; background-color: #BEBDBD">
                 {{chat.user.ip}}
@@ -24,6 +25,9 @@
                     </span>
                     <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_AGENT" class="red">
                         {{ message.created_at * 1000 | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}
+                    </span>
+                    <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_ROBOT" class="gray">
+                        {{ message.created_at * 1000 | date:'shortTime' }}: Robot: {{message.text}}
                     </span>
                 </p>
             </div>

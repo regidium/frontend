@@ -6,6 +6,8 @@ head.load(
     "/js/libs/underscore/underscore.js",
     "/js/libs/bootstrap/js/bootstrap.js",
     "/js/libs/moment/moment-with-langs.js",
+    "/js/libs/ua-parser/ua-parser.min.js",
+    "/js/libs/es5-shim/es5-shim.min.js",
     "/js/libs/angular/angular.js",
     "/js/libs/angular/angular-route/angular-route.min.js",
     "/js/libs/angular/angular-resource/angular-resource.min.js",
@@ -19,11 +21,11 @@ head.load(
     "/js/libs/angular/angular-translate/angular-translate-storage-local/angular-translate-storage-local.min.js",
     "/js/libs/angular/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
     "/js/libs/angular/angular-translate/angular-translate-handler-log/angular-translate-handler-log.min.js",
-    "/js/libs/ua-parser/ua-parser.min.js",
     "/js/libs/angular/angular-loading-bar/loading-bar.min.js",
     "/js/libs/angular/angular-flash/angular-flash.min.js",
     "/js/libs/angular/angular-underscore/angular-underscore.js",
     "/js/libs/angular/angular-block-ui/angular-block-ui.min.js",
+    "/js/libs/angular/angular-file-upload/angular-file-upload.min.js",
     // Agent
     "/js/app/agent/app.js",
     // Controllers
@@ -34,14 +36,13 @@ head.load(
     "/js/app/agent/controllers/settings.js",
     "/js/app/agent/controllers/statistics.js",
     "/js/app/agent/controllers/visitors.js",
-    //
-    "/js/app/main/controllers.js",
-    "/js/app/main/directives.js",
+
     "/js/app/common/config/config.js",
     "/js/app/common/services.js",
     "/js/app/common/directives.js",
     "/js/app/common/filters.js",
     function() {
-        console.log("Done loading agent JS");
+        console.log("Done loading agent JS. Environment: "+env);
+        angular.bootstrap(document, ['regidiumApp']);
     }
 );

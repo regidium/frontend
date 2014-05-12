@@ -31,7 +31,7 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
         $log.debug('Main', 'Socket chat:message:remove:new', data);
 
         delete $scope.new_messages[data.message_uid];
-        $scope.new_messages_count = Object.keys($scope.chatting).length;
+        $scope.new_messages_count = Object.keys($scope.new_messages).length;
     });
 };
 

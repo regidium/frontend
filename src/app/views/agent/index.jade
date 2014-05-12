@@ -12,9 +12,9 @@ block header
         .collapse.navbar-collapse(role="navigation")
             ul.nav.navbar-nav
                 li
-                    span(ng-bind="new_messages_count" class="label label-default") {{new_messages_count}}
-                li
-                    a(href="/agent/chats", translate) Chats
+                    a(href="/agent/chats")
+                        span(translate) Chats
+                        span(ng-bind="new_messages_count", class="badge badge-message-new-count")
                 li
                     a(href="/agent/visitors", translate) Visitors
                 li

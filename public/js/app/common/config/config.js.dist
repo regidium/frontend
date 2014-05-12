@@ -6,7 +6,8 @@
     angular.module('regidiumApp')
         .factory('config', function ($rootScope) {
 
-            $rootScope.apiUrl = 'http://API_URL/api/v1/'
+            $rootScope.apiUrl = 'http://api.regidium.com/api/v1/'
+            $rootScope.config.fsUrl = 'http://fs.regidium.com/';
 
             return $rootScope;
         });

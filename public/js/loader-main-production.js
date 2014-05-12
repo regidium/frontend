@@ -9,11 +9,13 @@ head.load(
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js",
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js",
     "//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js",
-    "/js/libs/angular/angular-translate/angular-translate.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/bower-angular-translate/2.0.1/angular-translate.min.js",
     "/js/libs/angular/angular-translate/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-local/angular-translate-storage-local.min.js",
-    "/js/libs/angular/angular-translate/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
+    "//cdnjs.cloudflare.com/ajax/libs/bower-angular-translate-loader-static-files/2.0.0/angular-translate-loader-static-files.min.js",
     "/js/libs/angular/angular-translate/angular-translate-handler-log/angular-translate-handler-log.min.js",
     "/js/libs/ua-parser/ua-parser.min.js",
     "/js/libs/angular/angular-loading-bar/loading-bar.min.js",
@@ -27,6 +29,7 @@ head.load(
     "/js/app/common/services.js",
     "/js/app/common/directives.js",
     function() {
-        console.log("Done loading main JS");
+        console.log("Done loading main JS. Environment: "+env);
+        angular.bootstrap(document, ['regidiumApp']);
     }
 );

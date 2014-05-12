@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form" name="form">
+<form class="form-horizontal" role="form" name="form" ng-file-drop>
     <fieldset ng-disabled="disabled">
         <div class="form-group" ng-show="current_agent.avatar">
             <img class="avatar img-thumbnail" ng-src="{{current_agent.avatar}}" />
@@ -22,10 +22,33 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label" translate>Avatar (пока без загрузки)</label>
+            <label class="col-sm-3 control-label" translate>Avatar</label>
             <div class="col-sm-9">
-                <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-model="current_agent.avatar" />
+                <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-disabled="true" ng-model="current_agent.avatar" />
             </div>
+        </div>
+        <div class="form-group" ng-show="!disabled">
+            <label class="col-sm-3 control-label">&nbsp;</label>
+            <div class="col-sm-9">
+                <input ng-file-select type="file" class="form-control" />
+                <button type="button" class="btn btn-success btn-xs" ng-click="uploader.uploadAll()" ng-disabled="uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span> <span translate>Upload</span>
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="uploader.cancelAll()" ng-disabled="!uploader.queue[0].isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> <span translate>Cancel</span>
+                </button>
+<!--                 <button type="button" class="btn btn-danger btn-xs" ng-click="uploader.clearQueue()">
+                    <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
+                </button> -->
+            </div>
+<!--             <div ng-show="uploader.isHTML5" class="progress progress-striped active">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+            </div>
+            <div ng-show="uploader.isHTML5">
+                <div class="well" ng-file-over>
+                    <span translate>Drop zone</span>
+                </div>
+            </div> -->
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Email</label>
@@ -59,20 +82,6 @@
                 </label>
                 <label>
                     <input type="radio" ng-model="current_agent.type" value="3" translate /> Operator
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" translate>Status</label>
-            <div class="col-sm-9">
-                <label>
-                    <input type="radio" ng-model="current_agent.status" value="1" translate /> Enabled
-                </label>
-                <label>
-                    <input type="radio" ng-model="current_agent.status" value="2" translate /> Blocked
-                </label>
-                <label>
-                    <input type="radio" ng-model="current_agent.status" value="3" translate /> Deleted
                 </label>
             </div>
         </div>
