@@ -1,5 +1,9 @@
 <div ng-include="'js/app/agent/views/settings/widget/_menu.html'"></div>
 
+<script>
+    $(":file").filestyle({buttonBefore: true, input: false, icon: false});
+</script>
+
 <div class="col-md-9" role="main">
     <div block-ui="styleBlockUI"></div>
     <div class="content">
@@ -11,9 +15,20 @@
                             <img class="company-logo img-thumbnail media-object" ng-src="{{settings.company_logo}}" />
                         </div>
                         <div class="media-body">
-                            <label class="col-sm-4 control-label" translate>Logo</label>
-                            <div class="col-sm-6">
+                            <label class="col-sm-2 control-label" translate>Logo</label>
+<!--                             <div class="col-sm-6">
                                 <input type="url" class="form-control" placeholder="Logo" ng-model="settings.company_logo" />
+                            </div> -->
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <input ng-file-select type="file" class="filestyle" data-input="false" />
+                                </span>
+                                <input type="text" class="form-control" placeholder="Company Logo" ng-disabled="true" ng-model="settings.company_logo" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger" ng-click="removeLogo()">
+                                        <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </div>

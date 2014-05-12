@@ -15,7 +15,7 @@ function AgentSettingsWidgetCtrl($scope) {
 /**
  * @url "/agent/widget/style"
  */
-function AgentSettingsWidgetStyleCtrl($rootScope, $scope, socket, blockUI) {
+function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, socket, blockUI) {
     $scope.settings = {};
     $scope.current_menu = 'style';
     // Определяем блоки блокировки
@@ -36,17 +36,63 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, socket, blockUI) {
         // Разблокировка ожидающих блоков
         styleBlockUI.stop(); 
         menuBlockUI.stop(); 
-    })
+    });
 
     // Настройки стялей виджета изменены
     socket.on('widget:setting:style:edited', function(data) {
         $scope.settings = data.settings;
-    })
+    });
+
+    // Определяем загрузчик файлов
+    var uploader = $scope.uploader = $fileUploader.create({
+        queueLimit: 1,
+        autoUpload: true,
+        removeAfterUpload: true,
+        scope: $scope,
+        url: $rootScope.config.fsUrl + 'upload/' + $rootScope.widget.uid + '/widget/logo',
+        filters: [
+            function(item) {
+                var type = uploader.isHTML5 ? item.type : '/' + item.value.slice(item.value.lastIndexOf('.') + 1);
+                type = '|' + type.toLowerCase().slice(type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+        ]
+    });
+
+    // Добавляем обрабочик загрузки файла
+    uploader.bind('success', function (event, xhr, item, response) {
+        if (response && response.url) {
+            $scope.settings.company_logo = response.url;
+        }
+    });
+
+    $scope.removeLogo = function() {
+        $http.delete($rootScope.config.fsUrl + $rootScope.widget.uid)
+            .success(function(data, status, headers, config) {
+                if (data && data.success) {
+                    $scope.settings.company_logo = '';
+                } else if (data && data.errors) {
+                    $log.debug(data.errors);
+                    flash.error = data.errors;
+                } else {
+                    $log.debug(data);
+                    flash.error = 'System error!';
+                }
+            }).error(function(data, status, headers, config) {
+                if (data && data.errors) {
+                    $log.debug(data.errors);
+                    flash.error = data.errors;
+                } else {
+                    $log.debug('System error!');
+                    flash.error = 'System error!';
+                }
+        });
+    }
 
     $scope.submit = function() {
         // Сохраняем настройки
         socket.emit('widget:setting:style:edit', { settings: $scope.settings, widget_uid: $rootScope.widget.uid });
-    }
+    };
 }
 
 /**

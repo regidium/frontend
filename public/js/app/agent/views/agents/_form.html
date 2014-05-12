@@ -1,5 +1,5 @@
 <script>
-    $(":file").filestyle();
+    $(":file").filestyle({buttonBefore: true, input: false, icon: false});
 </script>
 
 <form class="form-horizontal" role="form" name="form" ng-file-drop>
@@ -28,25 +28,18 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Avatar</label>
             <div class="col-sm-9">
-                <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-disabled="true" ng-model="current_agent.avatar" />
-            </div>
-        </div>
-        <div class="form-group" ng-show="!disabled">
-            <label class="col-sm-3 control-label">&nbsp;</label>
-            <div class="col-sm-9">
-                <input ng-file-select type="file" class="filestyle" data-input="false" />
-                <button type="button" class="btn btn-danger btn-xs" ng-click="removeAvatar()">
-                    <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
-                </button>
-            </div>
-<!--             <div ng-show="uploader.isHTML5" class="progress progress-striped active">
-                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-            </div>
-            <div ng-show="uploader.isHTML5">
-                <div class="well" ng-file-over>
-                    <span translate>Drop zone</span>
+                <div ng-class="{'input-group': !disabled}">
+                    <span ng-show="!disabled" class="input-group-btn">
+                        <input ng-file-select type="file" class="filestyle" data-input="false" />
+                    </span>
+                    <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-disabled="true" ng-model="current_agent.avatar" />
+                    <span ng-show="!disabled" class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="removeAvatar()">
+                            <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
+                        </button>
+                    </span>
                 </div>
-            </div> -->
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Email</label>

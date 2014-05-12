@@ -93,6 +93,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         var uploader = $scope.uploader = $fileUploader.create({
             queueLimit: 1,
             autoUpload: true,
+            removeAfterUpload: true,
             scope: $scope,
             url: $rootScope.config.fsUrl + 'upload/' + $rootScope.widget.uid + '/agent/avatar/' + $scope.current_agent.uid,
             filters: [
@@ -113,7 +114,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
     };
 
     $scope.removeAvatar = function() {
-        $http.get($rootScope.config.fsUrl + $rootScope.widget.uid + '/avatars/' + $scope.current_agent.uid)
+        $http.delete($rootScope.config.fsUrl + $rootScope.widget.uid + '/avatars/' + $scope.current_agent.uid)
             .success(function(data, status, headers, config) {
                 if (data && data.success) {
                     $scope.current_agent.avatar = '';

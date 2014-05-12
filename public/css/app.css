@@ -38,8 +38,8 @@ img.avatar {
 }
 
 img.company-logo {
-  width: 79px;
-  height: 79px;
+  width: 45px;
+  height: 45px;
 }
 
 .overflowable {
@@ -160,4 +160,8 @@ canvas {
   border: 1px solid #c3c3c3;
   height: 100px;
   margin: 6px 0 0 6px;
+}
+
+.group-span-filestyle .badge {
+  display: none;
 }
