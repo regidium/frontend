@@ -13,7 +13,6 @@
         'angular-underscore',
         'blockUI',
         'regidiumApp.commonDirectives'
-        //'regidiumApp.mainDirectives'
     ]).config(function($locationProvider, $routeProvider, $translateProvider, $logProvider, flashProvider) {
         $locationProvider.html5Mode(true);
 
