@@ -30,16 +30,10 @@
         <div class="form-group" ng-show="!disabled">
             <label class="col-sm-3 control-label">&nbsp;</label>
             <div class="col-sm-9">
-                <input ng-file-select type="file" class="form-control" />
-                <button type="button" class="btn btn-success btn-xs" ng-click="uploader.uploadAll()" ng-disabled="uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess">
-                    <span class="glyphicon glyphicon-upload"></span> <span translate>Upload</span>
-                </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="uploader.cancelAll()" ng-disabled="!uploader.queue[0].isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> <span translate>Cancel</span>
-                </button>
-<!--                 <button type="button" class="btn btn-danger btn-xs" ng-click="uploader.clearQueue()">
+                <input ng-file-select type="file" class="filestyle" data-input="false" />
+                <button type="button" class="btn btn-danger btn-xs" ng-click="removeAvatar()">
                     <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
-                </button> -->
+                </button>
             </div>
 <!--             <div ng-show="uploader.isHTML5" class="progress progress-striped active">
                 <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>

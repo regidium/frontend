@@ -5,7 +5,7 @@
  * @todo Разделять online & offline
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($rootScope, $scope, $log, $fileUploader, flash, sha1, socket, blockUI) {
+function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, sha1, socket, blockUI) {
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -91,6 +91,8 @@ function AgentAgentsCtrl($rootScope, $scope, $log, $fileUploader, flash, sha1, s
 
         // Определяем загрузчик файлов
         var uploader = $scope.uploader = $fileUploader.create({
+            queueLimit: 1,
+            autoUpload: true,
             scope: $scope,
             url: $rootScope.config.fsUrl + 'upload/' + $rootScope.widget.uid + '/agent/avatar/' + $scope.current_agent.uid,
             filters: [
@@ -109,6 +111,29 @@ function AgentAgentsCtrl($rootScope, $scope, $log, $fileUploader, flash, sha1, s
             }
         });
     };
+
+    $scope.removeAvatar = function() {
+        $http.get($rootScope.config.fsUrl + $rootScope.widget.uid + '/avatars/' + $scope.current_agent.uid)
+            .success(function(data, status, headers, config) {
+                if (data && data.success) {
+                    $scope.current_agent.avatar = '';
+                } else if (data && data.errors) {
+                    $log.debug(data.errors);
+                    flash.error = data.errors;
+                } else {
+                    $log.debug(data);
+                    flash.error = 'System error!';
+                }
+            }).error(function(data, status, headers, config) {
+                if (data && data.errors) {
+                    $log.debug(data.errors);
+                    flash.error = data.errors;
+                } else {
+                    $log.debug('System error!');
+                    flash.error = 'System error!';
+                }
+        });
+    }
 
     // Сохраняем агента
     $scope.save = function() {
