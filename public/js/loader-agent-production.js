@@ -14,7 +14,7 @@ head.load(
     "//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.7.0/angular-moment.min.js",
     "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap.min.js",
     "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js",
-    "/js/libs/angular/angular-translate/angular-translate/angular-translate.min.js",
+    "/js/libs/angular/angular-translate/angular-translate.min.js",
     "/js/libs/angular/angular-translate/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js",
     "/js/libs/angular/angular-translate/angular-translate-storage-local/angular-translate-storage-local.min.js",
