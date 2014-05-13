@@ -129,7 +129,11 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         $scope.current_chat = chat;
 
         if ($scope.current_chat.current_url) {
-            $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+            try {
+                $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+            } catch(e) {
+                $log.debug($scope.current_chat);
+            }
         }
 
         // Подключаем агента к чату
@@ -193,7 +197,11 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
 
         // Отсеиваем чужие оповещения
         if (data.agent.uid == $rootScope.agent.uid) {
-            data.chat.current_url = decodeURIComponent(data.chat.current_url);
+            try {
+                data.chat.current_url = decodeURIComponent(data.chat.current_url);
+            } catch(e) {
+                $log.debug(data.chat);
+            }
             $scope.current_chat = data.chat;
             if ($scope.current_chat.messages) {
                 angular.forEach($scope.current_chat.messages, function(message, key) {
