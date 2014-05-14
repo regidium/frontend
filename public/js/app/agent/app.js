@@ -133,8 +133,31 @@
             window.location = '/login';
         }
 
-        // Сообщяем слушателей о подключении агента
-        socket.emit('agent:connect', { agent: $rootScope.agent, widget_uid: $rootScope.agent.widget.uid });
+        var getSession = function(cb) {
+            var session_data = {};
+            session_data.device = UAParser('').device.model + ' ' + UAParser('').device.vendor;
+            session_data.os = UAParser('').os.name;
+            session_data.browser = UAParser('').browser.name + ' ' + UAParser('').browser.version;
+            session_data.language = $rootScope.lang;
+            // Получаем IP, страну, город пользователя
+            try {
+                $http.jsonp('http://api.sypexgeo.net/jsonp/?callback=JSON_CALLBACK').success(function(data) {
+                    // @todo можно определять timezone (http://sypexgeo.net/ru/api/)
+                    session_data.ip = data.ip;
+                    session_data.country = data.country.name_en;
+                    session_data.city = data.city.name_en;
+                    cb(session_data);
+                });
+            } catch(e) {
+                $log.debug('Ошибка получения IP, страны, города');
+                cb(session_data);
+            }
+        }
+
+        getSession(function(session) {
+            // Сообщяем слушателей о подключении агента
+            socket.emit('agent:connect', { agent: $rootScope.agent, session: session, widget_uid: $rootScope.agent.widget.uid });
+        });
 
         // Добавляем переменную widget в глобальный скоуп
         $rootScope.widget = $rootScope.agent.widget;
