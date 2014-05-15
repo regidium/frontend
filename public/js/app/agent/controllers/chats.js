@@ -186,6 +186,10 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
     socket.on('chat:agent:entered', function (data) {
         $log.debug('Socket chat:agent:entered', data);
 
+        if(!$scope.chats[data.chat.uid]) {
+            $scope.chats[data.chat.uid] = data.chat;
+        }
+
         // Обновляем количество не прочтенных сообщений в кружках
         if ($scope.chats[data.chat.uid]) {
             angular.forEach($scope.chats[data.chat.uid].messages, function(message, key) {

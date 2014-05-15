@@ -31,12 +31,14 @@ head.load(
     "/js/app/agent/app.js",
     // Controllers
     "/js/app/agent/controllers/agents.js",
+    "/js/app/agent/controllers/ballance.js",
     "/js/app/agent/controllers/chats.js",
-    "/js/app/agent/controllers/archives.js",
     "/js/app/agent/controllers/main.js",
-    "/js/app/agent/controllers/settings.js",
-    "/js/app/agent/controllers/statistics.js",
+    "/js/app/agent/controllers/report.js",
     "/js/app/agent/controllers/visitors.js",
+    "/js/app/agent/controllers/statistics.js",
+    "/js/app/agent/controllers/settings/triggers.js",
+    "/js/app/agent/controllers/settings/widget.js",
 
     "/js/app/common/config/config.js",
     "/js/app/common/services.js",
@@ -45,5 +47,23 @@ head.load(
     function() {
         console.log("Done loading agent JS. Environment: "+env);
         angular.bootstrap(document, ['regidiumApp']);
+
+        // 3-х уровневое меню
+        $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+            event.preventDefault(); 
+            event.stopPropagation(); 
+            $(this).parent().addClass('open');
+
+            var menu = $(this).parent().find("ul");
+            var menupos = menu.offset();
+          
+            if ((menupos.left + menu.width()) + 30 > $(window).width()) {
+                var newpos = - menu.width();      
+            } else {
+                var newpos = $(this).parent().width();
+            }
+            menu.css({ left:newpos });
+
+        });
     }
 );

@@ -6,8 +6,13 @@
     angular.module('regidiumApp')
         .factory('config', function ($rootScope) {
 
-            $rootScope.apiUrl = 'http://api.regidium.com/api/v1/'
+            $rootScope.config = {};
+            $rootScope.config.widgetUrl = 'http://widget.regidium.com/';
+            $rootScope.config.apiUrl = 'http://api.regidium.com/api/v1/';
             $rootScope.config.fsUrl = 'http://fs.regidium.com/';
+            $rootScope.config.server = {};
+            $rootScope.config.server.io_url = 'http://io.regidium.com';
+            $rootScope.config.server.io_port = '5000';
 
             return $rootScope;
         });

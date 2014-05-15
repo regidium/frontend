@@ -1,19 +1,28 @@
 'use strict';
 
 /**
- * @todo Внедрить пагинацию
- * @url "/agent/archives"
+ * @todo
+ * @url "/agent/report/statistics"
  */
-function AgentArchivesCtrl($rootScope, $scope, $log, socket, blockUI) {
+function AgentReportStatisticsCtrl($scope) {
+}
+
+'use strict';
+
+/**
+ * @todo Внедрить пагинацию
+ * @url "/agent/report/history"
+ */
+function AgentReportHistoryCtrl($rootScope, $scope, $log, socket, blockUI) {
     // Определяем блоки блокировки
-    var archivesBlockUI = blockUI.instances.get('archivesBlockUI');
+    var historyBlockUI = blockUI.instances.get('historyBlockUI');
 
     $scope.chats = {};
 
     // Запрашиваем список архивных чатов
     socket.emit('chat:archives', { widget_uid: $rootScope.widget.uid });
     // Блокируем ожидающие блоки
-    archivesBlockUI.start();
+    historyBlockUI.start();
 
     // Получаем список архивных чатов
     socket.on('chat:archives:list', function(data) {
@@ -23,6 +32,6 @@ function AgentArchivesCtrl($rootScope, $scope, $log, socket, blockUI) {
         $scope.chats = data;
 
         // Разблокировка ожидающих блоков
-        archivesBlockUI.stop(); 
+        historyBlockUI.stop(); 
     });
 }
