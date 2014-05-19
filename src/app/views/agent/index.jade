@@ -66,8 +66,23 @@ block header
                                 a(href="/agent/ballance/pay", translate) Payment
 
                 ul.nav.navbar-nav.navbar-right
-                    li(ng-controller="AgentAuthLogoutCtrl")
-                        a(href="", ng-click="logout()", translate) Logout
+                    li.dropdown(ng-controller="AgentAuthLogoutCtrl")
+                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                            img(ng-src="{{agent.avatar + 'avatar?width=25&heigth=25'}}")
+                            b.caret
+                        ul.dropdown-menu
+                            li
+                                span.navbar-text {{agent.last_visit * 1000 | amDateFormat:'DD.MM.YYYY, H:mm:ss'}}
+                            li.divider
+                            li
+                                a(href="/agent/agents", translate) Profile
+                            li
+                                a(href="", translate) Panel Settings
+                            li
+                                a(href="", translate) Improve Regidium
+                            li.divider
+                            li
+                                a(href="", ng-click="logout()", translate) Logout
 
 block content
     div(ng-controller="AgentCtrl")

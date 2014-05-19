@@ -108,6 +108,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         // Добавляем обрабочик загрузки файла
         uploader.bind('success', function (event, xhr, item, response) {
             if (response && response.url) {
+                $scope.current_agent.avatar = '';
                 $scope.current_agent.avatar = response.url;
             }
         });
