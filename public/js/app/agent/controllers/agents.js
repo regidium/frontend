@@ -114,6 +114,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             if (response && response.url) {
                 $('#avatar').attr('url', '');
                 $('#avatar').attr('url', response.url);
+                $scope.t = (+new Date);
                 $scope.current_agent.avatar = response.url;
                 flash.success = 'Agent avatar uploaded';
             }
