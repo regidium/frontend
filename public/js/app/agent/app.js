@@ -20,7 +20,7 @@
         $locationProvider.html5Mode(true);
 
         $routeProvider
-            .when('/logout', { templateUrl: 'js/app/agent/views/index.html', controller: AgentAuthLogoutCtrl })
+            .when('/agent/logout', { templateUrl: 'js/app/agent/views/index.html', controller: AgentAuthLogoutCtrl })
 
             .when('/agent', { templateUrl: 'js/app/agent/views/index.html', controller: AgentCtrl })
             .when('/agent/visitors', { templateUrl: 'js/app/agent/views/visitors/index.html', controller: AgentVisitorsCtrl })

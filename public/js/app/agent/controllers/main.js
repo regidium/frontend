@@ -40,18 +40,17 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
  */
 function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
     // Нажатие кнопки Logout
-    $scope.logout = function() {
-        // Оповещаем об отключении агента
-        socket.emit('agent:disconnect', { agent_uid: $rootScope.agent.uid });
-
+    //$scope.logout = function() {
         // Запрос на отключение агента
         $http.get('/logout')
             .success(function(data, status, headers, config) {
+                // Оповещаем об отключении агента
+                socket.emit('agent:disconnect', { agent_uid: $rootScope.agent.uid });
                 window.location = '/';
             }).error(function(data, status, headers, config) {
                 window.location = '/';
             });
-    }
+    //}
 }
 
 /**
