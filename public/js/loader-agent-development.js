@@ -37,7 +37,6 @@ head.load(
     "/js/app/agent/controllers/main.js",
     "/js/app/agent/controllers/report.js",
     "/js/app/agent/controllers/visitors.js",
-    "/js/app/agent/controllers/statistics.js",
     "/js/app/agent/controllers/settings/triggers.js",
     "/js/app/agent/controllers/settings/widget.js",
 
