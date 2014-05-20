@@ -29,6 +29,8 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
     // Настройки стялей виджета изменены
     socket.on('widget:setting:style:edited', function(data) {
         $scope.settings = data.settings;
+
+        flash.success = 'Widget style edited';
     });
 
     // Определяем загрузчик файлов
@@ -52,6 +54,8 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
         if (response && response.url) {
             $scope.settings.company_logo = response.url;
         }
+
+        flash.success = 'Widget logo uploaded';
     });
 
     $scope.removeLogo = function() {
@@ -59,6 +63,7 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
             .success(function(data, status, headers, config) {
                 if (data && data.success) {
                     $scope.settings.company_logo = '';
+                    flash.success = 'Widget logo removed';
                 } else if (data && data.errors) {
                     $log.debug(data.errors);
                     flash.error = data.errors;

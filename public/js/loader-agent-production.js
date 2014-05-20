@@ -31,7 +31,7 @@ head.load(
     "/js/app/agent/app.js",
     // Controllers
     "/js/app/agent/controllers/agents.js",
-    "/js/app/agent/controllers/ballance.js",
+    "/js/app/agent/controllers/balance.js",
     "/js/app/agent/controllers/chats.js",
     "/js/app/agent/controllers/main.js",
     "/js/app/agent/controllers/report.js",

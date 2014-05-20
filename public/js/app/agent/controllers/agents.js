@@ -54,6 +54,8 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         if (existed == false) {
             $scope.agents.push(data.agent);
         }
+
+        flash.success = 'Agent saved';
     });
 
     // Получено событие удаления агента
@@ -71,6 +73,8 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         if (existed) {
             $scope.agents.splice($scope.agents.indexOf(existed), 1);
         }
+
+        flash.success = 'Agent removed';
     });
 
     // Выбираем агента
@@ -110,6 +114,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             if (response && response.url) {
                 $scope.current_agent.avatar = '';
                 $scope.current_agent.avatar = response.url;
+                flash.success = 'Agent avatar uploaded';
             }
         });
     };
@@ -119,6 +124,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             .success(function(data, status, headers, config) {
                 if (data && data.success) {
                     $scope.current_agent.avatar = '';
+                    flash.success = 'Agent avatar removed';
                 } else if (data && data.errors) {
                     $log.debug(data.errors);
                     flash.error = data.errors;
@@ -184,6 +190,8 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
 
                 $scope.current_agent = $scope.agents[0];
                 $scope.disabled = true;
+
+                flash.success = 'Agent removed';
             }
         } else {
             flash.success = 'Владелец виджета не может быть удален!';

@@ -61,15 +61,15 @@ block header
                             b.caret
                         ul.dropdown-menu
                             li
-                                a(href="/agent/ballance/plan", translate) Rate (subscription)
+                                a(href="/agent/balance/plan", translate) Rate (subscription)
                             li
-                                a(href="/agent/ballance/pay", translate) Payment
+                                a(href="/agent/balance/pay", translate) Payment
 
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown(ng-controller="AgentAuthLogoutCtrl")
                         a.dropdown-toggle(href="", data-toggle="dropdown")
                             img(ng-src="{{agent.avatar + 'avatar?width=25&heigth=25'}}")
-                            span(ng-bind="agent.first_name + agent.last_name", style="padding: 0 5px;")
+                            span(ng-bind="agent.first_name + ' ' + agent.last_name", style="padding: 0 5px;")
                             b.caret
                         ul.dropdown-menu
                             li

@@ -3,7 +3,7 @@
 /**
  * @url "/agent/settings/triggers"
  */
-function AgentSettingsTriggersCtrl($rootScope, $scope, socket, blockUI) {
+function AgentSettingsTriggersCtrl($rootScope, $scope, socket, blockUI, flash) {
     // Определяем блоки блокировки
     var triggerBlockUI = blockUI.instances.get('triggerBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -41,6 +41,8 @@ function AgentSettingsTriggersCtrl($rootScope, $scope, socket, blockUI) {
         if (exists == false) {
             $scope.triggers.push(data.trigger);
         }
+
+        flash.success = 'Trigger saved';
     })
 
     // Триггер удален
@@ -54,6 +56,8 @@ function AgentSettingsTriggersCtrl($rootScope, $scope, socket, blockUI) {
         if ($scope.current_trigger && $scope.current_trigger.uid == data.trigger_uid) {
             delete $scope.current_trigger;
         }
+
+        flash.success = 'Trigger removed';
     })
 
     /** @todo Избавится от new */

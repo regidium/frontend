@@ -72,6 +72,8 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         if ($scope.current_chat && $scope.current_chat.uid == data.chat.uid) {
             $scope.current_chat.messages.push(message);
         }
+
+        flash.warn = 'Chat connected';
     });
 
     // Чат отключен
@@ -101,21 +103,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             $scope.current_chat.messages.push(message);
         }
 
-        // timeouts[data.chat_uid] = $timeout(function() {
-        //     var message = {
-        //         sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
-        //         created_at: (+new Date) / 1000,
-        //         text: 'User leave site'
-        //     };
-
-        //     if ($scope.chats[data.chat_uid]) {
-        //         $scope.chats[data.chat_uid].messages.push(message);
-        //     }
-
-        //     if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
-        //         $scope.current_chat.messages.push(message);
-        //     }
-        // }, 500);
+        flash.warn = 'Chat disconnected';
     });
 
     // Пользователь закрыл чат
@@ -168,6 +156,8 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         if ($scope.chats[data.chat_uid]) {
             delete $scope.chats[data.chat_uid];
         }
+
+        flash.success = 'Chat closed';
     });
 
     // Агент подключен к чату
@@ -253,6 +243,8 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
                 chat_uid: data.chat_uid,
                 widget_uid: $rootScope.widget.uid
             });
+
+            flash.warn = 'User send message';
         }
     });
 
