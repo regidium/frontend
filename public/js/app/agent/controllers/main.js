@@ -40,7 +40,7 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
  */
 function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
     // Нажатие кнопки Logout
-    //$scope.logout = function() {
+    $scope.logout = function() {
         // Запрос на отключение агента
         $http.get('/logout')
             .success(function(data, status, headers, config) {
@@ -50,7 +50,7 @@ function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
             }).error(function(data, status, headers, config) {
                 window.location = '/';
             });
-    //}
+    }
 }
 
 /**
