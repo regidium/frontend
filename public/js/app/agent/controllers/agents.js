@@ -113,7 +113,6 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         uploader.bind('success', function (event, xhr, item, response) {
             if (response && response.url) {
                 $('#avatar').attr('url', '');
-                console.log($('#avatar'));
                 $('#avatar').attr('url', response.url);
                 $scope.current_agent.avatar = response.url;
                 flash.success = 'Agent avatar uploaded';
