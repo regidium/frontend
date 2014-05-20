@@ -9,6 +9,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
+    $scope.t = (+new Date);
 
     // Блокировка формы редактирования
     $scope.disabled = true;
