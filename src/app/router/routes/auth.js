@@ -66,6 +66,7 @@ exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
+            console.log(req.agent);
             if (req.agent && req.agent.uid) {
                 if (req.xhr || req.headers['xhr']) {
                     res.send({agent: req.agent});
@@ -96,26 +97,23 @@ exports.login = function (req, res) {
                 },
                 onErrors: function (body) {
                     /** @todo Сделать обработчик ошибок */
-                    if (req.xhr || req.headers['xhr']) {
-                        return res.send(body);
-                    } else {
-                        return res.redirect('/login');
-                    }
+                    callback(null, body);
                 }
             });
         }
 
     ], function (err, data) {
+        console.log(err, data);
         if (data && data.agent) {
             res.authorizer.login(res, data.agent);
-            if (req.headers['xhr']) {
+            if (req.xhr || req.headers['xhr']) {
                 res.send(data);
             } else {
                 return res.redirect('/agent');
             }
         } else if (data.length == 0) {
             /** @todo Сделать обработчик ошибок */
-            if (req.headers['xhr']) {
+            if (req.xhr || req.headers['xhr']) {
                 res.send({ errors: ['Agent no found!'] });
             } else {
                 res.redirect('/login');

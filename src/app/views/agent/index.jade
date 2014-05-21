@@ -75,10 +75,10 @@ block header
                             li
                                 span.navbar-text {{agent.last_visit * 1000 | amDateFormat:'DD.MM.YYYY, H:mm:ss'}}
                                 br
-                                span.navbar-text(am-time-ago="agent.last_session.started_at", am-preprocess="unix")
+                                span.navbar-text(ng-show="agent.session", am-time-ago="agent.session.started_at", am-preprocess="unix")
                             li.divider
                             li
-                                a(href="/agent/agents/{{agent.uid}}", translate) Profile
+                                a(href="/agent/agents", translate) Profile
                             li
                                 a(href="", translate) Panel Settings
                             li

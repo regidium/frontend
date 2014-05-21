@@ -2,7 +2,7 @@
     <div block-ui="menuBlockUI"></div>
     <div class="sidebar hidden-print affix-top" role="complementary">
         <ul class="nav sidenav">
-            <li ng-repeat="agent in agents ">
+            <li ng-repeat="agent in agents">
                 <a href="" ng-click="select(agent)" ng-class="{'agent-list-offline': agent.status == c.AGENT_STATUS_OFFLINE}" class="active">
                     {{agent.first_name}} {{agent.last_name}}
                     <img height="25px" ng-src="{{agent.avatar}}?height=25&t={{t}}" />

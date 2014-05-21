@@ -2,7 +2,6 @@
 
 /**
  * @todo Внедрить пагинацию
- * @todo Разделять online & offline
  * @url "/agent/agents"
  */
 function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, sha1, socket, blockUI) {
@@ -14,7 +13,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
     // Блокировка формы редактирования
     $scope.disabled = true;
     // Список агентов
-    $scope.agents = [];
+    $scope.agents = {};
     // Выбранный агент
     $scope.current_agent = {};
 
@@ -26,13 +25,15 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
 
     // Получаем список агентов
     socket.on('agent:existed:list', function(data) {
-        $log.debug('Socket agent:existed:list');
+        $log.debug('Socket agent:existed:list', data);
 
         // Наполняем список чатов онлайн
-        $scope.agents = data.agents;
+        angular.forEach(data.agents, function(agent, key) {
+            $scope.agents[agent.uid] = agent;
+        });
 
-        // Делам текущим первого из списка
-        $scope.current_agent = $scope.agents[0];
+        // Активируем текущего агента
+        $scope.current_agent = $scope.agents[$rootScope.agent.uid];
 
         // Разблокировка ожидающих блоков
         agentBlockUI.stop(); 
@@ -43,18 +44,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
     socket.on('agent:saved', function(data) {
         $log.debug('Socket agent:saved');
 
-        var existed = false;
-
-        angular.forEach($scope.agents, function(agent, key) {
-            if (agent.uid == data.agent.uid) {
-                agent = data.agent;
-                existed = true;
-            }
-        });
-
-        if (existed == false) {
-            $scope.agents.push(data.agent);
-        }
+        $scope.agents[data.agent.uid] = data.agent;
 
         flash.success = 'Agent saved';
     });
@@ -65,15 +55,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
 
         var existed = {};
 
-        angular.forEach($scope.agents, function(agent, key) {
-            if (agent.uid == data.agent_uid) {
-                existed = agent;
-            }
-        });
-
-        if (existed) {
-            $scope.agents.splice($scope.agents.indexOf(existed), 1);
-        }
+        delete $scope.agents[data.agent.uid];
 
         flash.success = 'Agent removed';
     });
@@ -117,6 +99,10 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
                 $('#avatar').attr('src', response.url);
                 $scope.t = (+new Date);
                 $scope.current_agent.avatar = response.url;
+                if ($scope.agents[$scope.current_agent.uid]) {
+                    $scope.agents[$scope.current_agent.uid].avatar = $scope.current_agent.avatar;
+                }
+
                 flash.success = 'Agent avatar uploaded';
             }
         });
@@ -127,6 +113,11 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             .success(function(data, status, headers, config) {
                 if (data && data.success) {
                     $scope.current_agent.avatar = '';
+
+                    if ($scope.agents[$scope.current_agent.uid]) {
+                        $scope.agents[$scope.current_agent.uid].avatar = $scope.current_agent.avatar;
+                    }
+
                     flash.success = 'Agent avatar removed';
                 } else if (data && data.errors) {
                     $log.debug(data.errors);
