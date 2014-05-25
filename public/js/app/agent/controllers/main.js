@@ -33,7 +33,7 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
         delete $scope.new_messages[data.message_uid];
         $scope.new_messages_count = Object.keys($scope.new_messages).length;
     });
-};
+}
 
 /**
  * @url "/logout"
@@ -45,7 +45,7 @@ function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
         $http.get('/logout')
             .success(function(data, status, headers, config) {
                 // Оповещаем об отключении агента
-                socket.emit('agent:disconnect', { agent_uid: $rootScope.agent.uid });
+                //socket.emit('agent:disconnect', { agent_uid: $rootScope.agent.uid, widget_uid: $rootScope.agent.widget_uid });
                 window.location = '/';
             }).error(function(data, status, headers, config) {
                 window.location = '/';
@@ -58,4 +58,28 @@ function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
  */
 function AgentCtrl($scope) {
     /** @todo */
-};
+}
+
+/**
+ * @url "/agent/issue"
+ */
+function AgentIssueCtrl($rootScope, $scope, $location, socket, flash) {
+    if ($location.path() === '/agent/issue') {
+        angular.element('#issue').modal('show');
+    }
+
+    $scope.send = function() {
+        socket.emit('agent:issue:send', { issue: $scope.issue, agent_uid: $rootScope.agent.uid });
+        $scope.issue = {title: '', text: ''};
+
+        flash.success = 'Issue sended';
+
+        angular.element('#issue').modal('hide');
+
+        $location.path('/agent');
+    };
+
+    $scope.close = function() {
+        $location.path('/agent');
+    };
+}

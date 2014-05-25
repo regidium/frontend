@@ -73,9 +73,9 @@ block header
                             b.caret
                         ul.dropdown-menu
                             li
-                                span.navbar-text {{agent.last_visit * 1000 | amDateFormat:'DD.MM.YYYY, H:mm:ss'}}
-                                br
-                                span.navbar-text(ng-show="agent.session", am-time-ago="agent.session.started_at", am-preprocess="unix")
+                                span.dropdown-header(ng-show="agent.current_session") {{agent.current_session.started_at * 1000 | amDateFormat:'DD.MM.YYYY, H:mm:ss'}}
+                            li
+                                span.dropdown-header(ng-show="agent.current_session") {{agent.current_session.last_visit * 1000 | amDateFormat:'DD.MM.YYYY, H:mm:ss'}}
                             li.divider
                             li
                                 a(href="/agent/agents", translate) Profile
@@ -90,6 +90,9 @@ block header
 block content
     div(ng-controller="AgentCtrl")
         .row(ng-view)
+
+block auto_popups
+    div(agent-issue)
 
 block script
     script(src= (config.server.io_url + ':' + config.server.io_port + '/socket.io/socket.io.js'))

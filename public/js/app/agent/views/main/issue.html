@@ -1,0 +1,25 @@
+<div ng-controller="AgentIssueCtrl" id="issue" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="issue" aria-hidden="true">
+    <div class="modal-body">
+        <div class="modal-dialog">
+            <div class="modal-content form-auth">
+                <div class="modal-header">
+                    <button ng-click="close()" class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" translate>Add Issue</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    <form role="form" ng-submit='send()' name="issue_form">
+                        <input ng-model="issue.title" ng-required="true" type="text" placeholder="Title Issue" required="required" autofocus="autofocus" class="form-control" />
+                        <textarea ng-model="issue.text" ng-required="true" placeholder="Text Issue" required="required" class="form-control"></textarea>
+                        <p>
+                            <button type="submit" ng-disabled="issue_form.$invalid" class="btn btn-lg btn-primary btn-block">Send</button>
+                        </p>
+                        <p>
+                            <button ng-click="close()" class="btn btn-lg btn-danger btn-block" type="button" data-dismiss="modal" aria-hidden="true">Close</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

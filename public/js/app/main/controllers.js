@@ -34,7 +34,7 @@ function MainAuthLoginCtrl($scope, $location, $http, $log, sha1, flash) {
     };
 
     if ($location.path() === '/login') {
-        $('#login').modal('show');
+        angular.element('#login').modal('show');
     }
 
     /** todo Валилидация данных */
@@ -80,7 +80,7 @@ function MainAuthRegistrationCtrl($rootScope, $scope, $location, $log, $http, sh
     };
 
     if ($location.path() === '/registration') {
-        $('#registration').modal('show');
+        angular.element('#registration').modal('show');
     }
 
     /** todo Валилидация данных */

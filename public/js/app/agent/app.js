@@ -23,6 +23,7 @@
             .when('/agent/logout', { templateUrl: 'js/app/agent/views/index.html', controller: AgentAuthLogoutCtrl })
 
             .when('/agent', { templateUrl: 'js/app/agent/views/index.html', controller: AgentCtrl })
+            .when('/agent/issue', { templateUrl: 'js/app/agent/views/index.html', controller: AgentIssueCtrl })
             .when('/agent/visitors', { templateUrl: 'js/app/agent/views/visitors/index.html', controller: AgentVisitorsCtrl })
             .when('/agent/chats', { templateUrl: 'js/app/agent/views/chats/index.html', controller: AgentChatsCtrl })
             .when('/agent/agents', { templateUrl: 'js/app/agent/views/agents/index.html', controller: AgentAgentsCtrl })

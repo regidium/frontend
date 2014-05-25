@@ -4,6 +4,12 @@
 
     /* Directives */
     angular.module('regidiumApp.commonDirectives', [])
+        .directive('agentIssue', function() {
+            return {
+                restrict: 'A',
+                templateUrl: '/js/app/agent/views/main/issue.html'
+            };
+        })
         .directive('authLogin', function() {
             return {
                 restrict: 'A',
