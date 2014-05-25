@@ -3,7 +3,7 @@
 /**
  * @url "/agent/widget/style"
  */
-function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, socket, blockUI) {
+function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, socket, blockUI, flash) {
     $scope.settings = {};
     $scope.current_menu = 'style';
     // Определяем блоки блокировки
@@ -52,6 +52,8 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
     // Добавляем обрабочик загрузки файла
     uploader.bind('success', function (event, xhr, item, response) {
         if (response && response.url) {
+            angular.element('#logo').attr('src', response.url);
+            $scope.t = (+new Date);
             $scope.settings.company_logo = response.url;
         }
 

@@ -95,8 +95,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         // Добавляем обрабочик загрузки файла
         uploader.bind('success', function (event, xhr, item, response) {
             if (response && response.url) {
-                $('#avatar').attr('src', '');
-                $('#avatar').attr('src', response.url);
+                angular.element('#avatar').attr('src', response.url);
                 $scope.t = (+new Date);
                 $scope.current_agent.avatar = response.url;
                 if ($scope.agents[$scope.current_agent.uid]) {
