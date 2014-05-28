@@ -37,6 +37,7 @@
             
             .when('/agent/report/statistics', { templateUrl: 'js/app/agent/views/report/statistics.html', controller: AgentReportStatisticsCtrl })
             .when('/agent/report/history', { templateUrl: 'js/app/agent/views/report/history.html', controller: AgentReportHistoryCtrl })
+
             .otherwise({ redirectTo: '/agent' });
 
         // Настраиваем переводчик

@@ -134,7 +134,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
                     flash.error = 'System error!';
                 }
         });
-    }
+    };
 
     // Сохраняем агента
     $scope.save = function() {
@@ -157,6 +157,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             type: $scope.current_agent.type,
             accept_chats: $scope.current_agent.accept_chats,
             render_visitors_period: $scope.current_agent.render_visitors_period,
+            notifications: $scope.current_agent.notifications,
             uid: uid,
             widget_uid: $rootScope.widget.uid
         };

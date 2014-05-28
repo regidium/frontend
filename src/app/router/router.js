@@ -30,6 +30,8 @@ self.init = function(app) {
     ;
 
     app.get('/agent', agent.agent);
+    app.get('/agent/payment', agent.payment);
+
     app.get('/agent/*', agent.agent);
 
     app.get('*', index.index);

@@ -101,6 +101,33 @@
                 </label>
             </div>
         </div>
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label" translate>Email Notifications</label>-->
+            <!--<div class="col-sm-9">-->
+                <!--<select ng-model="current_agent.notifications" ng-options="notification for (key, value) in {1: 'New user',2: 'New agent',3: 'New message',4: 'Pay agent',5: 'Pay subscription'}">-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label" translate>Email Notifications</label>
+            <div class="col-sm-9">
+                <label>
+                    <input type="checkbox" ng-model="current_agent.notifications.new_user" ng-value="1" translate /> New user
+                </label>
+                <label>
+                    <input type="checkbox" ng-model="current_agent.notifications.new_agent" ng-value="1" translate /> New agent
+                </label>
+                <label>
+                    <input type="checkbox" ng-model="current_agent.notifications.new_message" ng-value="1" translate /> New message
+                </label>
+                <label>
+                    <input type="checkbox" ng-model="current_agent.notifications.pay_agent" ng-value="1" translate /> Pay agent
+                </label>
+                <label>
+                    <input type="checkbox" ng-model="current_agent.notifications.pay_subscription" ng-value="1" translate /> Pay subscription
+                </label>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-9">
                 <div ng-show="!disabled">

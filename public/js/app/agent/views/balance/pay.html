@@ -4,25 +4,30 @@
             <div class="panel-heading">
                 <h1 translate>Pay widget</h1>
             </div>
-            <form ng-submit='submit()' name="pay_form" role="form">
+            <!--<form ng-submit='submit()' name="pay_form" role="form">-->
+            <form action='//sp-money.yandex.ru/oauth/authorize' method="POST" name="pay_form" role="form">
                 <fieldset>
                     <div class="form-group col-sm-10">
-                        <div class="radio">
-                            <label>
-                                <input ng-model="pay.payment_method" type="radio" value="1" /> Electronic money
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input ng-model="pay.payment_method" type="radio" value="2" /> Plastic card
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input ng-model="pay.payment_method" type="radio" value="3" /> Cashless payments
-                            </label>
-                        </div>
-                    </div>
+                        <input type="hidden" name="client_id" value="EBBB93A0EC2E849F3955D7452C39E76FA03436BA64679E61F421621F668FAA3F" />
+                        <input type="hidden" name="response_type" value="code" />
+                        <input type="hidden" name="redirect_uri" value="http://my.regidium.loc/agent/payment" />
+                        <input type="hidden" name="scope" value="account-info operation-history" />
+                        <!--<div class="radio">-->
+                            <!--<label>-->
+                                <!--<input ng-model="pay.payment_method" type="radio" value="1" /> Electronic money-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="radio">-->
+                            <!--<label>-->
+                                <!--<input ng-model="pay.payment_method" type="radio" value="2" /> Plastic card-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="radio">-->
+                            <!--<label>-->
+                                <!--<input ng-model="pay.payment_method" type="radio" value="3" /> Cashless payments-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group col-sm-3">
                         <label class="control-label" translate>Amount</label>
                         <input ng-model="pay.amount" type="text" class="form-control" />

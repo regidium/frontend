@@ -62,7 +62,7 @@ module.exports.registration = function (req, res) {
     });
 };
 
-exports.login = function (req, res) {
+module.exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
@@ -130,7 +130,7 @@ exports.login = function (req, res) {
     });
 };
 
-exports.logout = function (req, res) {
+module.exports.logout = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
@@ -161,7 +161,7 @@ exports.logout = function (req, res) {
     });
 };
 
-exports.external_service_connect = function (req, res) {
+module.exports.external_service_connect = function (req, res) {
     var provider = new external_services(req.params.provider, req, res);
     var token = null;
 

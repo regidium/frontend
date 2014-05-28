@@ -57,7 +57,8 @@
     "sha1": "1.1.x",
     "oauth": "0.9.x",
     "qs": "0.6.x",
-    "angular-ua-parser": "0.0.2"
+    "angular-ua-parser": "0.0.x",
+    "yamoney": "0.1.x"
   },
   "os": [
     "linux"
