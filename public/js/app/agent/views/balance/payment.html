@@ -33,11 +33,16 @@
             </form>
 
             <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
-                <input type="hidden" name="receiver" data-type="string">
-                <input type="hidden" name="label" data-type="string">
-                <input type="hidden" name="paymentType" data-type="string">
-                <input type="hidden" name="sum" data-type="number">
-                <input type="hidden" name="targets" data-type="string">
+                <input type="hidden" name="receiver" ng-model="transaction.receiver" data-type="string">
+                <input type="hidden" name="label" ng-model="transaction.uid" data-type="string">
+                <input type="hidden" name="paymentType" ng-model="transaction.payment_method" data-type="string">
+                <input type="hidden" name="sum" ng-model="transaction.sum" data-type="number">
+                <input type="hidden" name="targets" ng-model="transaction.number" data-type="string">
+                <!--<input type="hidden" name="receiver" data-type="string">-->
+                <!--<input type="hidden" name="label" data-type="string">-->
+                <!--<input type="hidden" name="paymentType" data-type="string">-->
+                <!--<input type="hidden" name="sum" data-type="number">-->
+                <!--<input type="hidden" name="targets" data-type="string">-->
                 <input type="hidden" name="formcomment" value="Пополнение счета Regidium.com">
                 <input type="hidden" name="short-dest" value="Пополнение счета Regidium.com">
                 <input type="hidden" name="quickpay-form" value="shop">
