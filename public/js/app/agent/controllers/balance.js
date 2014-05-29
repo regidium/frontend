@@ -1,26 +1,49 @@
 'use strict';
 
 /**
- * @url "/agent/balance"
+ * @url "/agent/balance/payment"
  */
-function AgentBalanceCtrl($scope) {
-}
+function AgentBalancePayCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
+    // Определяем блоки блокировки
+    var paymentBlockUI = blockUI.instances.get('paymentBlockUI');
 
-/**
- * @todo Делать запрос в платежную систему, по возврату зачислять оплату и выводить страницу выбора плана
- * @url "/agent/balance/pay"
- */
-function AgentBalancePayCtrl($rootScope, $scope, $location, socket) {
-    $scope.pay = {};
-    $scope.current_menu = 'pay';
+    $scope.payment = {};
 
-    $scope.submit = function() {
-        alert('В этом месте будет редирект на систему online оплаты. При положительном ответе, оплаченная сумма будет внесена на счет клиента');
+    $scope.paymentSubmit = function() {
+        socket.emit('widget:payment:made', { payment: $scope.payment, widget_uid: $rootScope.widget.uid });
 
-        socket.emit('widget:payment:made', { pay: $scope.pay, widget_uid: $rootScope.widget.uid });
+        // Активируем оижадющие блоки
+        paymentBlockUI.start();
+    };
 
-        $location.path('/agent/settings/widget');
-    }
+    // Транзакция создана
+    socket.on('widget:payment:transaction', function(data) {
+        $log.debug('Socket widget:payment:transaction', data);
+
+        if (data.errors) {
+            angular.forEach(data.errors, function(error) {
+                flash.error = error;
+            });
+        } else {
+            if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
+                data.payment_method = 'PC';
+            } else if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
+                data.payment_method = 'AC';
+            }
+            $scope.transaction = data.transaction;
+
+            angular.element('#transaction_form input[name="sum"]').val(data.transaction.sum);
+            angular.element('#transaction_form input[name="receiver"]').val(data.transaction.receiver);
+            angular.element('#transaction_form input[name="label"]').val(data.transaction.uid);
+            angular.element('#transaction_form input[name="paymentType"]').val(data.transaction.paymentType);
+            angular.element('#transaction_form input[name="targets"]').val(data.transaction.number);
+
+            angular.element('#transaction_form').submit();
+        }
+
+        // Разблокировка ожидающих блоков
+        paymentBlockUI.stop();
+    });
 }
 
 /**
@@ -28,7 +51,6 @@ function AgentBalancePayCtrl($rootScope, $scope, $location, socket) {
  */
 function AgentBalancePlanCtrl($rootScope, $scope, $location, socket) {
     $scope.plan = $rootScope.widget.plan;
-    $scope.current_menu = 'plan';
 
     $scope.submit = function() {
         socket.emit('widget:plan:change', { plan: $scope.plan, widget_uid: $rootScope.widget.uid });

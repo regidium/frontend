@@ -24,19 +24,21 @@
 
             .when('/agent', { templateUrl: 'js/app/agent/views/index.html', controller: AgentCtrl })
             .when('/agent/issue', { templateUrl: 'js/app/agent/views/index.html', controller: AgentIssueCtrl })
+
             .when('/agent/visitors', { templateUrl: 'js/app/agent/views/visitors/index.html', controller: AgentVisitorsCtrl })
             .when('/agent/chats', { templateUrl: 'js/app/agent/views/chats/index.html', controller: AgentChatsCtrl })
-            .when('/agent/agents', { templateUrl: 'js/app/agent/views/agents/index.html', controller: AgentAgentsCtrl })
+
+            .when('/agent/agents/list', { templateUrl: 'js/app/agent/views/agents/index.html', controller: AgentAgentsCtrl })
 
             .when('/agent/settings/widget/style', { templateUrl: 'js/app/agent/views/settings/widget/style.html', controller: AgentSettingsWidgetStyleCtrl })
             .when('/agent/settings/widget/code', { templateUrl: 'js/app/agent/views/settings/widget/code.html', controller: AgentSettingsWidgetCodeCtrl })
             .when('/agent/settings/triggers', { templateUrl: 'js/app/agent/views/settings/triggers.html', controller: AgentSettingsTriggersCtrl })
             
-            .when('/agent/balance/pay', { templateUrl: 'js/app/agent/views/balance/pay.html', controller: AgentBalancePayCtrl })
+            .when('/agent/balance/payment', { templateUrl: 'js/app/agent/views/balance/payment.html', controller: AgentBalancePayCtrl })
             .when('/agent/balance/plan', { templateUrl: 'js/app/agent/views/balance/plan.html', controller: AgentBalancePlanCtrl })
             
-            .when('/agent/report/statistics', { templateUrl: 'js/app/agent/views/report/statistics.html', controller: AgentReportStatisticsCtrl })
-            .when('/agent/report/history', { templateUrl: 'js/app/agent/views/report/history.html', controller: AgentReportHistoryCtrl })
+            .when('/agent/reports/statistics', { templateUrl: 'js/app/agent/views/report/statistics.html', controller: AgentReportStatisticsCtrl })
+            .when('/agent/reports/history', { templateUrl: 'js/app/agent/views/report/history.html', controller: AgentReportHistoryCtrl })
 
             .otherwise({ redirectTo: '/agent' });
 
@@ -60,7 +62,9 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }).run(function($rootScope, $cookieStore, $translate, $http, amMoment, config, socket, flash, sound) {
+    }).run(function($rootScope, $cookieStore, $translate, $http, $location, amMoment, config, socket, flash, sound) {
+        $rootScope.location = $location;
+
         $rootScope.env = env || 'production';
 
         $http.defaults.headers.common.xhr = true;
@@ -174,6 +178,9 @@
         $rootScope.c.CHAT_STATUS_CHATTING = 2;
         $rootScope.c.CHAT_STATUS_OFFLINE  = 3;
         $rootScope.c.CHAT_STATUS_CLOSED   = 4;
+
+        $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY   = 1;
+        $rootScope.c.PAYMENT_METHOD_CREDIT_CARD   = 2;
 
         $rootScope.c.TRIGGER_EVENT_WIDGET_CREATED = 1;
         $rootScope.c.TRIGGER_EVENT_WORD_SEND = 2;

@@ -1,0 +1,52 @@
+<div class="col-md-12" role="main">
+    <div block-ui="paymentBlockUI"></div>
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 translate>Payment widget</h1>
+            </div>
+            <form ng-submit='paymentSubmit()' name="payment_form" role="form">
+                <fieldset>
+                    <div class="form-group col-sm-10">
+                        <label class="control-label" translate>Payment type</label>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="payment.payment_method" type="radio" value="1" /> Electronic money
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="payment.payment_method" type="radio" value="2" /> Plastic card
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label class="control-label" translate>Sum</label>
+                        <input ng-model="payment.sum" type="text" class="form-control" />
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <button ng-show="!transaction" ng-disabled="payment_form.$invalid" type="submit" class="btn btn-lg btn-primary btn-block">Pay</button>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
+                <input type="hidden" name="receiver" data-type="string">
+                <input type="hidden" name="label" data-type="string">
+                <input type="hidden" name="paymentType" data-type="string">
+                <input type="hidden" name="sum" data-type="number">
+                <input type="hidden" name="targets" data-type="string">
+                <input type="hidden" name="formcomment" value="Пополнение счета Regidium.com">
+                <input type="hidden" name="short-dest" value="Пополнение счета Regidium.com">
+                <input type="hidden" name="quickpay-form" value="shop">
+                <input type="hidden" name="comment" value="" >
+                <input type="hidden" name="need-fio" value="true">
+                <input type="hidden" name="need-email" value="true" >
+                <input type="hidden" name="need-phone" value="false">
+                <input type="hidden" name="need-address" value="false">
+            </form>
+        </div>
+    </div>
+</div>
