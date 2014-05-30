@@ -68,7 +68,7 @@ block header
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown(ng-controller="AgentAuthLogoutCtrl")
                         a.dropdown-toggle(href="", data-toggle="dropdown")
-                            img(ng-src="{{agent.avatar || '/img/logo.png'}}?width=25&heigth=25&t={{t}}", heigth="25px")
+                            img(ng-src="{{agent.avatar || '/img/logo.png'}}?width=25&heigth=25&t={{t}}", heigth="25px", style="max-heigth: 25px;")
                             span(ng-bind="agent.first_name + ' ' + agent.last_name", style="padding: 0 5px;")
                             b.caret
                         ul.dropdown-menu
