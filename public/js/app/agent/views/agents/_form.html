@@ -65,6 +65,16 @@
                 <span ng-show="form.$error.equal" class="help-block has-error" translate>Should be equal to password!</span>
             </span>
         </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" translate>Language</label>
+            <div class="col-sm-9">
+                <select type="text" class="form-control" placeholder="Language" ng-model="current_agent.language">
+                    <option value="auto" translate>Auto</option>
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group" ng-show="current_agent.type != 1">
             <label class="col-sm-3 control-label" translate>Type</label>
             <div class="col-sm-9">

@@ -52,12 +52,10 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
     // Добавляем обрабочик загрузки файла
     uploader.bind('success', function (event, xhr, item, response) {
         if (response && response.url) {
-            angular.element('#logo').attr('src', response.url);
-            $scope.t = (+new Date);
             $scope.settings.company_logo = response.url;
+            $rootScope.t = (+new Date);
+            $scope.$apply();
         }
-
-        flash.success = 'Widget logo uploaded';
     });
 
     $scope.removeLogo = function() {
@@ -82,7 +80,7 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
                     flash.error = 'System error!';
                 }
         });
-    }
+    };
 
     $scope.submit = function() {
         // Сохраняем настройки

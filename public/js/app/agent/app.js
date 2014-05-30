@@ -73,14 +73,13 @@
         var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
         lang = lang.substring(0, 2);
         $rootScope.lang = lang;
-        $translate.uses(lang);
 
         amMoment.changeLanguage(lang);
 
         /** @todo убрать в сервис */
         $rootScope.getOsClass = function(os_string) {
             if (os_string) {
-                os_string = angular.lowercase(os_string)
+                os_string = angular.lowercase(os_string);
                 if (os_string.indexOf('linux') != -1) {
                     return 'fa-linux';
                 } else if (os_string.indexOf('windows') != -1) {
@@ -95,7 +94,7 @@
                     return '';
                 }
             }
-        }
+        };
 
         /** @todo убрать в сервис */
         $rootScope.getBrowserClass = function(browser_string) {
@@ -113,7 +112,7 @@
                     return '';
                 }
             }
-        }
+        };
 
         // Получаем агента из cookie или отправляем на страницу авторизации
         $rootScope.agent = $cookieStore.get('agent');
@@ -139,6 +138,11 @@
             window.location = '/login';
         }
 
+        if ($rootScope.agent.language != 'auto') {
+            $rootScope.lang = $rootScope.agent.language;
+            $translate.uses($rootScope.agent.language);
+        }
+
         var getSession = function(cb) {
             var session_data = {};
             session_data.device = UAParser('').device.model + ' ' + UAParser('').device.vendor;
@@ -158,7 +162,7 @@
                 $log.debug('Ошибка получения IP, страны, города');
                 cb(session_data);
             }
-        }
+        };
 
         getSession(function(session) {
             // Сообщяем слушателей о подключении агента
@@ -201,6 +205,8 @@
         $rootScope.c.MESSAGE_SENDER_TYPE_USER = 1;
         $rootScope.c.MESSAGE_SENDER_TYPE_AGENT = 2;
         $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT = 3;
+
+        $rootScope.t = (+new Date);
     }).constant('angularMomentConfig', {
         preprocess: 'unix',
         // @todo

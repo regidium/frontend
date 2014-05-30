@@ -4,11 +4,10 @@
  * @todo Внедрить пагинацию
  * @url "/agent/agents"
  */
-function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, sha1, socket, blockUI) {
+function AgentAgentsCtrl($rootScope, $scope, $http, $log, $translate, $fileUploader, flash, sha1, socket, blockUI) {
     // Определяем блоки блокировки
     var agentBlockUI = blockUI.instances.get('agentBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
-    $scope.t = (+new Date);
 
     // Блокировка формы редактирования
     $scope.disabled = true;
@@ -45,6 +44,16 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         $log.debug('Socket agent:saved');
 
         $scope.agents[data.agent.uid] = data.agent;
+        if ($scope.current_agent.uid == data.agent.uid) {
+            if ($rootScope.agent.language != 'auto') {
+                $rootScope.lang = $rootScope.agent.language;
+                $translate.uses($rootScope.agent.language);
+            } else {
+                var lang = navigator.browserLanguage || navigator.language || navigator.userLanguage;
+                lang = lang.substring(0, 2);
+                $translate.uses($rootScope.lang);
+            }
+        }
 
         flash.success = 'Agent saved';
     });
@@ -95,14 +104,17 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
         // Добавляем обрабочик загрузки файла
         uploader.bind('success', function (event, xhr, item, response) {
             if (response && response.url) {
-                angular.element('#avatar').attr('src', response.url);
-                $scope.t = (+new Date);
+                //angular.element('#avatar').attr('src', response.url);
                 $scope.current_agent.avatar = response.url;
+                if ($scope.current_agent.uid == $rootScope.agent.uid) {
+                    $rootScope.agent.avatar = response.url;
+                    console.log($rootScope.agent);
+                }
                 if ($scope.agents[$scope.current_agent.uid]) {
                     $scope.agents[$scope.current_agent.uid].avatar = $scope.current_agent.avatar;
                 }
-
-                flash.success = 'Agent avatar uploaded';
+                $rootScope.t = (+new Date);
+                $scope.$apply();
             }
         });
     };
@@ -117,7 +129,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
                         $scope.agents[$scope.current_agent.uid].avatar = $scope.current_agent.avatar;
                     }
 
-                    flash.success = 'Agent avatar removed';
+                    $scope.$apply();
                 } else if (data && data.errors) {
                     $log.debug(data.errors);
                     flash.error = data.errors;
@@ -158,6 +170,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $fileUploader, flash, 
             accept_chats: $scope.current_agent.accept_chats,
             render_visitors_period: $scope.current_agent.render_visitors_period,
             notifications: $scope.current_agent.notifications,
+            language: $scope.current_agent.language,
             uid: uid,
             widget_uid: $rootScope.widget.uid
         };

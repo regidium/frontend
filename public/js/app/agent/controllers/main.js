@@ -38,7 +38,7 @@ function AgentMenuCtrl($rootScope, $scope, $log, socket, sound) {
 /**
  * @url "/logout"
  */
-function AgentAuthLogoutCtrl($rootScope, $scope, $http, socket) {
+function AgentAuthLogoutCtrl($scope, $http) {
     // Нажатие кнопки Logout
     $scope.logout = function() {
         // Запрос на отключение агента

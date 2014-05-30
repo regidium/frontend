@@ -20,10 +20,14 @@ function AgentBalancePayCtrl($rootScope, $scope, $location, $log, socket, flash,
     socket.on('widget:payment:transaction', function(data) {
         $log.debug('Socket widget:payment:transaction', data);
 
-        if (data.errors) {
-            angular.forEach(data.errors, function(error) {
-                flash.error = error;
-            });
+        if (data.errors || data.error) {
+            if (data.errors) {
+                angular.forEach(data.errors, function(error) {
+                    flash.error = error;
+                });
+            } else if (data.error && data.error.message) {
+                flash.error = data.error.message;
+            }
         } else {
             if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
                 data.payment_method = 'PC';
