@@ -34,7 +34,9 @@
             .when('/agent/settings/widget/code', { templateUrl: 'js/app/agent/views/settings/widget/code.html', controller: AgentSettingsWidgetCodeCtrl })
             .when('/agent/settings/triggers', { templateUrl: 'js/app/agent/views/settings/triggers.html', controller: AgentSettingsTriggersCtrl })
             
-            .when('/agent/balance/payment', { templateUrl: 'js/app/agent/views/balance/payment.html', controller: AgentBalancePayCtrl })
+            .when('/agent/balance/payment', { templateUrl: 'js/app/agent/views/balance/payment.html', controller: AgentBalancePaymentCtrl })
+            .when('/agent/balance/payment', { templateUrl: 'js/app/agent/views/balance/payment.html', controller: AgentBalancePaymentSuccessCtrl })
+            .when('/agent/balance/payment', { templateUrl: 'js/app/agent/views/balance/payment.html', controller: AgentBalancePaymentFailCtrl })
             .when('/agent/balance/plan', { templateUrl: 'js/app/agent/views/balance/plan.html', controller: AgentBalancePlanCtrl })
             
             .when('/agent/reports/statistics', { templateUrl: 'js/app/agent/views/report/statistics.html', controller: AgentReportStatisticsCtrl })

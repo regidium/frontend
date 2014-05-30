@@ -3,7 +3,7 @@
 /**
  * @url "/agent/balance/payment"
  */
-function AgentBalancePayCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
+function AgentBalancePaymentCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var paymentBlockUI = blockUI.instances.get('paymentBlockUI');
 
@@ -51,6 +51,22 @@ function AgentBalancePayCtrl($rootScope, $scope, $location, $log, socket, flash,
         // Разблокировка ожидающих блоков
         paymentBlockUI.stop();
     });
+}
+
+/**
+ * @url "/agent/balance/payment/success"
+ */
+function AgentBalancePaymentSuccessCtrl($rootScope, $scope, $location, $log, socket, flash) {
+    flash.success = 'Payment Success';
+    $location.path('/agent');
+}
+
+/**
+ * @url "/agent/balance/payment/fail"
+ */
+function AgentBalancePaymentFailCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
+    flash.success = 'Payment Success';
+    $location.path('/agent');
 }
 
 /**
