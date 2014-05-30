@@ -32,7 +32,21 @@
                 </fieldset>
             </form>
 
-            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="GET" action=""></form>
+            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
+                <input type="hidden" name="receiver" data-type="string">
+                <input type="hidden" name="label" data-type="string">
+                <input type="hidden" name="paymentType" data-type="string">
+                <input type="hidden" name="sum" data-type="number">
+                <input type="hidden" name="targets" data-type="string">
+                <input type="hidden" name="formcomment" value="Пополнение счета Regidium.com">
+                <input type="hidden" name="short-dest" value="Пополнение счета Regidium.com">
+                <input type="hidden" name="quickpay-form" value="shop">
+                <input type="hidden" name="comment" value="" >
+                <input type="hidden" name="need-fio" value="true">
+                <input type="hidden" name="need-email" value="true" >
+                <input type="hidden" name="need-phone" value="false">
+                <input type="hidden" name="need-address" value="false">
+            </form>
         </div>
     </div>
 </div>

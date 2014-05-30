@@ -29,19 +29,22 @@ function AgentBalancePayCtrl($rootScope, $scope, $location, $log, socket, flash,
                 flash.error = data.error.message;
             }
         } else {
-            if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
-                data.payment_method = 'PC';
-            } else if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
-                data.payment_method = 'AC';
-            }
-            $scope.transaction = data.transaction;
-
-            angular.element('#transaction_form input[name="sum"]').val(data.transaction.sum);
-            angular.element('#transaction_form input[name="receiver"]').val(data.transaction.receiver);
-            angular.element('#transaction_form input[name="label"]').val(data.transaction.uid);
-            angular.element('#transaction_form input[name="paymentType"]').val(data.transaction.paymentType);
-            angular.element('#transaction_form input[name="targets"]').val(data.transaction.number);
-
+            // Яндекс.Деньги
+//            if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
+//                data.payment_method = 'PC';
+//            } else if (data.payment_method == $rootScope.c.PAYMENT_METHOD_YANDEX_MONEY) {
+//                data.payment_method = 'AC';
+//            }
+//            $scope.transaction = data.transaction;
+//            angular.element('#transaction_form input[name="sum"]').val(data.transaction.sum);
+//            angular.element('#transaction_form input[name="receiver"]').val(data.transaction.receiver);
+//            angular.element('#transaction_form input[name="label"]').val(data.transaction.uid);
+//            angular.element('#transaction_form input[name="paymentType"]').val(data.transaction.paymentType);
+//            angular.element('#transaction_form input[name="targets"]').val(data.transaction.number);
+//
+//            angular.element('#transaction_form').submit();
+            // ROBOKASSA
+            angular.element('#transaction_form').attr('action', data.url);
             angular.element('#transaction_form').submit();
         }
 
