@@ -76,7 +76,9 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
             if (chat.current_url) {
                 try {
                     chat.current_url = decodeURIComponent(chat.current_url);
-                    chat.referrer = decodeURIComponent(chat.referrer);
+                    if (chat.referrer) {
+                        chat.referrer = decodeURIComponent(chat.referrer);
+                    }
                 } catch(e) {
                     $log.debug(chat);
                 }
@@ -150,7 +152,9 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
         if ($scope.current_chat.current_url) {
                 try {
                     $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
-                    $scope.current_chat.referrer = decodeURIComponent($scope.current_chat.referrer);
+                    if ($scope.current_chat.referrer) {
+                        $scope.current_chat.referrer = decodeURIComponent($scope.current_chat.referrer);
+                    }
                 } catch(e) {
                     $log.debug($scope.current_chat);
                 }
