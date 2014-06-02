@@ -345,6 +345,8 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
             return 'Mail.ru';
         } else if (referrer.indexOf('rambler.') != -1) {
             return 'Rambler';
+        } else {
+            return referrer;
         }
     };
 }

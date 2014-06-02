@@ -181,6 +181,8 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
             return 'Mail.ru';
         } else if (referrer.indexOf('rambler.') != -1) {
             return 'Rambler';
+        } else {
+            return referrer;
         }
     };
 }
