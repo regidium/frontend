@@ -53,11 +53,11 @@
 
 
             <p ng-if="!current_chat.keywords && current_chat.referrer">
-                <span translate>Referrer</span>: <a href="{{getReferrer(current_chat)}}">{{current_chat.referrer}}</a>
+                <span translate>Referrer</span>: <a href="{{current_chat.referrer}}">{{current_chat.referrer}}</a>
             </p>
 
             <p ng-if="current_chat.keywords && current_chat.referrer">
-                {{current_chat.referrer}}: <i>{{current_chat.keywords}}</i>
+                {{getReferrer(current_chat)}}: <i>{{current_chat.keywords}}</i>
             </p>
 
             <p><a href="" class="btn btn-danger" ng-click="leaveChat()" translate>Leave chat</a></p>
