@@ -10,7 +10,7 @@ function AgentBalancePaymentCtrl($rootScope, $scope, $log, socket, flash, blockU
     $scope.payment = {};
 
     $scope.paymentSubmit = function() {
-        socket.emit('widget:payment:made', { payment: $scope.payment, widget_uid: $rootScope.widget.uid });
+        socket.emit('widget:payment:made', { payment: $scope.payment, agent_uid: $rootScope.agent.uid, widget_uid: $rootScope.widget.uid });
 
         // Активируем оижадющие блоки
         paymentBlockUI.start();
