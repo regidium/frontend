@@ -7,19 +7,19 @@
             </div>
             <form ng-submit='paymentSubmit()' name="payment_form" role="form">
                 <fieldset>
-                    <div class="form-group col-sm-10">
-                        <label class="control-label" translate>Payment type</label>
-                        <div class="radio">
-                            <label>
-                                <input ng-model="payment.payment_method" type="radio" value="1" /> Electronic money
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input ng-model="payment.payment_method" type="radio" value="2" /> Plastic card
-                            </label>
-                        </div>
-                    </div>
+                    <!--<div class="form-group col-sm-10">-->
+                        <!--<label class="control-label" translate>Payment type</label>-->
+                        <!--<div class="radio">-->
+                            <!--<label>-->
+                                <!--<input ng-model="payment.payment_method" type="radio" value="1" /> Electronic money-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="radio">-->
+                            <!--<label>-->
+                                <!--<input ng-model="payment.payment_method" type="radio" value="2" /> Plastic card-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
                     <div class="form-group col-sm-3">
                         <label class="control-label" translate>Sum</label>
@@ -32,7 +32,7 @@
                 </fieldset>
             </form>
 
-            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="GET" action=""></form>
+            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="GET" action="#"></form>
         </div>
     </div>
 </div>
