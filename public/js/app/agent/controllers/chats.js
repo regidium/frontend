@@ -332,4 +332,19 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         // clear message box
         $scope.text = '';
     };
+
+    $scope.getReferrer = function(chat) {
+        var referrer = chat.referrer;
+        if (referrer.indexOf('google.') != -1) {
+            return 'Google';
+        } else if (referrer.indexOf('yandex.') != -1) {
+            return 'Яндекс';
+        } else if (referrer.indexOf('bing.') != -1) {
+            return 'Bing';
+        } else if (referrer.indexOf('mail.ru') != -1) {
+            return 'Mail.ru';
+        } else if (referrer.indexOf('rambler.') != -1) {
+            return 'Rambler';
+        }
+    };
 }
