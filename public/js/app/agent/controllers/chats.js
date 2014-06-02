@@ -28,6 +28,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         angular.forEach(data.chats, function(chat) {
             try {
                 chat.current_url = decodeURIComponent(chat.current_url);
+                chat.referrer = decodeURIComponent(chat.referrer);
             } catch(e) {
                 $log.debug(chat);
             }
@@ -119,6 +120,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         if ($scope.current_chat.current_url) {
             try {
                 $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
+                $scope.current_chat.referrer = decodeURIComponent($scope.current_chat.referrer);
             } catch(e) {
                 $log.debug($scope.current_chat);
             }
@@ -193,6 +195,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         if (data.agent.uid == $rootScope.agent.uid) {
             try {
                 data.chat.current_url = decodeURIComponent(data.chat.current_url);
+                data.chat.referrer = decodeURIComponent(data.chat.referrer);
             } catch(e) {
                 $log.debug(data.chat);
             }
