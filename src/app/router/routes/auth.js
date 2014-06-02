@@ -66,7 +66,6 @@ module.exports.login = function (req, res) {
     res.async.waterfall([
 
         function (callback) {
-            console.log(req.agent);
             if (req.agent && req.agent.uid) {
                 if (req.xhr || req.headers['xhr']) {
                     res.send({agent: req.agent});
@@ -103,9 +102,14 @@ module.exports.login = function (req, res) {
         }
 
     ], function (err, data) {
-        console.log(err, data);
         if (data && data.agent) {
             res.authorizer.login(res, data.agent);
+            if (req.xhr || req.headers['xhr']) {
+                res.send(data);
+            } else {
+                return res.redirect('/agent');
+            }
+        } else if (data && data.errors) {
             if (req.xhr || req.headers['xhr']) {
                 res.send(data);
             } else {
@@ -121,8 +125,8 @@ module.exports.login = function (req, res) {
         } else if (err) {
             console.log(err);
             /** @todo Сделать обработчик ошибок */
-            if (req.headers['xhr']) {
-                res.send({ errors: ['Backend return bad data!'] });
+            if (req.xhr || req.headers['xhr']) {
+                res.send({ errors: err });
             } else {
                 res.redirect('/login');
             }
