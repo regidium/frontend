@@ -3,7 +3,7 @@
 /**
  * @url "/agent/balance/payment"
  */
-function AgentBalancePaymentCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
+function AgentBalancePaymentCtrl($rootScope, $scope, $log, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var paymentBlockUI = blockUI.instances.get('paymentBlockUI');
 
@@ -56,29 +56,29 @@ function AgentBalancePaymentCtrl($rootScope, $scope, $location, $log, socket, fl
 /**
  * @url "/agent/balance/payment/success"
  */
-function AgentBalancePaymentSuccessCtrl($rootScope, $scope, $location, $log, socket, flash) {
-    flash.success = 'Payment Success';
+function AgentBalancePaymentSuccessCtrl($location, $translate, flash) {
+    flash.success = $translate('Payment success');
     $location.path('/agent');
 }
 
 /**
  * @url "/agent/balance/payment/fail"
  */
-function AgentBalancePaymentFailCtrl($rootScope, $scope, $location, $log, socket, flash, blockUI) {
-    flash.success = 'Payment Success';
+function AgentBalancePaymentFailCtrl($location, $translate, flash) {
+    flash.success = $translate('Payment failed');
     $location.path('/agent');
 }
 
 /**
  * @url "/agent/balance/plan"
  */
-function AgentBalancePlanCtrl($rootScope, $scope, $location, socket) {
+function AgentBalancePlanCtrl($rootScope, $scope, $location, $translate, socket) {
     $scope.plan = $rootScope.widget.plan;
 
     $scope.submit = function() {
         socket.emit('widget:plan:change', { plan: $scope.plan, widget_uid: $rootScope.widget.uid });
 
-        flash.success = 'Plan changed';
+        flash.success = $translate('Plan changed');
 
         $location.path('/agent/settings/widget');
     }

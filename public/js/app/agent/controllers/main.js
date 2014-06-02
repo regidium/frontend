@@ -63,8 +63,8 @@ function AgentCtrl($scope) {
 /**
  * @url "/agent/issue"
  */
-function AgentIssueCtrl($rootScope, $scope, $location, socket, flash) {
-    if ($location.path() === '/agent/issue') {
+function AgentIssueCtrl($rootScope, $scope, $location, $translate, socket, flash) {
+    if ($location.path() == '/agent/issue') {
         angular.element('#issue').modal('show');
     }
 
@@ -72,7 +72,7 @@ function AgentIssueCtrl($rootScope, $scope, $location, socket, flash) {
         socket.emit('agent:issue:send', { issue: $scope.issue, agent_uid: $rootScope.agent.uid });
         $scope.issue = {title: '', text: ''};
 
-        flash.success = 'Issue sended';
+        flash.success = $translate('Issue sended');
 
         angular.element('#issue').modal('hide');
 

@@ -31,7 +31,7 @@
                     </span>
                 </p>
             </div>
-            <form ng-submit="sendMessage()" class="form-horizontal" role="form">
+            <form ng-submit="sendMessage()" class="form-horizontal" role="form" ng-hide="current_chat.status == c.CHAT_STATUS_OFFLINE">
                 <div class="col-md-10">
                     <input ng-model="text" class="form-control" placeholder="Enter message" />
                 </div>
@@ -47,7 +47,15 @@
                 <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
                 <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
             </p>
-            <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
+            <p>
+                Current URL: <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
+            </p>
+            <p ng-show="current_chat.referrer">
+                Referrer: <a href="{{current_chat.referrer}}">{{current_chat.referrer}}</a>
+            </p>
+            <p ng-show="current_chat.keywords">
+                Keywords: <i>{{current_chat.keywords}}</i>
+            </p>
             <p><a href="" class="btn btn-danger" ng-click="leaveChat()" translate>Leave chat</a></p>
         </div>
     </div>

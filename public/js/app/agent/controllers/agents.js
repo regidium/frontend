@@ -55,7 +55,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $translate, $fileUploa
             }
         }
 
-        flash.success = 'Agent saved';
+        flash.success = $translate('Agent saved');
     });
 
     // Получено событие удаления агента
@@ -66,7 +66,7 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $translate, $fileUploa
 
         delete $scope.agents[data.agent.uid];
 
-        flash.success = 'Agent removed';
+        flash.success = $translate('Agent removed');
     });
 
     // Выбираем агента
@@ -135,15 +135,15 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $translate, $fileUploa
                     flash.error = data.errors;
                 } else {
                     $log.debug(data);
-                    flash.error = 'System error!';
+                    flash.error = $translate('System error');
                 }
             }).error(function(data, status, headers, config) {
                 if (data && data.errors) {
                     $log.debug(data.errors);
                     flash.error = data.errors;
                 } else {
-                    $log.debug('System error!');
-                    flash.error = 'System error!';
+                    $log.debug('System error');
+                    flash.error = $translate('System error');
                 }
         });
     };
@@ -190,18 +190,16 @@ function AgentAgentsCtrl($rootScope, $scope, $http, $log, $translate, $fileUploa
     // Удаляем агента
     $scope.remove = function() {
         if ($scope.current_agent.type != 1) {
-            if (confirm('Are you sure you want to remove this agent?')) {
+            if (confirm($translate('Are you sure you want to remove this agent?'))) {
 
                 // Отправляем событие сохранения агента
                 socket.emit('agent:remove', { agent_uid: $scope.current_agent.uid, widget_uid: $rootScope.widget.uid });
 
                 $scope.current_agent = $scope.agents[0];
                 $scope.disabled = true;
-
-                flash.success = 'Agent removed';
             }
         } else {
-            flash.success = 'Владелец виджета не может быть удален!';
+            flash.success = $translate('Owner of the widget can not be deleted');
         }
     };
 }

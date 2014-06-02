@@ -3,9 +3,8 @@
 /**
  * @url "/agent/widget/style"
  */
-function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, socket, blockUI, flash) {
+function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, $translate, socket, blockUI, flash) {
     $scope.settings = {};
-    $scope.current_menu = 'style';
     // Определяем блоки блокировки
     var styleBlockUI = blockUI.instances.get('styleBlockUI');
     var menuBlockUI = blockUI.instances.get('menuBlockUI');
@@ -30,7 +29,7 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
     socket.on('widget:setting:style:edited', function(data) {
         $scope.settings = data.settings;
 
-        flash.success = 'Widget style edited';
+        flash.success = $translate('Widget style edited');
     });
 
     // Определяем загрузчик файлов
@@ -76,8 +75,8 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
                     $log.debug(data.errors);
                     flash.error = data.errors;
                 } else {
-                    $log.debug('System error!');
-                    flash.error = 'System error!';
+                    $log.debug('System error');
+                    flash.error = $translate('System error');
                 }
         });
     };
@@ -93,5 +92,4 @@ function AgentSettingsWidgetStyleCtrl($rootScope, $scope, $http, $fileUploader, 
  */
 function AgentSettingsWidgetCodeCtrl($rootScope, $scope) {
     $scope.widget_uid = $rootScope.widget.uid;
-    $scope.current_menu = 'code';
 }

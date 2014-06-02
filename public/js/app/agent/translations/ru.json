@@ -35,11 +35,50 @@
     "Panel Settings": "Настройки панели",
     "Improve Regidium": "Улучшить Regidium",
     "Logout": "Выход",
-
     "Leave chat": "Покинуть чат",
 
     "visited": "зашел",
     "left": "вышел",
 
-    "new": "новых"
+    "new": "новых",
+
+    "System error": "Системная ошибка",
+
+    "Trigger saved": "Триггер сохранен",
+    "Trigger removed": "Триггер удален",
+    "WIDGET CREATED": "ВИДЖЕТ СОЗДАН",
+    "WORD SEND": "СЛОВО ОТПРАВЛЕНО",
+    "TIME ONE PAGE": "ВРЕМЯ НА СТРАНИЦУ",
+    "VISIT PAGE": "СТРАНИЦА ПОСЕЩЕНА",
+    "VISIT FROM URL": "ПЕРЕХОД С АДРЕСА",
+    "VISIT FROM KEYWORD": "ПЕРЕХОД ПО КЛЮЧЕВЬМУ СЛОВУ",
+    "WIDGET OPENED": "ВИДЖЕТ ОТКРЫТ",
+    "WIDGET CLOSED": "ВИДЖЕТ ЗАКРЫТ",
+    "MESSAGE START": "СООБЩЕНИЕ НАЧАТО",
+    "MESSAGE SEND": "СООБЩЕНИЕ ОТПРАВЛЕНО",
+    "SEND MESSAGE": "ОТПРАВИТЬ СООБЩЕНИЕ",
+    "ALERT OPERATORS": "ОПОВЕСТИТЬ АГЕНТА",
+    "OPEN WIDGET": "ОТКРЫТЬ ВИДЖЕТ",
+    "BELL WIDGET": "ОПОВЕСТИТЬ ВИДЖЕТ",
+
+    "Widget style edited": "Стиль виджета сохранен",
+
+    "Agent saved": "Агент сохранен",
+    "Agent removed": "Агент удален",
+    "Owner of the widget can not be deleted": "Владелец виджета не может быть удален",
+    "Are you sure you want to remove this agent?": "Вы уверены, что хотите удалить агента?",
+
+    "Payment success": "Платеж оформлен",
+    "Payment failed": "Ошибка оформления платежа",
+    "Plan changed": "План изменен",
+
+    "User back to site": "Пользователь вернулся",
+    "User leave site": "Пользователь покинул сайт",
+
+    "Chat connected": "Пользователь подключился",
+    "Chat disconnected": "Пользователь отключился",
+    "Chat closed": "Чат закрыт",
+    "User send message": "Пользователь написал сообщение",
+
+    "Issue sended": "Ошибка отправлена"
 }

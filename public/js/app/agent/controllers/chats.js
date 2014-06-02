@@ -4,7 +4,7 @@
  * @todo Внедрить пагинацию
  * @url "/agent/chats"
  */
-function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound, blockUI) {
+function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sound, blockUI) {
     var soundChat = sound.init('chat');
     // Определяем блоки блокировки
     var chatsBlockUI = blockUI.instances.get('chatsBlockUI');
@@ -61,7 +61,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
             readed: true,
             created_at: (+new Date) / 1000,
-            text: 'User back to site'
+            text: $translate('User back to site')
         };
 
         if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
@@ -73,7 +73,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             $scope.current_chat.messages.push(message);
         }
 
-        flash.warn = 'Chat connected';
+        flash.warn = $translate('Chat connected');
     });
 
     // Чат отключен
@@ -91,7 +91,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
             readed: true,
             created_at: (+new Date) / 1000,
-            text: 'User leave site'
+            text: $translate('User leave site')
         };
 
         if ($scope.chats[data.chat_uid]) {
@@ -103,7 +103,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             $scope.current_chat.messages.push(message);
         }
 
-        flash.warn = 'Chat disconnected';
+        flash.warn = $translate('Chat disconnected');
     });
 
     // Пользователь закрыл чат
@@ -133,7 +133,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
 
         // Блокируем ожидающие блоки
         currentChatBlockUI.start();
-    }
+    };
 
     $scope.closeChat = function(chat) {
         if ($scope.current_chat && $scope.current_chat.uid == chat.uid) {
@@ -147,7 +147,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         });
 
         delete $scope.chats[chat.uid];
-    }
+    };
 
     // Чат закрыт
     socket.on('chat:closed', function (data) {
@@ -157,7 +157,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
             delete $scope.chats[data.chat_uid];
         }
 
-        flash.success = 'Chat closed';
+        flash.success = $translate('Chat closed');
     });
 
     // Агент подключен к чату
@@ -244,7 +244,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
                 widget_uid: $rootScope.widget.uid
             });
 
-            flash.warn = 'User send message';
+            flash.warn = $translate('User send message');
         }
     });
 
@@ -271,6 +271,22 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
         }
     });
 
+    // Изменен Referrer чата
+    socket.on('chat:referrer:changed', function (data) {
+        $log.debug('Socket chat:referrer:changed', data);
+
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].referrer = data.referrer;
+            $scope.chats[data.chat_uid].keywords = data.keywords;
+        }
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            $scope.current_chat.referrer = data.referrer;
+            $scope.current_chat.keywords = data.keywords;
+        }
+    });
+
+
     $scope.leaveChat = function () {
         if ($scope.current_chat && $scope.current_chat.uid) {
             // Оповещаем слушаталей о выходе агента из чата
@@ -282,7 +298,7 @@ function AgentChatsCtrl($rootScope, $scope, $timeout, $log, flash, socket, sound
 
             delete $scope.current_chat;
         }
-    }
+    };
 
     $scope.sendMessage = function () {
         // Блокируем отправку пустых сообщений

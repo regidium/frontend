@@ -19,7 +19,7 @@ block header
                             span(translate) Chats
                             span(ng-bind="new_messages_count", class="badge badge-message-new-count")
                     li.dropdown(ng-class="{'active': location.path().indexOf('/agent/agents')> -1}")
-                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                        a.dropdown-toggle(href="")
                             span(translate) Agents
                             b.caret
                         ul.dropdown-menu
@@ -28,7 +28,7 @@ block header
                             li.disabled(ng-class="{'active': location.path().indexOf('/agent/agents/departments')> -1}")
                                 a(href="/agent/agents/departments", translate) Departments
                     li.dropdown(ng-class="{'active': location.path().indexOf('/agent/reports')> -1}")
-                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                        a.dropdown-toggle(href="")
                             span(translate) Reports
                             b.caret
                         ul.dropdown-menu
@@ -37,14 +37,14 @@ block header
                             li(ng-class="{'active': location.path().indexOf('/agent/reports/history')> -1}")
                                 a(href="/agent/reports/history", translate) Chat history
                     li.dropdown(ng-class="{'active': location.path().indexOf('/agent/settings')> -1}")
-                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                        a.dropdown-toggle(href="")
                             span(translate) Settings
                             b.caret
                         ul.dropdown-menu
                             li.disabled(ng-class="{'active': location.path().indexOf('/agent/settings/sites')> -1}")
                                 a(href="/agent/settings/sites" translate) List sites
                             li.dropdown.dropdown-submenu(ng-class="{'active': location.path().indexOf('/agent/settings/widget')> -1}")
-                                a.dropdown-toggle(href="", data-toggle="dropdown")
+                                a(href="", data-toggle="dropdown", data-target="#")
                                     span(translate) Widget
                                 ul.dropdown-menu
                                     li(ng-class="{'active': location.path().indexOf('/agent/settings/widget/style')> -1}")
@@ -56,7 +56,7 @@ block header
                             li(ng-class="{'active': location.path().indexOf('/agent/settings/blocked')> -1}")
                                 a(href="/agent/settings/blocked", translate) Blocked users
                     li.dropdown(ng-class="{'active': location.path().indexOf('/agent/balance')> -1}")
-                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                        a.dropdown-toggle(href="")
                             span(translate) Balance
                             b.caret
                         ul.dropdown-menu
@@ -67,7 +67,7 @@ block header
 
                 ul.nav.navbar-nav.navbar-right
                     li.dropdown(ng-controller="AgentAuthLogoutCtrl")
-                        a.dropdown-toggle(href="", data-toggle="dropdown")
+                        a.dropdown-toggle(href="")
                             img(ng-src="{{agent.avatar || '/img/logo.png'}}?width=25&heigth=25&t={{t}}", height="25px", style="max-height: 25px;")
                             span(ng-bind="agent.first_name + ' ' + agent.last_name", style="padding: 0 5px;")
                             b.caret

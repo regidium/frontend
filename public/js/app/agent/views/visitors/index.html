@@ -49,5 +49,14 @@
             <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
             <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
         </p>
+        <p ng-show="current_chat.referrer">
+            Current URL: <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
+        </p>
+        <p ng-show="current_chat.keywords">
+            Referrer: <a href="{{current_chat.referrer}}">{{current_chat.referrer}}</a>
+        </p>
+        <p ng-show="current_chat.keywords">
+            Keywords: <i>{{current_chat.keywords}}</i>
+        </p>
     </div>
 </div>

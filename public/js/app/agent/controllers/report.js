@@ -7,8 +7,6 @@
 function AgentReportStatisticsCtrl($scope) {
 }
 
-'use strict';
-
 /**
  * @todo Внедрить пагинацию
  * @url "/agent/report/history"

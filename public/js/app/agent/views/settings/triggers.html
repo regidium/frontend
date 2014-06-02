@@ -1,7 +1,7 @@
 <div class="col-md-12" role="main">
     <div block-ui="triggerBlockUI"></div>
     <div class="content">
-        <button ng-hide="current_trigger" type="button" class="btn btn-primary" ng-click="new()" translate>New</button>
+        <button ng-hide="current_trigger" type="button" class="btn btn-primary" ng-click="add()" translate>New</button>
         <button ng-show="current_trigger && current_trigger.uid != 'new'" type="button" class="btn btn-danger" ng-click="remove()" translate>Remove</button>
         <button ng-show="current_trigger" type="button" class="btn btn-warning" ng-click="close()" translate>Close</button>
         <div ng-show="current_trigger">

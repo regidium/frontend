@@ -4,7 +4,7 @@
  * @todo Внедрить пагинацию
  * @url "/agent/visitors"
  */
-function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket, flash, blockUI) {
+function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, socket, flash, blockUI) {
     // Определяем блоки блокировки
     var visitorsBlockUI = blockUI.instances.get('visitorsBlockUI');
 
@@ -29,7 +29,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
         if (!state) {
             localStorage.setItem('visitorsPageState', list);
         }
-    }
+    };
 
     // ================================================================
 
@@ -49,6 +49,21 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
 
         if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
             $scope.current_chat.current_url = data.new_url;
+        }
+    });
+
+    // Изменен Referrer чата
+    socket.on('chat:referrer:changed', function (data) {
+        $log.debug('Socket chat:referrer:changed', data);
+
+        if ($scope.chats[data.chat_uid]) {
+            $scope.chats[data.chat_uid].referrer = data.referrer;
+            $scope.chats[data.chat_uid].keywords = data.keywords;
+        }
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            $scope.current_chat.referrer = data.referrer;
+            $scope.current_chat.keywords = data.keywords;
         }
     });
 
@@ -94,12 +109,12 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
 
     // Чат подключен
     socket.on('chat:connected', function (data) {
-        $log.debug('Socket chat:connected');
+        $log.debug('Socket chat:connected', data);
 
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
 
-        flash.warn = 'Chat connected';
+        flash.warn = $translate('Chat connected');
     });
 
     // Чат отключен
@@ -112,12 +127,11 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
 
         // Переносим чат из списка чатов онлайн в список покинувших сайт
         if ($scope.chats[data.chat_uid]) {
-            flash.warn = 'Chat connected';
             $scope.chats[data.chat_uid].status = $rootScope.c.CHAT_STATUS_OFFLINE;
             $scope.chats[data.chat_uid].ended_at = Math.round(+new Date()/1000);
         }
 
-        flash.warn = 'Chat disconnected';
+        flash.warn = $translate('Chat disconnected');
     });
 
     // Пользователь закрыл чат
@@ -139,7 +153,7 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $filter, socket,
                     $log.debug($scope.current_chat);
                 }
         }
-    }
+    };
 
     // Начало чата с пользователем
     $scope.startChat = function(current_chat) {
