@@ -45,8 +45,10 @@ function AgentBalancePaymentCtrl($rootScope, $scope, $log, socket, flash, blockU
 //
 //            angular.element('#transaction_form').submit();
             // ROBOKASSA
-            angular.element('#transaction_form').attr('action', data.url);
-            angular.element('#transaction_form').submit();
+            $scope.transaction = data.transaction;
+
+            angular.element('#pay').attr('href', data.url);
+            angular.element('#pay').click();
         }
 
         // Разблокировка ожидающих блоков

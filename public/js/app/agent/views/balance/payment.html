@@ -5,7 +5,7 @@
             <div class="panel-heading">
                 <h1 translate>Payment widget</h1>
             </div>
-            <form ng-submit='paymentSubmit()' name="payment_form" role="form">
+            <form ng-show="!transaction" ng-submit='paymentSubmit()' name="payment_form" role="form">
                 <fieldset>
                     <!--<div class="form-group col-sm-10">-->
                         <!--<label class="control-label" translate>Payment type</label>-->
@@ -27,12 +27,18 @@
                     </div>
 
                     <div class="form-group col-sm-12">
-                        <button ng-show="!transaction" ng-disabled="payment_form.$invalid" type="submit" class="btn btn-lg btn-primary btn-block">Pay</button>
+                        <button ng-show="!transaction" ng-disabled="payment_form.$invalid" type="submit" class="btn btn-lg btn-primary btn-block">Generate payment</button>
                     </div>
                 </fieldset>
             </form>
 
-            <form ng-show="transaction" name="transaction_form" id="transaction_form" role="form" method="GET" action="#"></form>
+            <form class="content">
+                <fieldset>
+                    <div class="form-group col-sm-12">
+                        <a id="pay" href="#" ng-show="transaction" class="btn btn-default btn-block" translate>Pay</a>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>

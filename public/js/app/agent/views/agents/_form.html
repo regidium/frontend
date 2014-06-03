@@ -34,7 +34,7 @@
                     </span>
                     <input type="text" name="form.avatar" class="form-control" placeholder="Avatar" ng-disabled="true" ng-model="current_agent.avatar" />
                     <span ng-show="!disabled" class="input-group-btn">
-                        <button type="button" class="btn btn-danger" ng-click="removeAvatar()">
+                        <button ng-show="current_agent.avatar" type="button" class="btn btn-danger" ng-click="removeAvatar()">
                             <span class="glyphicon glyphicon-trash"></span> <span translate>Remove</span>
                         </button>
                     </span>
