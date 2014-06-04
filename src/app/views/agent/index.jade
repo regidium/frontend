@@ -58,6 +58,7 @@ block header
                     li.dropdown(ng-class="{'active': location.path().indexOf('/agent/balance')> -1}")
                         a.dropdown-toggle(href="")
                             span(translate) Balance
+                            span(ng-bind="widget.balance", class="badge badge-message-new-count")
                             b.caret
                         ul.dropdown-menu
                             li(ng-class="{'active': location.path().indexOf('/agent/balance/plan')> -1}")

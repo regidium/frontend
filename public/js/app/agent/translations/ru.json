@@ -84,5 +84,8 @@
     "User": "Пользователь",
     "visited the site": "зашел на сайт",
     "left site": "покинул сайт",
-    "User send message": "Пользователь написал сообщение"
+    "User send message": "Пользователь написал сообщение",
+
+    "Explanatory message in chat": "Пояснительное сообщение в чате",
+    "Write your message and Enter": "Напишите сообщение и нажмите ВВОД"
 }
