@@ -1,66 +1,73 @@
 <div class="col-md-12">
-    <h3 translate>List of all chats</h3>
-    <div block-ui="chatsBlockUI"></div>
-    <div class="col-md-12">
-        <div ng-repeat="chat in chats" class="col-md-2">
-            <button ng-click="closeChat(chat)" type="button" class="close">×</button>
-            <a href="" ng-click="selectChat(chat)">
-                <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 42px; background-color: #BEBDBD">
-                {{chat.user.ip}}
-                <br/>
-                <span translate>new</span>: {{(chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length}}
-                <br/>
-                <span am-time-ago="chat.started_at" am-preprocess="unix"></span>
-                </span>
-            </a>
+    <div ng-if="chats.length">
+        <h3 translate>List of all chats</h3>
+        <div block-ui="chatsBlockUI"></div>
+        <div class="col-md-12">
+            <div ng-repeat="chat in chats" class="col-md-2">
+                <button ng-click="closeChat(chat)" type="button" class="close">×</button>
+                <a href="" ng-click="selectChat(chat)">
+                    <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 42px; background-color: #BEBDBD">
+                    {{chat.user.ip}}
+                    <br/>
+                    <span translate>new</span>: {{(chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length}}
+                    <br/>
+                    <span am-time-ago="chat.started_at" am-preprocess="unix"></span>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div ng-show="current_chat">
+            <div block-ui="currentChatBlockUI"></div>
+            <div class="col-md-9">
+                <div class="well message-spot overflowable" auto-scroll>
+                    <p ng-repeat="message in current_chat.messages track by $index;" ng-class="{'not-readed': !message.readed}">
+                        <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_USER" class="green">
+                            {{ message.created_at * 1000 | date:'shortTime' }}: {{current_chat.user.first_name}}: {{message.text}}
+                        </span>
+                        <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_AGENT" class="red">
+                            {{ message.created_at * 1000 | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}
+                        </span>
+                        <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_ROBOT" class="gray">
+                            {{ message.created_at * 1000 | date:'shortTime' }}: Robot: {{message.text}}
+                        </span>
+                    </p>
+                </div>
+                <form ng-submit="sendMessage()" class="form-horizontal" role="form" ng-hide="current_chat.status == c.CHAT_STATUS_OFFLINE">
+                    <div class="col-md-10">
+                        <input ng-model="text" class="form-control" placeholder="Enter message" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success" ng-disabled="!current_chat" translate>Send</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3" ng-show="current_chat">
+                <p>{{current_chat.user.ip}}: {{current_chat.user.first_name}}</p>
+                <p>{{current_chat.user.country}}, {{current_chat.user.city}}</p>
+                <p>
+                    <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
+                    <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
+                </p>
+                <p>
+                    <span translate>URL</span>: <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
+                </p>
+
+
+                <p ng-if="!current_chat.keywords && current_chat.referrer">
+                    <span translate>Referrer</span>: <a href="{{current_chat.referrer}}">{{current_chat.referrer}}</a>
+                </p>
+
+                <p ng-if="current_chat.keywords && current_chat.referrer">
+                    {{getReferrer(current_chat)}}: <i>{{current_chat.keywords}}</i>
+                </p>
+
+                <p><a href="" class="btn btn-danger" ng-click="leaveChat()" translate>Leave chat</a></p>
+            </div>
         </div>
     </div>
-    <div ng-show="current_chat">
-        <div block-ui="currentChatBlockUI"></div>
-        <div class="col-md-9">
-            <div class="well message-spot overflowable" auto-scroll>
-                <p ng-repeat="message in current_chat.messages track by $index;" ng-class="{'not-readed': !message.readed}">
-                    <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_USER" class="green">
-                        {{ message.created_at * 1000 | date:'shortTime' }}: {{current_chat.user.first_name}}: {{message.text}}
-                    </span>
-                    <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_AGENT" class="red">
-                        {{ message.created_at * 1000 | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}
-                    </span>
-                    <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_ROBOT" class="gray">
-                        {{ message.created_at * 1000 | date:'shortTime' }}: Robot: {{message.text}}
-                    </span>
-                </p>
-            </div>
-            <form ng-submit="sendMessage()" class="form-horizontal" role="form" ng-hide="current_chat.status == c.CHAT_STATUS_OFFLINE">
-                <div class="col-md-10">
-                    <input ng-model="text" class="form-control" placeholder="Enter message" />
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-success" ng-disabled="!current_chat" translate>Send</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-3" ng-show="current_chat">
-            <p>{{current_chat.user.ip}}: {{current_chat.user.first_name}}</p>
-            <p>{{current_chat.user.country}}, {{current_chat.user.city}}</p>
-            <p>
-                <span>{{current_chat.user.os}} <i ng-class="getOsClass(current_chat.user.os)" class="fa"></i></span>
-                <span>{{current_chat.user.browser}} <i ng-class="getBrowserClass(current_chat.user.browser)"></i></span>
-            </p>
-            <p>
-                <span translate>URL</span>: <a href="{{current_chat.current_url}}">{{current_chat.current_url}}</a>
-            </p>
-
-
-            <p ng-if="!current_chat.keywords && current_chat.referrer">
-                <span translate>Referrer</span>: <a href="{{current_chat.referrer}}">{{current_chat.referrer}}</a>
-            </p>
-
-            <p ng-if="current_chat.keywords && current_chat.referrer">
-                {{getReferrer(current_chat)}}: <i>{{current_chat.keywords}}</i>
-            </p>
-
-            <p><a href="" class="btn btn-danger" ng-click="leaveChat()" translate>Leave chat</a></p>
+    <div ng-if="!chats.length">
+        <div style="text-align: center;">
+            <h1 translate>Not chats</h1>
         </div>
     </div>
 </div>

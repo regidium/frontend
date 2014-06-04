@@ -74,12 +74,15 @@
     "User back to site": "Пользователь вернулся",
     "User leave site": "Пользователь покинул сайт",
 
-    "Chat connected": "Пользователь подключился",
-    "Chat disconnected": "Пользователь отключился",
     "Chat closed": "Чат закрыт",
-    "User send message": "Пользователь написал сообщение",
 
     "Issue sended": "Ошибка отправлена",
 
-    "Referrer": "Источник"
+    "Referrer": "Источник",
+    "Not chats": "Нет активных чатов",
+    "No users": "Нет пользователей",
+    "User": "Пользователь",
+    "visited the site": "зашел на сайт",
+    "left site": "покинул сайт",
+    "User send message": "Пользователь написал сообщение"
 }

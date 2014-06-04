@@ -73,8 +73,6 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         if ($scope.current_chat && $scope.current_chat.uid == data.chat.uid) {
             $scope.current_chat.messages.push(message);
         }
-
-        flash.warn = $translate('Chat connected');
     });
 
     // Чат отключен
@@ -103,8 +101,6 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
             // Добавляем сообщение в список сообщений
             $scope.current_chat.messages.push(message);
         }
-
-        flash.warn = $translate('Chat disconnected');
     });
 
     // Пользователь закрыл чат
@@ -246,8 +242,6 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
                 chat_uid: data.chat_uid,
                 widget_uid: $rootScope.widget.uid
             });
-
-            flash.warn = $translate('User send message');
         }
     });
 

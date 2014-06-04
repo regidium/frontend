@@ -116,13 +116,11 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
 
         // Добавляем чат в список чатов онлайн
         $scope.chats[data.chat.uid] = data.chat;
-
-        flash.warn = $translate('Chat connected');
     });
 
     // Чат отключен
     socket.on('chat:disconnect', function (data) {
-        $log.debug('Socket chat:disconnect');
+        $log.debug('Socket chat:disconnect', data);
 
         if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid == data.chat_uid) {
             $scope.current_chat = {};
@@ -133,8 +131,6 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
             $scope.chats[data.chat_uid].status = $rootScope.c.CHAT_STATUS_OFFLINE;
             $scope.chats[data.chat_uid].ended_at = Math.round(+new Date()/1000);
         }
-
-        flash.warn = $translate('Chat disconnected');
     });
 
     // Пользователь закрыл чат
