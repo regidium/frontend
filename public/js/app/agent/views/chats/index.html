@@ -1,5 +1,5 @@
 <div class="col-md-12">
-    <div ng-if="chats.length">
+    <div ng-if="chats">
         <h3 translate>List of all chats</h3>
         <div block-ui="chatsBlockUI"></div>
         <div class="col-md-12">
@@ -34,7 +34,7 @@
                 </div>
                 <form ng-submit="sendMessage()" class="form-horizontal" role="form" ng-hide="current_chat.status == c.CHAT_STATUS_OFFLINE">
                     <div class="col-md-10">
-                        <input ng-model="text" class="form-control" placeholder="Enter message" />
+                        <input ng-model="$parent.text" class="form-control" placeholder="Enter message" />
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-success" ng-disabled="!current_chat" translate>Send</button>
@@ -65,7 +65,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="!chats.length">
+    <div ng-if="!chats">
         <div style="text-align: center;">
             <h1 translate>Not chats</h1>
         </div>

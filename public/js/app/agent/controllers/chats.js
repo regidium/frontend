@@ -15,6 +15,8 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
     // Резервируем $scope переменную для списка онлайн чатов
     $scope.chats = {};
 
+    $scope.text = '';
+
     // Запрашиваем список чатов онлайн
     socket.emit('chat:online', { widget_uid: $rootScope.widget.uid });
     // Блокируем ожидающие блоки
@@ -116,7 +118,9 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         if ($scope.current_chat.current_url) {
             try {
                 $scope.current_chat.current_url = decodeURIComponent($scope.current_chat.current_url);
-                $scope.current_chat.referrer = decodeURIComponent($scope.current_chat.referrer);
+                if ($scope.current_chat.referrer) {
+                    $scope.current_chat.referrer = decodeURIComponent($scope.current_chat.referrer);
+                }
             } catch(e) {
                 $log.debug($scope.current_chat);
             }
@@ -158,7 +162,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         flash.success = $translate('Chat closed');
     });
 
-    // Агент подключен к чату
+    // Агент прочел сообщение
     socket.on('chat:message:readed:agent', function (data) {
         $log.debug('Socket chat:message:readed:agent', data);
 
@@ -191,7 +195,9 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         if (data.agent.uid == $rootScope.agent.uid) {
             try {
                 data.chat.current_url = decodeURIComponent(data.chat.current_url);
-                data.chat.referrer = decodeURIComponent(data.chat.referrer);
+                if (data.chat.referrer) {
+                    data.chat.referrer = decodeURIComponent(data.chat.referrer);
+                }
             } catch(e) {
                 $log.debug(data.chat);
             }
@@ -306,6 +312,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         var message = {
             sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_AGENT,
             created_at: (+new Date) / 1000,
+            readed: true,
             text: $scope.text
         };
 
