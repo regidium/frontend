@@ -55,25 +55,36 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         }
     });
 
-    // Чат подключен
-    /** @todo Фильтруются ли по статусу? */
-    socket.on('chat:connected', function (data) {
-        $log.debug('Socket chat:connected', data);
-
-        var message = {
-            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
-            readed: true,
-            created_at: (+new Date) / 1000,
-            text: $translate('User back to site')
-        };
+    // Изменился статус чата
+    socket.on('chat:status:changed', function (data) {
+        $log.debug('Socket chat:status:changed');
 
         if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
             // Добавляем чат в список чатов онлайн
             $scope.chats[data.chat.uid] = data.chat;
         }
+    });
 
-        if ($scope.current_chat && $scope.current_chat.uid == data.chat.uid) {
-            $scope.current_chat.messages.push(message);
+    // Чат подключен
+    socket.on('chat:connected', function (data) {
+        $log.debug('Socket chat:connected', data);
+
+        var message = {
+            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT_TO_AGENT,
+            readed: true,
+            created_at: (+new Date) / 1000,
+            text: $translate('User back to site')
+        };
+
+        socket.emit('chat:message:send:robot', {
+            message: message,
+            chat_uid: data.chat.uid,
+            widget_uid: $rootScope.widget.uid
+        });
+
+        if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
+            // Добавляем чат в список чатов онлайн
+            $scope.chats[data.chat.uid] = data.chat;
         }
     });
 
@@ -89,19 +100,20 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
         //delete $scope.chats[data.chat_uid];
 
         var message = {
-            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT,
+            sender_type: $rootScope.c.MESSAGE_SENDER_TYPE_ROBOT_TO_AGENT,
             readed: true,
             created_at: (+new Date) / 1000,
             text: $translate('User leave site')
         };
 
+        socket.emit('chat:message:send:robot', {
+            message: message,
+            chat_uid: data.chat_uid,
+            widget_uid: $rootScope.widget.uid
+        });
+
         if ($scope.chats[data.chat_uid]) {
             $scope.chats[data.chat_uid].messages.push(message);
-        }
-
-        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
-            // Добавляем сообщение в список сообщений
-            $scope.current_chat.messages.push(message);
         }
     });
 
@@ -215,6 +227,15 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
             }
             // Разблокировка ожидающих блоков
             currentChatBlockUI.stop();
+        }
+    });
+
+    // Робот написал сообщение
+    socket.on('chat:message:sended:robot', function (data) {
+        $log.debug('Chat', 'Socket chat:message:sended:robot');
+
+        if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
+            $scope.current_chat.messages.push(data.message);
         }
     });
 

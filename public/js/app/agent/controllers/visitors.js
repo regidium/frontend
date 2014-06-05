@@ -110,6 +110,24 @@ function AgentVisitorsCtrl($rootScope, $scope, $location, $log, $translate, sock
         }
     });
 
+    // Изменился статус чата
+    socket.on('chat:status:changed', function (data) {
+        $log.debug('Socket chat:status:changed');
+
+        if (data.chat.status == $rootScope.c.CHAT_STATUS_CHATTING) {
+            // Добавляем чат в список чатов онлайн
+            $scope.chats[data.chat.uid] = data.chat;
+        }
+    });
+
+    // Чат создан
+    socket.on('chat:created', function (data) {
+        $log.debug('Socket chat:created', data);
+
+        // Добавляем чат в список чатов онлайн
+        $scope.chats[data.chat.uid] = data.chat;
+    });
+
     // Чат подключен
     socket.on('chat:connected', function (data) {
         $log.debug('Socket chat:connected', data);

@@ -35,13 +35,18 @@ function AgentMenuCtrl($rootScope, $scope, $log, $translate, socket, sound, flas
     });
 
     // Чат подключен
+    socket.on('chat:created', function (data) {
+        flash.warn = $translate('User') + ' ' + data.chat.user.ip + ', ' + data.chat.user.city + ', ' + data.chat.user.first_name  + ' ' + $translate('visited site');
+    });
+
+    // Чат подключен
     socket.on('chat:connected', function (data) {
-        flash.warn = $translate('User') + ' ' + data.chat.user.ip + ', ' + data.chat.user.city + ', ' + data.chat.user.first_name  + ' ' + $translate('visited the site');
+        flash.warn = $translate('User') + ' ' + data.chat.user.ip + ', ' + data.chat.user.city + ', ' + data.chat.user.first_name  + ' ' + $translate('back to site');
     });
 
     // Чат отключен
     socket.on('chat:disconnect', function (data) {
-        flash.warn = $translate('User left the site');
+        flash.warn = $translate('User left site');
     });
 
     // Пользователь написал сообщение

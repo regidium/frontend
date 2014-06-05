@@ -27,7 +27,7 @@
                         <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_AGENT" class="red">
                             {{ message.created_at * 1000 | date:'shortTime' }}: {{agent.first_name}}: {{message.text}}
                         </span>
-                        <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_ROBOT" class="gray">
+                        <span ng-if="message.sender_type == c.MESSAGE_SENDER_TYPE_ROBOT_TO_AGENT" class="gray">
                             {{ message.created_at * 1000 | date:'shortTime' }}: Robot: {{message.text}}
                         </span>
                     </p>
