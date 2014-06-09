@@ -173,3 +173,30 @@ canvas {
 .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+.chat {
+    display: block;
+    width: 140px;
+    height: 140px;
+    text-align: center;
+    padding-top: 42px;
+    background-color: #ADADAD;
+    border-style: solid;
+    border-color: #00ff00;
+}
+
+.chat-offline {
+    background-color: #DFDFDF;
+    border-style: solid;
+    border-color: #DFDFDF;
+}
+
+.chat-current {
+    border-style: solid;
+    border-color: #ffff00;
+}
+
+.chat-not-readed {
+    border-style: solid;
+    border-color: #ffff00;
+}

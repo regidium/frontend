@@ -6,7 +6,11 @@
             <div ng-repeat="chat in chats" class="col-md-2">
                 <button ng-click="closeChat(chat)" type="button" class="close">×</button>
                 <a href="" ng-click="selectChat(chat)">
-                    <span class="img-circle" style="display: block; width: 140px; height: 140px; text-align: center; padding-top: 42px; background-color: #BEBDBD">
+                    <span ng-class="{
+                        'chat-offline': (chat.status != c.CHAT_STATUS_OFFLINE),
+                        'chat-current': (current_chat && current_chat.uid == chat.uid),
+                        'chat-not-readed': (chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length > 0
+                        }" class="img-circle chat">
                     {{chat.user.ip}}
                     <br/>
                     <span translate>new</span>: {{(chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length}}
