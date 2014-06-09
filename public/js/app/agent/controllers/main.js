@@ -20,6 +20,8 @@ function AgentMenuCtrl($rootScope, $scope, $log, $translate, socket, sound, flas
     socket.on('chat:message:add:new', function (data) {
         $log.debug('Main', 'Socket chat:message:add:new');
 
+        flash.warn = $translate('User send message') + ': ' + data.message.text;
+
         /** @todo выбрать звук для уведомления */
         soundBeep.play();
         $scope.new_messages[data.message.uid] = data.message.uid;
@@ -47,11 +49,6 @@ function AgentMenuCtrl($rootScope, $scope, $log, $translate, socket, sound, flas
     // Чат отключен
     socket.on('chat:disconnect', function (data) {
         flash.warn = $translate('User left site');
-    });
-
-    // Пользователь написал сообщение
-    socket.on('chat:message:sended:user', function (data) {
-        flash.warn = $translate('User send message') + ': ' + data.message.text;
     });
 }
 
