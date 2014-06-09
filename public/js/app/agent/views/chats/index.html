@@ -7,7 +7,7 @@
                 <button ng-click="closeChat(chat)" type="button" class="close">×</button>
                 <a href="" ng-click="selectChat(chat)">
                     <span ng-class="{
-                        'chat-offline': (chat.status != c.CHAT_STATUS_OFFLINE),
+                        'chat-offline': (chat.status == c.CHAT_STATUS_OFFLINE),
                         'chat-current': (current_chat && current_chat.uid == chat.uid),
                         'chat-not-readed': (chat.messages|filter:{sender_type:c.MESSAGE_SENDER_TYPE_USER, readed:false}).length > 0
                         }" class="img-circle chat">

@@ -64,8 +64,14 @@
         flashProvider.warnClassnames.push('alert-warning');
         flashProvider.infoClassnames.push('alert-info');
         flashProvider.successClassnames.push('alert-success');
-    }).run(function($rootScope, $cookieStore, $translate, $http, $location, amMoment, config, socket, flash, sound) {
+    }).run(function($rootScope, $cookieStore, $translate, $http, $location, $templateCache, amMoment, config, socket, flash, sound) {
         $rootScope.location = $location;
+
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            if (typeof(current) !== 'undefined'){
+                $templateCache.remove(current.templateUrl);
+            }
+        });
 
         $rootScope.env = env || 'production';
 
