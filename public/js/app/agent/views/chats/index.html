@@ -1,5 +1,5 @@
 <div class="col-md-12">
-    <div ng-if="chats">
+    <div ng-if="chats && keys(chats).length">
         <h3 translate>List of all chats</h3>
         <div block-ui="chatsBlockUI"></div>
         <div class="col-md-12">
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="!chats">
+    <div ng-if="!chats || !keys(chats).length">
         <div style="text-align: center;">
             <h1 translate>Not chats</h1>
         </div>
