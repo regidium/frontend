@@ -67,6 +67,7 @@
     }).run(function($rootScope, $cookieStore, $translate, $http, $location, $templateCache, amMoment, config, socket, flash, sound) {
         $rootScope.location = $location;
 
+        // Отключаем кэш шаблонов
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
             if (typeof(current) !== 'undefined'){
                 $templateCache.remove(current.templateUrl);
@@ -172,13 +173,25 @@
             }
         };
 
+        $rootScope.widget = $rootScope.agent.widget;
+
         getSession(function(session) {
             // Сообщяем слушателей о подключении агента
             socket.emit('agent:connect', { agent: $rootScope.agent, session: session, widget_uid: $rootScope.agent.widget.uid });
-        });
 
-        // Добавляем переменную widget в глобальный скоуп
-        $rootScope.widget = $rootScope.agent.widget;
+            /**
+             * Запрашиваем информацию о виджете
+             */
+            socket.emit('widget:info:get', {
+                widget_uid: $rootScope.agent.widget.uid
+            });
+
+            // Event сервер прислала информацию о виджете
+            socket.on('widget:info:sended', function(data) {
+                // Добавляем переменную widget в глобальный scope
+                $rootScope.widget = data;
+            });
+        });
 
         // Константы
         $rootScope.c = {};

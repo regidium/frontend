@@ -1,0 +1,7 @@
+//.row(ng-show="keys(widget.notifications | filter:{show:true}).length")
+.row(ng-show="notificationsShow && keys(widget.notifications).length")
+    .col-md-12
+        .alert.alert-notification.alert-warning.alert-dismissable(ng-repeat="notification in widget.notifications | filter:{show:true}")
+            button.close(type="button", data-dismiss="alert", aria-hidden="true", ng-click="closeNotification(notification)") &times;
+            i.glyphicon.glyphicon-info-sign
+            span.alert-message(ng-bind="notification.text")

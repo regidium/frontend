@@ -200,3 +200,9 @@ canvas {
     border-style: solid;
     border-color: #ffff00;
 }
+
+.alert-notification {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}

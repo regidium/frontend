@@ -73,8 +73,24 @@ function AgentAuthLogoutCtrl($scope, $http) {
 /**
  * @url "/agent"
  */
-function AgentCtrl($scope) {
-    /** @todo */
+function AgentCtrl($rootScope, $scope, socket) {
+    // Event сервер прислала информацию о виджете
+    socket.on('widget:info:sended', function(data) {
+        // Добавляем переменную widget в глобальный scope
+        $rootScope.widget.notifications = data.notifications;
+        var notifications = JSON.parse(localStorage.getItem('notifications'));
+        angular.forEach($rootScope.widget.notifications, function(notification) {
+            if (notifications && notifications[notification.key] && notifications[notification.key].show) {
+                $rootScope.widget.notifications[notification.key].show = false;
+            }
+        });
+        $rootScope.notificationsShow = true;
+    });
+
+    $scope.closeNotification = function(notification) {
+        $rootScope.widget.notifications[notification.key].show = false;
+        localStorage.setItem('notifications', JSON.stringify($rootScope.widget.notifications));
+    }
 }
 
 /**
