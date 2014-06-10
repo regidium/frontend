@@ -78,18 +78,23 @@ function AgentCtrl($rootScope, $scope, socket) {
     socket.on('widget:info:sended', function(data) {
         // Добавляем переменную widget в глобальный scope
         $rootScope.widget.notifications = data.notifications;
-        var notifications = JSON.parse(localStorage.getItem('notifications'));
+        $rootScope.notifications = JSON.parse(localStorage.getItem('notifications'));
+        if (!$rootScope.notifications) {
+            $rootScope.notifications = {};
+        }
+
         angular.forEach($rootScope.widget.notifications, function(notification) {
-            if (notifications && notifications[notification.key] && notifications[notification.key].show) {
-                $rootScope.widget.notifications[notification.key].show = false;
+            if (!$rootScope.notifications[notification.key]) {
+                $rootScope.notifications[notification.key] = notification;
             }
         });
+
         $rootScope.notificationsShow = true;
     });
 
     $scope.closeNotification = function(notification) {
-        $rootScope.widget.notifications[notification.key].show = false;
-        localStorage.setItem('notifications', JSON.stringify($rootScope.widget.notifications));
+        $rootScope.notifications[notification.key].show = false;
+        localStorage.setItem('notifications', JSON.stringify($rootScope.notifications));
     }
 }
 
