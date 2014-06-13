@@ -9,7 +9,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
     // Определяем блоки блокировки
     var chatsBlockUI = blockUI.instances.get('chatsBlockUI');
     var currentChatBlockUI = blockUI.instances.get('currentChatBlockUI');
-
+console.log($rootScope.cou);
     var timeouts = {};
 
     // Резервируем $scope переменную для списка онлайн чатов
@@ -26,6 +26,7 @@ function AgentChatsCtrl($rootScope, $scope, $log, $translate, flash, socket, sou
     socket.on('chat:online:list', function(data) {
         $log.debug('Socket chat:online:list', data);
 
+        $rootScope.cou = $rootScope.cou + 1;
         // Наполняем список чатов онлайн
         angular.forEach(data.chats, function(chat) {
             try {

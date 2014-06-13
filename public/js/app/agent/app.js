@@ -66,13 +66,13 @@
         flashProvider.successClassnames.push('alert-success');
     }).run(function($rootScope, $cookieStore, $translate, $http, $location, $templateCache, amMoment, config, socket, flash, sound) {
         $rootScope.location = $location;
-
+        $rootScope.cou = 0;
         // Отключаем кэш шаблонов
-        $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            if (typeof(current) !== 'undefined'){
-                $templateCache.remove(current.templateUrl);
-            }
-        });
+//        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+//            if (typeof(current) !== 'undefined'){
+//                $templateCache.remove(current.templateUrl);
+//            }
+//        });
 
         $rootScope.env = env || 'production';
 
