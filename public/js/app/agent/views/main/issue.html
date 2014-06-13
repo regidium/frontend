@@ -9,13 +9,13 @@
                 <div class="modal-body">
                     <p>
                     <form role="form" ng-submit='send()' name="issue_form">
-                        <input ng-model="issue.title" ng-required="true" type="text" placeholder="Title Issue" required="required" autofocus="autofocus" class="form-control" />
-                        <textarea ng-model="issue.text" ng-required="true" placeholder="Text Issue" required="required" class="form-control"></textarea>
+                        <input ng-model="issue.title" ng-required="true" type="text" placeholder="{{trans('Title Issue')}}" required="required" autofocus="autofocus" class="form-control" />
+                        <textarea ng-model="issue.text" ng-required="true" placeholder="{{trans('Text Issue')}}" required="required" class="form-control"></textarea>
                         <p>
-                            <button type="submit" ng-disabled="issue_form.$invalid" class="btn btn-lg btn-primary btn-block">Send</button>
+                            <button type="submit" ng-disabled="issue_form.$invalid" class="btn btn-lg btn-primary btn-block" translate>Send</button>
                         </p>
                         <p>
-                            <button ng-click="close()" class="btn btn-lg btn-danger btn-block" type="button" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <button ng-click="close()" class="btn btn-lg btn-danger btn-block" type="button" data-dismiss="modal" aria-hidden="true" translate>Close</button>
                         </p>
                     </form>
                 </div>

@@ -66,6 +66,7 @@
         flashProvider.successClassnames.push('alert-success');
     }).run(function($rootScope, $cookieStore, $translate, $http, $location, $templateCache, amMoment, config, socket, flash, sound) {
         $rootScope.location = $location;
+        $rootScope.trans = $translate;
         $rootScope.cou = 0;
         // Отключаем кэш шаблонов
 //        $rootScope.$on('$routeChangeStart', function(event, next, current) {
