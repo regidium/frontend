@@ -21,23 +21,23 @@
         $routeProvider
             .when('/', {
                 templateUrl: 'js/app/main/views/index.html',
-                controller: MainCtrl
+                controller: 'MainCtrl'
             })
             .when('/login', {
                 templateUrl: 'js/app/main/views/index.html',
-                controller: MainAuthLoginCtrl
+                controller: 'MainAuthLoginCtrl'
             })
             .when('/registration', {
                 templateUrl: 'js/app/main/views/index.html',
-                controller: MainAuthRegistrationCtrl
+                controller: 'MainAuthRegistrationCtrl'
             })
             .when('/auth/external/service/:provider/connect', {
                 templateUrl: 'js/app/main/views/index.html',
-                controller: MainAuthExternalServiceConnectCtrl
+                controller: 'MainAuthExternalServiceConnectCtrl'
             })
             .when('/auth/external/service/:provider/disconnect', {
                 templateUrl: 'js/app/main/views/index.html',
-                controller: MainAuthExternalServiceDisconnectCtrl
+                controller: 'MainAuthExternalServiceDisconnectCtrl'
             })
             .otherwise({
                 redirectTo: '/'
