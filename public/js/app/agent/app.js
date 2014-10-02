@@ -21,8 +21,8 @@
         'regidiumApp.commonDirectives'
     ])
 
-    // removed { $location, $templateCache, flash, config, sound, config } dependencies
-    .run(function($rootScope, $translate, $http, amMoment,
+    // removed { $location, $templateCache, flash, sound, config } dependencies
+    .run(function($rootScope, $translate, $http, amMoment, config,
                   socket, cssHelper, cookieService,
                   langService, constantsService, sessionService) {
 
