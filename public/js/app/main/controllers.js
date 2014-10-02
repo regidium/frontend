@@ -11,7 +11,8 @@ function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $ht
             } else {
                 flash.error = 'Backend return error request!';
             }
-        }).error(function(data, status, headers, config) {
+        })
+        .error(function(data, status, headers, config) {
             if (data && data.errors) {
                 $log.debug(data.errors);
                 flash.error = data.errors;
@@ -19,7 +20,8 @@ function MainAuthExternalServiceConnectCtrl($scope, $location, $routeParams, $ht
                 $log.debug('System error!');
                 flash.error = 'System error!';
             }
-    });
+        })
+    ;
 }
 
 /** @todo Update */

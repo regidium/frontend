@@ -2,6 +2,7 @@
 
 function AgentMenuCtrl($rootScope, $scope, $log, $translate, socket, sound, flash) {
     var soundBeep = sound.init('beep');
+
     $scope.new_messages = {};
 
     socket.emit('widget:message:new:get', {

@@ -1,28 +1,37 @@
+/**
+ * App common filters
+ */
 (function(angular) {
 
     'use strict';
 
-    /* Services */
     angular.module('regidiumApp')
-        .filter('orderObjectBy', function() {
-          return function(items, field, reverse) {
-            var filtered = [];
 
-            angular.forEach(items, function(item) {
-                filtered.push(item);
-            });
+    /**
+     *  Filter for order items
+     *
+     *  @param items                items to order
+     *  @param field                order by
+     *  @param {boolean} reverse    ASC/DESC
+     */
+    .filter('orderObjectBy', function() {
+      return function(items, field, reverse) {
+        var filtered = [];
 
-            filtered.sort(function (a, b) {
-                return (a[field] > b[field]);
-            });
+        angular.forEach(items, function(item) {
+            filtered.push(item);
+        });
 
-            if(reverse) {
-                filtered.reverse();
-            }
+        filtered.sort(function (a, b) {
+            return (a[field] > b[field]);
+        });
 
-            return filtered;
-          };
-        })
-    ;
+        if(reverse) {
+            filtered.reverse();
+        }
+
+        return filtered;
+      };
+    })
 
 })(angular);

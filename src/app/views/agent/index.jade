@@ -1,7 +1,7 @@
 extends ../common/layout
 
 block header
-    header.navbar.navbar-inverse.navbar-fixed-top(role="banner", ng-controller="AgentMenuCtrl")
+    header.navbar.navbar-inverse.navbar-fixed-top(role="banner")
         .container-fluid
             .navbar-header
                 button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
@@ -14,7 +14,7 @@ block header
                 ul.nav.navbar-nav
                     li(ng-class="{'active': location.path().indexOf('/agent/visitors')> -1}")
                         a(href="/agent/visitors", translate) Visitors
-                    li(ng-class="{'active': location.path().indexOf('/agent/chats')> -1}")
+                    li(ng-class="{'active': location.path().indexOf('/agent/chats')> -1}", ng-controller="AgentMenuCtrl")
                         a(href="/agent/chats")
                             span(translate) Chats
                             span(ng-bind="new_messages_count", class="badge badge-message-new-count")

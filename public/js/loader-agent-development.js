@@ -31,6 +31,11 @@ head.load(
     "/js/libs/angular/angular-file-upload/angular-file-upload.min.js",
     // Agent
     "/js/app/agent/app.js",
+    "/js/app/agent/app.config.js",
+    "/js/app/agent/app.routes.js",
+    "/js/app/agent/app.constant.js",
+
+
     // Controllers
     "/js/app/agent/controllers/agents.js",
     "/js/app/agent/controllers/balance.js",
@@ -40,6 +45,13 @@ head.load(
     "/js/app/agent/controllers/visitors.js",
     "/js/app/agent/controllers/settings/triggers.js",
     "/js/app/agent/controllers/settings/widget.js",
+
+    // Services
+    "/js/app/agent/services/utils/ui/viewHelpers.js",
+    "/js/app/agent/services/utils/cookie/cookieService.js",
+    "/js/app/agent/services/utils/lang/langService.js",
+    "/js/app/agent/services/utils/constantsService.js",
+    "/js/app/agent/services/utils/session/sessionService.js",
 
     "/js/app/common/config/config.js",
     "/js/app/common/services.js",

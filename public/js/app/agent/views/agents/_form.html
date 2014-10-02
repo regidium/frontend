@@ -89,46 +89,83 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Period Visitors Render</label>
             <div class="col-sm-9">
-                <label>
-                    <input type="radio" ng-model="current_agent.render_visitors_period" value="1" translate /> Session
-                </label>
-                <label>
-                    <input type="radio" ng-model="current_agent.render_visitors_period" value="2" translate /> Day
-                </label>
-                <label>
-                    <input type="radio" ng-model="current_agent.render_visitors_period" value="3" translate /> Week
-                </label>
+                <div>
+                    <label translate>
+                        Session
+                    </label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="1" />
+                </div>
+
+                <div>
+                    <label translate>
+                        Day
+                    </label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="2" />
+                </div>
+
+                <div>
+                    <label translate>
+                        Week
+                    </label>
+                    <input type="radio" ng-model="current_agent.render_visitors_period" value="3" />
+                </div>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Accept chats</label>
             <div class="col-sm-9">
-                <label>
-                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="true" translate /> Yes
-                </label>
-                <label>
-                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="false" translate /> No
-                </label>
+                <div>
+                    <label translate>
+                        Yes
+                    </label>
+                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="true" />
+                </div>
+
+                <div>
+                    <label translate>
+                        No
+                    </label>
+                    <input type="radio" ng-model="current_agent.accept_chats" ng-value="false" />
+                </div>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label" translate>Email Notifications</label>
             <div class="col-sm-9">
-                <label>
-                    <input type="checkbox" ng-model="current_agent.notifications.new_chat" ng-value="1" translate /> New chat
-                </label>
-                <label>
-                    <input type="checkbox" ng-model="current_agent.notifications.new_agent" ng-value="1" translate /> New agent
-                </label>
-                <label>
-                    <input type="checkbox" ng-model="current_agent.notifications.new_message" ng-value="1" translate /> New message
-                </label>
-                <label>
-                    <input type="checkbox" ng-model="current_agent.notifications.pay_agent" ng-value="1" translate /> Pay agent
-                </label>
-                <label>
-                    <input type="checkbox" ng-model="current_agent.notifications.pay_subscription" ng-value="1" translate /> Pay subscription
-                </label>
+                <div>
+                    <label translate>
+                        New chat
+                    </label>
+                    <input type="checkbox" class="pull-left" ng-model="current_agent.notifications.new_chat" ng-value="1" translate />
+                </div>
+
+                <div>
+                    <label translate>
+                        New agent
+                    </label>
+                    <input type="checkbox" class="pull-left" ng-model="current_agent.notifications.new_agent" ng-value="1" translate />
+                </div>
+
+                <div>
+                    <label translate>
+                        New message
+                    </label>
+                    <input type="checkbox" class="pull-left" ng-model="current_agent.notifications.new_message" ng-value="1" translate />
+                </div>
+
+                <div>
+                    <label translate>
+                        Pay agent
+                    </label>
+                    <input type="checkbox" class="pull-left" ng-model="current_agent.notifications.pay_agent" ng-value="1" translate />
+                </div>
+
+                <div>
+                    <label translate>
+                        Pay subscription
+                    </label>
+                    <input type="checkbox" class="pull-left" ng-model="current_agent.notifications.pay_subscription" ng-value="1" translate />
+                </div>
             </div>
         </div>
         <div class="form-group">

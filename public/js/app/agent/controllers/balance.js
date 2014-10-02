@@ -75,7 +75,7 @@ function AgentBalancePaymentFailCtrl($location, $translate, flash) {
 /**
  * @url "/agent/balance/plan"
  */
-function AgentBalancePlanCtrl($rootScope, $scope, $location, $translate, socket) {
+function AgentBalancePlanCtrl($rootScope, $scope, $location, $translate, socket, flash) {
     $scope.plan = $rootScope.widget.plan;
 
     $scope.submit = function() {
