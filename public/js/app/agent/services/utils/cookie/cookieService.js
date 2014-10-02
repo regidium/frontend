@@ -19,11 +19,11 @@
             getAgent: function(){
                 var agent = $cookieStore.get('agent');
                 if (agent) {
-                    decodeAgentData(agent)
+                    decodeAgentData(agent);
                 }
                 return agent;
             }
-        }
+        };
     }
 
     /**

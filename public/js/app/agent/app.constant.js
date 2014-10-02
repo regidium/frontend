@@ -9,6 +9,6 @@
             preprocess: 'unix',
             // TODO: implement timezone logic
             timezone: 'Europe/London'
-        })
+        });
 
 })(angular);

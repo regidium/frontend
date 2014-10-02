@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('regidiumApp')
-        .factory('langService', langService)
+        .factory('langService', langService);
 
     function langService($rootScope){
         return {
@@ -19,14 +19,14 @@
              */
             getLang: function(){
                 var lang;
-                if ($rootScope.agent.language != 'auto') {
+                if ($rootScope.agent.language !== 'auto') {
                     lang = $rootScope.agent.language;
                 }else{
                     lang = getBrowserLang();
                 }
                 return lang;
             }
-        }
+        };
     }
 
     /**

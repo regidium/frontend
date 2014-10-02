@@ -8,7 +8,7 @@
 
             $rootScope.config = {};
             $rootScope.config.widgetUrl = 'http://widget.regidium.dev/';
-            $rootScope.config.apiUrl = 'http://api.regidium.dev/api/v1/'
+            $rootScope.config.apiUrl = 'http://api.regidium.dev/api/v1/';
             $rootScope.config.fsUrl = 'http://fs.regidium.dev/';
             $rootScope.config.server = {};
             $rootScope.config.server.io_url = 'http://io.regidium.dev';

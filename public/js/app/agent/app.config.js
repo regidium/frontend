@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('regidiumApp')
-        .config(config)
+        .config(config);
 
     function config($translateProvider, $logProvider, flashProvider) {
 
@@ -20,7 +20,7 @@
         $translateProvider.preferredLanguage('en');
 
         // Выводим сообщения в консоль только для окружения разработки
-        if (env == 'development') {
+        if (env === 'development') {
             $logProvider.debugEnabled(true);
             $translateProvider.useMissingTranslationHandlerLog();
         }

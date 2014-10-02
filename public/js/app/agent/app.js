@@ -84,7 +84,7 @@
 
         // Application global constants
         $rootScope.c = constantsService.getApplicationConstants();
-        $rootScope.t = (+new Date);
-    })
+        $rootScope.t = (+new Date());
+    });
 
 })(angular);

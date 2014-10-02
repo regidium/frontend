@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('regidiumApp')
-        .factory('constantsService', constantsService)
+        .factory('constantsService', constantsService);
 
     function constantsService(){
         return {
@@ -54,7 +54,7 @@
 
                 return c;
             }
-        }
+        };
     }
 
 })(angular);

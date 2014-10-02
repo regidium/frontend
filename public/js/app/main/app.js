@@ -54,7 +54,7 @@
         $translateProvider.preferredLanguage('en');
 
         // Выводим сообщения в консоль только для окружения разработки
-        if (env == 'development') {
+        if (env === 'development') {
             $translateProvider.useMissingTranslationHandlerLog();
             $logProvider.debugEnabled(true);
         }

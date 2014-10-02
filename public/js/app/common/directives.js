@@ -51,7 +51,7 @@
                     if (myValue === otherValue) {
                         ctrl.$setValidity('equal', true);
                         return myValue;
-                    } else if (myValue == undefined && otherValue == undefined) {
+                    } else if (myValue === undefined && otherValue === undefined) {
                         return true;
                     } else {
                         ctrl.$setValidity('equal', false);
@@ -87,7 +87,7 @@
                 });
             }
         };
-    })
+    });
 
     /*
      * Unused directive

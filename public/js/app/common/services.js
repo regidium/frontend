@@ -61,7 +61,7 @@
                             callback.apply(socket, args);
                         }
                     });
-                })
+                });
             }
         };
     })
@@ -81,7 +81,7 @@
                 function rotate_left(n,s) {
                     var t4 = ( n<<s ) | (n>>>(32-s));
                     return t4;
-                };
+                }
 
                 function lsb_hex(val) {
                     var str="";
@@ -95,7 +95,7 @@
                         str += vh.toString(16) + vl.toString(16);
                     }
                     return str;
-                };
+                }
 
                 function cvt_hex(val) {
                     var str="";
@@ -107,7 +107,7 @@
                         str += v.toString(16);
                     }
                     return str;
-                };
+                }
 
 
                 function Utf8Encode(input) {
@@ -134,7 +134,7 @@
                     }
 
                     return utftext;
-                };
+                }
 
                 var blockstart;
                 var i, j;
@@ -151,7 +151,7 @@
 
                 var input_len = input.length;
 
-                var word_array = new Array();
+                var word_array = [];
                 for( i=0; i<input_len-3; i+=4 ) {
                     j = input.charCodeAt(i)<<24 | input.charCodeAt(i+1)<<16 |
                         input.charCodeAt(i+2)<<8 | input.charCodeAt(i+3);
@@ -177,7 +177,9 @@
 
                 word_array.push( i );
 
-                while( (word_array.length % 16) != 14 ) word_array.push( 0 );
+                while( (word_array.length % 16) !== 14 ){
+                    word_array.push( 0 );
+                }
 
                 word_array.push( input_len>>>29 );
                 word_array.push( (input_len<<3)&0x0ffffffff );
@@ -185,8 +187,12 @@
 
                 for ( blockstart=0; blockstart<word_array.length; blockstart+=16 ) {
 
-                    for( i=0; i<16; i++ ) W[i] = word_array[blockstart+i];
-                    for( i=16; i<=79; i++ ) W[i] = rotate_left(W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16], 1);
+                    for( i=0; i<16; i++ ) {
+                        W[i] = word_array[blockstart+i];
+                    }
+                    for( i=16; i<=79; i++ ) {
+                        W[i] = rotate_left(W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16], 1);
+                    }
 
                     A = H0;
                     B = H1;

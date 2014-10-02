@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('regidiumApp')
-        .factory('sessionService', sessionService)
+        .factory('sessionService', sessionService);
 
     function sessionService($http, $log, $rootScope){
         return {
@@ -34,7 +34,7 @@
                     cb(session_data);
                 }
             }
-        }
+        };
     }
 
 })(angular);
