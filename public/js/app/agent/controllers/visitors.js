@@ -74,9 +74,9 @@
         });
 
         // Получаем список чатов
-        socket.on('chat:existed:list', function(data) {
-            $log.debug('Socket chat:existed:list');
-
+        socket.forward('chat:existed:list', $scope);
+        $scope.$on('chat:existed:list', function(ev,data) {
+            console.log('chat:existed:list',ev);
             // Наполняем список чатов
             angular.forEach(data, function(chat) {
                 if (chat.current_url) {
@@ -135,7 +135,8 @@
         });
 
         // Чат подключен
-        socket.on('chat:connected', function (data) {
+        socket.forward('chat:connected',$scope);
+        $scope.$on('chat:connected', function (data) {
             $log.debug('Socket chat:connected', data);
 
             // Добавляем чат в список чатов онлайн
@@ -143,7 +144,8 @@
         });
 
         // Чат отключен
-        socket.on('chat:disconnect', function (data) {
+        socket.forward('chat:disconnect',$scope);
+        $scope.$on('chat:disconnect', function (data) {
             $log.debug('Socket chat:disconnect', data);
 
             if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid === data.chat_uid) {
@@ -209,6 +211,11 @@
                 return referrer;
             }
         };
+
+
+        //$scope.$on('$destroy', function (event) {
+        //    socket.removeAllListeners();
+        //});
     }
 
 })(angular);

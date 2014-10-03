@@ -39,7 +39,6 @@
 
         // Агент прочел сообщение
         socket.on('chat:message:remove:new', function (data) {
-            $log.debug('Main', 'Socket chat:message:remove:new', data);
 
             delete $scope.new_messages[data.message_uid];
             $scope.new_messages_count = Object.keys($scope.new_messages).length;
@@ -83,6 +82,7 @@
      * @url "/agent"
      */
     function AgentCtrl($rootScope, $scope, socket) {
+
         // Event сервер прислала информацию о виджете
         socket.on('widget:info:sended', function(data) {
             // Добавляем переменную widget в глобальный scope

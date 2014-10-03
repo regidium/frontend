@@ -18,6 +18,7 @@
         'blockUI',
         'angularMoment',
         'angularFileUpload',
+        'btford.socket-io',
         'regidiumApp.commonDirectives'
     ])
 

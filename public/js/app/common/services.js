@@ -42,28 +42,14 @@
     /**
      * Wrapped IO socket
      */
-    .factory('socket', function ($rootScope) {
+    .factory('socket', function ($rootScope, socketFactory) {
         var socket = io.connect($rootScope.config.server.io_url + ':' + $rootScope.config.server.io_port);
-        return {
-            on: function (eventName, callback) {
-                socket.on(eventName, function () {
-                    var args = arguments;
-                    $rootScope.$apply(function () {
-                        callback.apply(socket, args);
-                    });
-                });
-            },
-            emit: function (eventName, data, callback) {
-                socket.emit(eventName, data, function () {
-                    var args = arguments;
-                    $rootScope.$apply(function () {
-                        if (callback) {
-                            callback.apply(socket, args);
-                        }
-                    });
-                });
-            }
-        };
+
+        var mySocket = socketFactory({
+            ioSocket: socket
+        });
+
+        return mySocket;
     })
 
     /**

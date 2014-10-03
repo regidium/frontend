@@ -29,6 +29,10 @@ head.load(
     "/js/libs/angular/angular-underscore/angular-underscore.js",
     "/js/libs/angular/angular-block-ui/angular-block-ui.min.js",
     "/js/libs/angular/angular-file-upload/angular-file-upload.min.js",
+
+    //angular socket
+    "/js/libs/socket.js",
+
     // Agent
     "/js/app/agent/app.js",
     "/js/app/agent/app.config.js",

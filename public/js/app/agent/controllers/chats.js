@@ -28,7 +28,8 @@
         chatsBlockUI.start();
 
         // Получаем список чатов онлайн
-        socket.on('chat:online:list', function(data) {
+        socket.forward('chat:online:list',$scope);
+        $scope.$on('chat:online:list', function(ev,data) {
             $log.debug('Socket chat:online:list', data);
 
             //$rootScope.cou = $rootScope.cou + 1;
@@ -72,7 +73,8 @@
         });
 
         // Чат подключен
-        socket.on('chat:connected', function (data) {
+        socket.forward('chat:connected',$scope);
+        $scope.$on('chat:connected', function (ev,data) {
             $log.debug('Socket chat:connected', data);
 
             var message = {
@@ -95,7 +97,8 @@
         });
 
         // Чат отключен
-        socket.on('chat:disconnected', function (data) {
+        socket.forward('chat:disconnected',$scope);
+        $scope.$on('chat:disconnected', function (data) {
             $log.debug('Socket chat:disconnected', data);
 
             // if ($scope.current_chat && $scope.current_chat.uid == data.chat_uid) {
@@ -237,7 +240,8 @@
         });
 
         // Робот написал сообщение
-        socket.on('chat:message:sended:robot', function (data) {
+        socket.forward('chat:message:sended:robot',$scope);
+        $scope.$on('chat:message:sended:robot', function (data) {
             $log.debug('Chat', 'Socket chat:message:sended:robot');
 
             if ($scope.current_chat && $scope.current_chat.uid === data.chat_uid) {
@@ -246,7 +250,8 @@
         });
 
         // Пользователь написал сообщение
-        socket.on('chat:message:sended:user', function (data) {
+        socket.forward('chat:message:sended:user',$scope)
+        $scope.$on('chat:message:sended:user', function (ev,data) {
             $log.debug('Chat', 'Socket chat:message:sended:user');
 
             // Обновляем количество не прочтенных сообщений в кружках
@@ -256,6 +261,10 @@
 
             // Отсеиваем чужие оповещения
             if ($scope.current_chat && data.chat_uid === $scope.current_chat.uid) {
+
+                console.log('---------');
+                console.log($scope.current_chat);
+
                 // Проигрываем звуковое уводомление
                 soundChat.play();
 
@@ -269,6 +278,7 @@
                 $scope.current_chat.messages.push(data.message);
 
                 // Оповещаем слушаталей о прочтении сообщения агентом
+                console.log('emit read event');
                 socket.emit('chat:message:read:agent', {
                     event_send: true,
                     message_uid: data.message.uid,
@@ -377,6 +387,11 @@
                 return referrer;
             }
         };
+
+        $scope.$on("$destroy", function(){
+            $scope.current_chat = {};
+            console.log('Chat controller destroyed');
+        });
     }
 
 
