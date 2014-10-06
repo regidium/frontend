@@ -267,6 +267,7 @@
 
                 // Проигрываем звуковое уводомление
                 //soundChat.play();
+                console.log('test');
 
                 if(!$scope.current_chat.messages) {
                     $scope.current_chat.messages = [];
