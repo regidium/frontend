@@ -136,7 +136,7 @@
 
         // Чат подключен
         socket.forward('chat:connected',$scope);
-        $scope.$on('chat:connected', function (data) {
+        $scope.$on('chat:connected', function (ev, data) {
             $log.debug('Socket chat:connected', data);
 
             // Добавляем чат в список чатов онлайн
@@ -145,7 +145,7 @@
 
         // Чат отключен
         socket.forward('chat:disconnect',$scope);
-        $scope.$on('chat:disconnect', function (data) {
+        $scope.$on('chat:disconnect', function (ev, data) {
             $log.debug('Socket chat:disconnect', data);
 
             if ($scope.current_chat && $scope.current_chat.uid && $scope.current_chat.uid === data.chat_uid) {
